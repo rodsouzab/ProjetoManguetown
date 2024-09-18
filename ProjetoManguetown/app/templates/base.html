@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Projeto Manguetown{% endblock %}</title>
+    {% load static %}  
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Projeto Manguetown</h1>
+        <nav>
+            <ul>
+                <li><a>Home</a></li>
+                <li><a>About</a></li>
+                <li><a>Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Projeto Manguetown</p>
+    </footer>
+</body>
+</html>

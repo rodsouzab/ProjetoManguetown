@@ -1,0 +1,70 @@
+/* Estilo geral para o corpo da página */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Estilo para o cabeçalho */
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Estilo para a navegação */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para o conteúdo principal */
+main {
+    padding: 2em;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Estilo para o rodapé */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Estilo para links */
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
