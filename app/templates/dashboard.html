@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+    <h2>Bem-vindo(a)</h2>
+    <p>Escolha a gestão que deseja acessar:</p>
+
+    <ul>
+        <li><a href="{% url 'manguetown:gestao_colaboradoras' %}">Gestão de Colaboradoras</a></li>
+        <li>Gestão de Parceiros</li>
+        <li>Gestão de Doadores</li>
+    </ul>
+{% endblock %}

@@ -12,5 +12,11 @@ def sobre(request):
 def contato(request):
     return render(request, 'contato.html')
 
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+def gestao_colaboradoras(request):
+    return render(request, 'gestao_colaboradoras.html')
+
 class LoginView(auth_views.LoginView):
     template_name = 'login.html'
