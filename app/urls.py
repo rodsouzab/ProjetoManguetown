@@ -11,5 +11,6 @@ urlpatterns = [
     path('sobre/', views.sobre, name='sobre'),
     path('contato/', views.contato, name='contato'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('gestao_colaboradoras/', views.gestao_colaboradoras, name='gestao_colaboradoras'),
+    path('gestao_colaboradores/', views.gestao_colaboradores, name='gestao_colaboradores'),
+    path('cadastrar_colaborador/', views.cadastrar_colaborador, name='cadastrar_colaborador'),
 ]

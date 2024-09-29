@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Gestao_colaboradores
+{% endblock %}
+
+{% block content %}
+    <h1>Colaboradores</h1>
+
+    <a href="{% url 'manguetown:cadastrar_colaborador' %}">Cadastrar novo Colaborador</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Data de nascimento</th>
+                <th>Lugar onde mora</th>
+                <th>Renda</th>
+                <th>Situações de vulnerabilidade</th>
+                <th>Quantos filhos</th>
+                <th>Moradores na residência</th>
+                <th>Habilidades</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for colaborador in colaboradores %}
+            <tr>
+                <td>{{ colaborador.nome }}</td>
+                <td>{{ colaborador.cpf }}</td>
+                <td>{{ colaborador.data_nascimento }}</td>
+                <td>{{ colaborador.lugar_onde_mora }}</td>
+                <td>{{ colaborador.renda }}</td>
+                <td>{{ colaborador.situacoes_de_vulnerabilidade }}</td>
+                <td>{{ colaborador.quantos_filhos }}</td>
+                <td>{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
+                <td>{{ colaborador.habilidades }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">Nenhum colaborador cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
