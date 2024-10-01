@@ -68,3 +68,18 @@ a {
 a:hover {
     text-decoration: underline;
 }
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    color: white;
+    background-color: #0333; /* Cor do fundo */
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    text-decoration: none; /* Remove o sublinhado */
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: #555; /* Cor do fundo ao passar o mouse */
+}

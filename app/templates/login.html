@@ -15,7 +15,13 @@
             <input type="password" id="password" name="password" required>
         </div>
         <div>
-            <button type="submit">Entrar</button>
+            <a href="{% url 'manguetown:home' %}">
+                <button type="submit">Entrar</button>
+            </a>
         </div>
     </form>
+        <div>
+            <h3>Ainda não tem uma conta?</h3>
+            <a href="{% url 'manguetown:cadastrar' %}" class="button">Ir para Cadastro</a>
+            
 {% endblock %}
