@@ -31,6 +31,9 @@ ALLOWED_HOSTS = [
     'localhost',  
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://projetomanguetown-app.azurewebsites.net']
+
+
 # Application definition
 
 INSTALLED_APPS = [
