@@ -1,20 +1,9 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from django.contrib.auth.hashers import make_password
-from django.shortcuts import render, redirect
-from .models import EmpresaParceira
-from .models import Colaborador
-# Create your views here.
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Colaborador, EmpresaParceira
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from .models import Colaborador, EmpresaParceira
+from django.contrib.auth import authenticate, login
+from .models import Colaboradora, EmpresaParceira
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 def home(request):
     return render(request, 'home.html')
 
@@ -24,136 +13,85 @@ def sobre(request):
 def contato(request):
     return render(request, 'contato.html')
 
+# View de login
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        usuario = authenticate(request, username=username, password=password)
-        if usuario is not None:
-            login(request, usuario)
-            return redirect('home')
-    return render(request, 'login.html')
-
-# views.py
-
-# View para cadastro de Colaborador
-from django.shortcuts import render, redirect
-from .models import Colaborador, EmpresaParceira
-from django.http import HttpResponse
-
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        usuario = authenticate(request, username=username, password=password)
-        if usuario is not None:
-            login(request, usuario)
-            return redirect('home')
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('manguetown:escolha_cadastro')
         else:
-            messages.error(request, "Nome de usuário ou senha inválidos.")
+            # Adiciona uma mensagem de erro se a autenticação falhar
+            messages.error(request, 'Usuário ou senha incorretos.')
     return render(request, 'login.html')
 
-# View para cadastro de Colaborador
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from .models import Colaborador
-from django.contrib.auth.models import User
-
-def cadastrar_colaborador(request):
+# View de registro de usuário
+def registro_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        confirmar_senha = request.POST.get('confirmar_senha')
-        nome = request.POST.get('nome')
-        cpf = request.POST.get('cpf')
-        lugar_mora = request.POST.get('lugar_mora')
-        renda = request.POST.get('renda')
-        situacoes_vulnerabilidade = request.POST.get('situacoes_vulnerabilidade')
-        quantos_filhos = request.POST.get('filhos')
-        quantas_pessoas_moram_com_voce = request.POST.get('pessoas_moram_com_voce')
-        habilidades = request.POST.get('habilidades')
-        email = request.POST.get('email')  # Novo campo
-        telefone = request.POST.get('telefone')  # Novo campo
-
-        # Verifica se as senhas coincidem
-        if password != confirmar_senha:
-            messages.error(request, "As senhas não coincidem.")
-            return render(request, 'colaborador.html')
-
-        # Verificando se o nome de usuário já existe
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
         if User.objects.filter(username=username).exists():
-            messages.error(request, "Esse nome de usuário já está em uso.")
-            return render(request, 'colaborador.html')
-
-        # Criar o usuário
-        user = User.objects.create_user(username=username, password=password)
-
-        # Criar o colaborador associado ao usuário
-        Colaborador.objects.create(
-            user=user,
-            nome=nome,
-            cpf=cpf,
-            lugar_onde_mora=lugar_mora,
-            renda=renda,
-            situacoes_vulnerabilidade=situacoes_vulnerabilidade,
-            quantos_filhos=quantos_filhos,
-            quantas_pessoas_moram_com_voce=quantas_pessoas_moram_com_voce,
-            habilidades=habilidades,
-            email=email,  # Novo campo
-            telefone=telefone  # Novo campo
-        )
-        
-        messages.success(request, "Colaborador cadastrado com sucesso!")
+            messages.error(request, 'Esse nome de usuário já está em uso.')
+            return render(request, 'registro.html')  # Renderize o formulário novamente
+        user = User.objects.create_user(username=username, password=password, email=email)
+        user.save()
         return redirect('login')
+    return render(request, 'registro.html')
 
-    return render(request, 'colaborador.html')  # Renderiza o template de cadastro
+# View para escolher tipo de cadastro
+def escolha_cadastro_view(request):
+    return render(request, 'escolha_cadastro.html')
 
+# View de cadastro de colaboradora
+@login_required
+def cadastro_colaboradora_view(request):
+    usuario = request.user
 
-
-# View para cadastro de Empresa Parceira
-def cadastrar_empresa(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        nome = request.POST.get('nome')
-        lugar_mora = request.POST.get('lugar_mora')
-        local_captacao = request.POST.get('local_captacao')
-        disponibilidade_residuo = request.POST.get('disponibilidade_residuo')
-        descricao = request.POST.get('descricao')
-        fabricacao_porte = request.POST.get('fabricacao_porte')
-        residuo_tipo = request.POST.get('residuo_tipo')
-        telefone = request.POST.get('telefone')
-        email = request.POST.get('email')
-        condicao_residuo = request.POST.get('condicao_residuo')
+        # Verifica se o usuário já tem uma instância de Colaboradora
+        if Colaboradora.objects.filter(usuario=usuario).exists():
+            # Se já existe, retorna uma mensagem de erro em vez de redirecionar
+            messages.error(request, "Você já está cadastrado como colaboradora.")
+            return render(request, 'cadastro_colaboradora.html')  # Renderiza a mesma página com mensagem
 
-        # Verificando se o nome de usuário já existe
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Esse nome de usuário já está em uso.")
-            return render(request, 'empresa.html')
+        # Se não existe, cria a nova instância
+        colaboradora = Colaboradora(
+            nome=request.POST['nome'],
+            cpf=request.POST['cpf'],
+            lugar_onde_mora=request.POST['lugar_onde_mora'],
+            renda=request.POST['renda'],
+            situacoes_vulnerabilidade=request.POST['situacoes_vulnerabilidade'],
+            quantos_filhos=request.POST['quantos_filhos'],
+            quantas_pessoas_moram=request.POST['quantas_pessoas_moram'],
+            habilidades=request.POST['habilidades'],
+            usuario=usuario
+        )
 
-        # Criar o usuário
-        user = User.objects.create_user(username=username, password=password)
-        if user:
-            messages.success(request, "Usuário criado com sucesso!")
-        else:
-            messages.error(request, "Erro ao criar o usuário.")
-        # Criar a empresa parceira associada ao usuário
+        try:
+            colaboradora.save()  # Tente salvar a colaboradora
+            messages.success(request, "Colaboradora cadastrada com sucesso!")  # Mensagem de sucesso
+            return redirect('manguetown:escolha_cadastro')  # Redireciona para a página de sucesso
+
+        except Exception as e:
+            messages.error(request, f"Ocorreu um erro ao cadastrar: {str(e)}")  # Mensagem de erro
+
+    return render(request, 'cadastro_colaboradora.html')  # Renderiza o template do for
+
+# View de cadastro de empresa parceira
+def cadastro_empresa_view(request):
+    if request.method == 'POST':
         EmpresaParceira.objects.create(
-            user=user,
-            nome=nome,
-            lugar_mora=lugar_mora,
-            local_captacao=local_captacao,
-            disponibilidade_residuo=disponibilidade_residuo,
-            descricao=descricao,
-            fabricacao_porte=fabricacao_porte,
-            residuo_tipo=residuo_tipo,
-            telefone=telefone,
-            email=email,
-            condicao_residuo=condicao_residuo
+            nome_responsavel=request.POST['nome_responsavel'],
+            nome_empresa=request.POST['nome_empresa'],
+            captacao_local=request.POST['captacao_local'],
+            disponibilidade_residuo=request.POST['disponibilidade_residuo'],
+            porte_fabrico=request.POST['porte_fabrico'],
+            tipo_residuo=request.POST['tipo_residuo'],
+            condicao_residuo=request.POST['condicao_residuo'],
+            usuario=request.user
         )
-        
-        messages.success(request, "Empresa cadastrada com sucesso!")
-        return redirect('login')
-
-    return render(request, 'empresa.html')
-
+        return redirect('manguetown:escolha_cadastro')
+    return render(request, 'cadastro_empresa.html')

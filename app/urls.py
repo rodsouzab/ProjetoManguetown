@@ -7,10 +7,11 @@ from django.views.generic import TemplateView
 app_name = "manguetown"
 urlpatterns = [
     path('', views.home, name='home'),
-    path('login/', views.login_view, name='login'),
     path('sobre/', views.sobre, name='sobre'),
+    path('login/', views.login_view, name='login'),
     path('contato/', views.contato, name='contato'),
-    path('cadastrar/', TemplateView.as_view(template_name='cadastro.html'), name='cadastrar'),
-    path('colaborador/cadastrar/', views.cadastrar_colaborador, name='colaborador'),
-    path('empresa/cadastrar/', views.cadastrar_empresa, name='empresa'),
+    path('registro/', views.registro_view, name='registro'),
+    path('escolha-cadastro/', views.escolha_cadastro_view, name='escolha_cadastro'),
+    path('cadastro-colaboradora/', views.cadastro_colaboradora_view, name='cadastro_colaboradora'),
+    path('cadastro-empresa/', views.cadastro_empresa_view, name='cadastro_empresa'),
 ]

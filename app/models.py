@@ -1,38 +1,35 @@
 from django.db import models
-
-# Create your models here.
-
+from django.db import models
+from django.contrib.auth.models import User
 
 
 from django.db import models
 from django.contrib.auth.models import User
 
-class Colaborador(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,default=None)
-    nome = models.CharField(max_length=255)
-    cpf = models.CharField(max_length=14, unique=True)
-    data_nascimento = models.DateField(blank=True, null=True)
-    lugar_onde_mora = models.CharField(max_length=255)
-    renda = models.DecimalField(max_digits=10, decimal_places=2)
-    situacoes_de_vulnerabilidade = models.TextField(blank=True, null=True)
-    quantos_filhos = models.PositiveIntegerField(default=0)
-    quantas_pessoas_moram_com_voce = models.PositiveIntegerField(default=0)
-    habilidades = models.TextField(null=True)
-    email = models.EmailField(default='nao_informado@example.com')  # Novo campo
-    telefone = models.CharField(max_length=15,default='0000000000')  # Novo campo
+class Colaboradora(models.Model):
+    nome = models.CharField(max_length=100,default='Nome Padrão')
+    cpf = models.CharField(max_length=14)
+    lugar_onde_mora = models.CharField(max_length=100, default='Não especificado')  # Adicionando um valor padrão
+    renda = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Adicionando um valor padrão
+    situacoes_vulnerabilidade = models.TextField(default='Não especificado')  # Adicionando um valor padrão
+    quantos_filhos = models.IntegerField(default=0)  # Adicionando um valor padrão
+    quantas_pessoas_moram = models.IntegerField(default=1)  # Adicionando um valor padrão
+    habilidades = models.TextField(default='Não especificado')  # Adicionando um valor padrão
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE,default='Nome Padrão')
 
     def __str__(self):
         return self.nome
 
+
 class EmpresaParceira(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,default=None)
-    nome = models.CharField(max_length=255)
-    lugar_mora = models.CharField(max_length=255)
-    local_captacao = models.CharField(max_length=255)
-    disponibilidade_residuo = models.TextField(null=True)
-    descricao = models.TextField(null=True)
-    fabricacao_porte = models.CharField(max_length=50)
-    residuo_tipo = models.CharField(max_length=50)
-    telefone = models.CharField(max_length=15,default='0000000000')
-    email = models.EmailField(default='nao_informado@example.com')
-    condicao_residuo = models.TextField(null=True)
+    nome_responsavel = models.CharField(max_length=100,default='Nome Padrão')
+    nome_empresa = models.CharField(max_length=100,default='Nome Padrão')
+    captacao_local = models.CharField(max_length=100, default='valor padrão')  # Valor padrão já definido
+    disponibilidade_residuo = models.CharField(max_length=100, default='Não especificado')  # Adicionando um valor padrão
+    porte_fabrico = models.CharField(max_length=50, choices=[('pequeno', 'Pequeno'), ('medio', 'Médio'), ('grande', 'Grande')],default='pequeno')
+    tipo_residuo = models.CharField(max_length=100, default='Não especificado')  # Adicionando um valor padrão
+    condicao_residuo = models.TextField(max_length=100, default='Não especificado')  # Valor padrão já definido
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE,default='Nome Padrão')
+
+    def __str__(self):
+        return self.nome_empresa
