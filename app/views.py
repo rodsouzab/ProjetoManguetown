@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from .models import Colaboradora, EmpresaParceira
+from .models import Colaborador, EmpresaParceira
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+
+
 def home(request):
     return render(request, 'home.html')
 
@@ -21,7 +24,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('manguetown:escolha_cadastro')
+            return redirect('manguetown:dashboard')
         else:
             # Adiciona uma mensagem de erro se a autenticação falhar
             messages.error(request, 'Usuário ou senha incorretos.')
@@ -41,44 +44,92 @@ def registro_view(request):
         return redirect('login')
     return render(request, 'registro.html')
 
-# View para escolher tipo de cadastro
-def escolha_cadastro_view(request):
-    return render(request, 'escolha_cadastro.html')
-
-# View de cadastro de colaboradora
 @login_required
-def cadastro_colaboradora_view(request):
-    usuario = request.user
+# View para escolher a página de gestão
+def dashboard_view(request):
+    return render(request, 'dashboard.html')
 
+# View da página de gestão de colaboradores
+def gestao_colaboradores_view(request):
+    colaboradores = Colaborador.objects.all()
+    return render(request, 'gestao_colaboradores.html', {'colaboradores': colaboradores})
+
+# View para o cadastro de colaborador
+def cadastrar_colaborador_view(request):
     if request.method == 'POST':
-        # Verifica se o usuário já tem uma instância de Colaboradora
-        if Colaboradora.objects.filter(usuario=usuario).exists():
-            # Se já existe, retorna uma mensagem de erro em vez de redirecionar
-            messages.error(request, "Você já está cadastrado como colaboradora.")
-            return render(request, 'cadastro_colaboradora.html')  # Renderiza a mesma página com mensagem
+        nome = request.POST['nome']
+        cpf = request.POST['cpf']
+        data_nascimento = request.POST['data_nascimento']
+        lugar_onde_mora = request.POST['lugar_onde_mora']
+        renda = request.POST['renda']
+        situacoes_de_vulnerabilidade = request.POST['situacoes_de_vulnerabilidade']
+        quantos_filhos = request.POST['quantos_filhos']
+        quantas_pessoas_moram_com_voce = request.POST['quantas_pessoas_moram_com_voce']
+        habilidades = request.POST['habilidades']
 
-        # Se não existe, cria a nova instância
-        colaboradora = Colaboradora(
-            nome=request.POST['nome'],
-            cpf=request.POST['cpf'],
-            lugar_onde_mora=request.POST['lugar_onde_mora'],
-            renda=request.POST['renda'],
-            situacoes_vulnerabilidade=request.POST['situacoes_vulnerabilidade'],
-            quantos_filhos=request.POST['quantos_filhos'],
-            quantas_pessoas_moram=request.POST['quantas_pessoas_moram'],
-            habilidades=request.POST['habilidades'],
-            usuario=usuario
-        )
+        # Verifica se o CPF já existe antes de tentar salvar
+        if Colaborador.objects.filter(cpf=cpf).exists():
+            messages.error(request, 'O CPF já está cadastrado. Por favor, insira um CPF diferente.')
+            return redirect('manguetown:cadastrar_colaborador')  # Redireciona de volta ao formulário
 
         try:
-            colaboradora.save()  # Tente salvar a colaboradora
-            messages.success(request, "Colaboradora cadastrada com sucesso!")  # Mensagem de sucesso
-            return redirect('manguetown:escolha_cadastro')  # Redireciona para a página de sucesso
+            novo_colaborador = Colaborador.objects.create(
+                nome=nome,
+                cpf=cpf,
+                data_nascimento=data_nascimento,
+                lugar_onde_mora=lugar_onde_mora,
+                renda=renda,
+                situacoes_de_vulnerabilidade=situacoes_de_vulnerabilidade,
+                quantos_filhos=quantos_filhos,
+                quantas_pessoas_moram_com_voce=quantas_pessoas_moram_com_voce,
+                habilidades=habilidades,
+            )
+            # Não mostrar mensagem de sucesso aqui
+            return redirect('manguetown:gestao_colaboradores')  # Redireciona para a página de Gestão de Colaboradores
 
-        except Exception as e:
-            messages.error(request, f"Ocorreu um erro ao cadastrar: {str(e)}")  # Mensagem de erro
+        except IntegrityError:
+            messages.error(request, 'Erro ao cadastrar colaborador. Por favor, tente novamente.')
+            return redirect('manguetown:cadastrar_colaborador')  # Redireciona de volta ao formulário
 
-    return render(request, 'cadastro_colaboradora.html')  # Renderiza o template do for
+    return render(request, 'cadastrar_colaborador.html')
+
+# View para escolher tipo de cadastro
+# def escolha_cadastro_view(request):
+#     return render(request, 'escolha_cadastro.html')
+
+# View de cadastro de colaboradora
+# def cadastro_colaboradora_view(request):
+#     usuario = request.user
+
+#     if request.method == 'POST':
+#         # Verifica se o usuário já tem uma instância de Colaboradora
+#         if Colaboradora.objects.filter(usuario=usuario).exists():
+#             # Se já existe, retorna uma mensagem de erro em vez de redirecionar
+#             messages.error(request, "Você já está cadastrado como colaboradora.")
+#             return render(request, 'cadastro_colaboradora.html')  # Renderiza a mesma página com mensagem
+
+#         # Se não existe, cria a nova instância
+#         colaboradora = Colaboradora(
+#             nome=request.POST['nome'],
+#             cpf=request.POST['cpf'],
+#             lugar_onde_mora=request.POST['lugar_onde_mora'],
+#             renda=request.POST['renda'],
+#             situacoes_vulnerabilidade=request.POST['situacoes_vulnerabilidade'],
+#             quantos_filhos=request.POST['quantos_filhos'],
+#             quantas_pessoas_moram=request.POST['quantas_pessoas_moram'],
+#             habilidades=request.POST['habilidades'],
+#             usuario=usuario
+#         )
+
+#         try:
+#             colaboradora.save()  # Tente salvar a colaboradora
+#             messages.success(request, "Colaboradora cadastrada com sucesso!")  # Mensagem de sucesso
+#             return redirect('manguetown:escolha_cadastro')  # Redireciona para a página de sucesso
+
+#         except Exception as e:
+#             messages.error(request, f"Ocorreu um erro ao cadastrar: {str(e)}")  # Mensagem de erro
+
+#     return render(request, 'cadastro_colaboradora.html')  # Renderiza o template do for
 
 # View de cadastro de empresa parceira
 def cadastro_empresa_view(request):
@@ -91,7 +142,7 @@ def cadastro_empresa_view(request):
             porte_fabrico=request.POST['porte_fabrico'],
             tipo_residuo=request.POST['tipo_residuo'],
             condicao_residuo=request.POST['condicao_residuo'],
-            usuario=request.user
+            # usuario=request.user
         )
-        return redirect('manguetown:escolha_cadastro')
+        return redirect('manguetown:dashboard')
     return render(request, 'cadastro_empresa.html')

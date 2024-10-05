@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <h2>Bem-vindo(a)</h2>
+        <p>Escolha a gestão que deseja acessar:</p>
+        
+        <div class="dashboard-buttons">
+            <a href="{% url 'manguetown:gestao_colaboradores' %}" class="button">Gestão de Colaboradores</a>
+            <a href="{% url 'manguetown:cadastro_empresa' %}" class="button">Gestão de Parceiros</a>
+            <a href="#" class="button">Gestão de Doadores</a>
+        </div>
+    </div>
+{% endblock %}
