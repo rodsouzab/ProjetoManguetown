@@ -22,7 +22,7 @@ Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de I
 2) Como administrador, eu quero receber relatórios das funcionárias, bem como dos doadores e parceiros
 3) Como administrador, eu quero diferenciar as funcionárias por nível de competência e suas especialidades
 4) Como administrador, eu quero poder atualizar as informações das funcionárias, doadores, colaboradores, parceiros
-5) Como administrador, eu quero um sistema que cuida da gestão da folha de pagamento
+5) Como administrador, eu quero listar os doadores, colaboradores e parceiros registrados
 
 ## Protótipo de Baixa Fidelidade e Screencast
 
