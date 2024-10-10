@@ -35,13 +35,16 @@ def registro_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        email = request.POST['email']
+        email = request.POST.get('email')
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Esse nome de usuário já está em uso.')
             return render(request, 'registro.html')  # Renderize o formulário novamente
         user = User.objects.create_user(username=username, password=password, email=email)
+        if not email:
+            messages.error(request, 'O campo de e-mail é obrigatório.')
+            return render(request, 'registro.html')
         user.save()
-        return redirect('login')
+        return render(request, 'login.html')
     return render(request, 'registro.html')
 
 @login_required
