@@ -2,7 +2,7 @@
 
 ## Descrição do Projeto
 
-Este projeto visa desenvolver um sistema de gestão para a Fábrica de Ideias, facilitando o cadastro e controle de colaboradores, parceiros e doadores. O sistema é focado na gestão de pessoas e na mensuração de impacto.
+Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de Ideias, facilitando o cadastro e controle de colaboradores, parceiros e doadores. O sistema é focado na gestão de pessoas e na mensuração de impacto.
 
 ## Equipe
 
@@ -24,15 +24,19 @@ Este projeto visa desenvolver um sistema de gestão para a Fábrica de Ideias, f
 4) Como administrador, eu quero poder atualizar as informações das funcionárias, doadores, colaboradores, parceiros
 5) Como administrador, eu quero um sistema que cuida da gestão da folha de pagamento
 
-## Protótipo de Baixa Fidelidade e Screencast:
+## Protótipo de Baixa Fidelidade e Screencast
 
 [Link para o Figma](https://www.figma.com/design/47pvZkXQXwdE2BK5Y1Arzw/Projeto-Manguetown---Prot%C3%B3tipo-Lo-fi?node-id=0-1&node-type=canvas&m=dev)
 
-## Diagrama de atividades:
+## Diagrama de atividades
 
 ![Diagrama](imgs/Diagrama_SR1(1).png)
 
-## Programação em Par:
+## Issue/Bug Tracker
+
+![image](https://github.com/user-attachments/assets/42136493-7eb4-4e1f-bc0e-8be5dc5dca12)
+
+## Programação em Par
 
 O Grupo TRAMA contou com 5 integrantes de ciência da computação para o desenvolvimento das primeiras 2 histórias, esses são: Fernando Fernandes, Matheus Lustosa, Augusto Barbosa, Arthur Xavier e Rodrigo Souza. Apesar do número ímpar de integrantes, nós tentamos aproveitar o máximo do método pair-programming, dividindo a programação desse modo:  
 
