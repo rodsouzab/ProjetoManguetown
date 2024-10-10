@@ -16,6 +16,10 @@ Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de I
 
 [Link para Site na Azure](https://projetomanguetown-app.azurewebsites.net)
 
+## ScreenCast Status Report I
+
+[Link para Vídeo](https://drive.google.com/file/d/1Z4u-yTMqXnzyEcWS6G3T0wl56bjRIl3I/view?usp=drive_link)
+
 ## Histórias de Usuário
 
 1) Como administrador, eu quero cadastrar doadores, colaboradores, parceiros
