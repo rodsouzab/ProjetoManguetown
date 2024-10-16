@@ -159,7 +159,6 @@ def cadastro_empresa_view(request):
             porte_fabrico=request.POST.get('porte_fabrico'),
             tipo_residuo=request.POST.get('tipo_residuo'),
             condicao_residuo=request.POST.get('condicao_residuo'),
-            usuario=usuario  # Associando a empresa ao usuário logado
         )
 
         try:
