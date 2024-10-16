@@ -81,17 +81,38 @@ def cadastro_colaboradora_view(request):
     return render(request, 'cadastro_colaboradora.html')  # Renderiza o template do for
 
 # View de cadastro de empresa parceira
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import EmpresaParceira  # Supondo que o modelo EmpresaParceira já esteja importado
+
+@login_required
 def cadastro_empresa_view(request):
+    usuario = request.user  # Obtém o usuário logado
+
     if request.method == 'POST':
-        EmpresaParceira.objects.create(
-            nome_responsavel=request.POST['nome_responsavel'],
-            nome_empresa=request.POST['nome_empresa'],
-            captacao_local=request.POST['captacao_local'],
-            disponibilidade_residuo=request.POST['disponibilidade_residuo'],
-            porte_fabrico=request.POST['porte_fabrico'],
-            tipo_residuo=request.POST['tipo_residuo'],
-            condicao_residuo=request.POST['condicao_residuo'],
-            usuario=request.user
+        # Verifica se o usuário já possui um cadastro de empresa
+        if EmpresaParceira.objects.filter(usuario=usuario).exists():
+            messages.error(request, "Você já está cadastrado como empresa parceira.")
+            return render(request, 'cadastro_empresa.html')
+
+        # Criação de uma nova instância de EmpresaParceira
+        empresa = EmpresaParceira(
+            nome_responsavel=request.POST.get('nome_responsavel'),
+            nome_empresa=request.POST.get('nome_empresa'),
+            captacao_local=request.POST.get('captacao_local'),
+            disponibilidade_residuo=request.POST.get('disponibilidade_residuo'),
+            porte_fabrico=request.POST.get('porte_fabrico'),
+            tipo_residuo=request.POST.get('tipo_residuo'),
+            condicao_residuo=request.POST.get('condicao_residuo'),
+            usuario=usuario  # Associando a empresa ao usuário logado
         )
-        return redirect('manguetown:escolha_cadastro')
+
+        try:
+            empresa.save()  # Tenta salvar a nova empresa
+            messages.success(request, "Empresa cadastrada com sucesso!")
+            return redirect('manguetown:escolha_cadastro')
+        except Exception as e:
+            messages.error(request, f"Erro ao cadastrar a empresa: {e}")
+
     return render(request, 'cadastro_empresa.html')
