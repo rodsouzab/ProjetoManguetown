@@ -145,11 +145,6 @@ def cadastro_empresa_view(request):
     usuario = request.user  # Obtém o usuário logado
 
     if request.method == 'POST':
-        # Verifica se o usuário já possui um cadastro de empresa
-        if EmpresaParceira.objects.filter(usuario=usuario).exists():
-            messages.error(request, "Você já está cadastrado como empresa parceira.")
-            return render(request, 'cadastro_empresa.html')
-
         # Criação de uma nova instância de EmpresaParceira
         empresa = EmpresaParceira(
             nome_responsavel=request.POST.get('nome_responsavel'),
