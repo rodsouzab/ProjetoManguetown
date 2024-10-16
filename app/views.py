@@ -142,29 +142,30 @@ from .models import EmpresaParceira  # Supondo que o modelo EmpresaParceira já 
 
 @login_required
 def cadastro_empresa_view(request):
-    usuario = request.user  # Obtém o usuário logado
-
     if request.method == 'POST':
+        nome_empresa = request.POST.get('nome_empresa')
+
         # Verifica se o usuário já possui um cadastro de empresa
-        if EmpresaParceira.objects.filter(usuario=usuario).exists():
+        if EmpresaParceira.objects.filter(nome_empresa=nome_empresa).exists():
             messages.error(request, "Você já está cadastrado como empresa parceira.")
             return render(request, 'cadastro_empresa.html')
 
         # Criação de uma nova instância de EmpresaParceira
         empresa = EmpresaParceira(
             nome_responsavel=request.POST.get('nome_responsavel'),
-            nome_empresa=request.POST.get('nome_empresa'),
+            nome_empresa=nome_empresa,
             captacao_local=request.POST.get('captacao_local'),
             disponibilidade_residuo=request.POST.get('disponibilidade_residuo'),
             porte_fabrico=request.POST.get('porte_fabrico'),
             tipo_residuo=request.POST.get('tipo_residuo'),
             condicao_residuo=request.POST.get('condicao_residuo'),
+            # Removido o campo 'usuario' da instância
         )
 
         try:
             empresa.save()  # Tenta salvar a nova empresa
             messages.success(request, "Empresa cadastrada com sucesso!")
-            return redirect('manguetown:escolha_cadastro')
+            return redirect('manguetown:dashboard')
         except Exception as e:
             messages.error(request, f"Erro ao cadastrar a empresa: {e}")
 
