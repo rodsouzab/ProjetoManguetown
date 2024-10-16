@@ -34,7 +34,7 @@ class EmpresaParceira(models.Model):
     condicao_residuo = models.TextField(default='Não especificado')
     
     # O campo `usuario` não deve ter valor padrão; o usuário logado será associado aqui
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    #usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome_empresa
