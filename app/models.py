@@ -21,14 +21,20 @@ class Colaborador(models.Model):
 
 
 class EmpresaParceira(models.Model):
-    nome_responsavel = models.CharField(max_length=100,default='Nome Padrão')
-    nome_empresa = models.CharField(max_length=100,default='Nome Padrão')
-    captacao_local = models.CharField(max_length=100, default='valor padrão')  # Valor padrão já definido
-    disponibilidade_residuo = models.CharField(max_length=100, default='Não especificado')  # Adicionando um valor padrão
-    porte_fabrico = models.CharField(max_length=50, choices=[('pequeno', 'Pequeno'), ('medio', 'Médio'), ('grande', 'Grande')],default='pequeno')
-    tipo_residuo = models.CharField(max_length=100, default='Não especificado')  # Adicionando um valor padrão
-    condicao_residuo = models.TextField(max_length=100, default='Não especificado')  # Valor padrão já definido
-    # usuario = models.OneToOneField(User, on_delete=models.CASCADE,default='Nome Padrão')
+    nome_responsavel = models.CharField(max_length=100, default='Nome Padrão')
+    nome_empresa = models.CharField(max_length=100, default='Nome Padrão')
+    captacao_local = models.CharField(max_length=100, default='Local não especificado')
+    disponibilidade_residuo = models.CharField(max_length=100, default='Não especificado')
+    porte_fabrico = models.CharField(
+        max_length=50,
+        choices=[('pequeno', 'Pequeno'), ('medio', 'Médio'), ('grande', 'Grande')],
+        default='pequeno'
+    )
+    tipo_residuo = models.CharField(max_length=100, default='Não especificado')
+    condicao_residuo = models.TextField(default='Não especificado')
+    
+    # # O campo `usuario` não deve ter valor padrão; o usuário logado será associado aqui
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.nome_empresa

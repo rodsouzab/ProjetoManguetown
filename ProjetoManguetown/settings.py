@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'projetomanguetown-app.azurewebsites.net',
     'localhost',  
+    '127.0.0.1',
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://projetomanguetown-app.azurewebsites.net']
