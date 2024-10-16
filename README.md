@@ -9,7 +9,7 @@ Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de I
 - **Arthur Xavier** 
 - **Augusto Barbosa**
 - **Fernando Cavalcanti** 
-- **Matheus Lustosa** - <a href="mailto:mclc3@cesar.school">📧</a> - <a href="https://www.linkedin.com/in/matheus-lustosa-827010242/"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
+- **Matheus Lustosa** - <a href="mailto:mclc3@cesar.school"><img src="https://github.com/user-attachments/assets/74e983eb-6515-477a-a6ec-61611d969ab6" width="25"></a> - <a href="https://www.linkedin.com/in/matheus-lustosa-827010242/"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
 - **Rodrigo Barbosa** - [rsb2@cesar.school](mailto:rsb2@cesar.school)
 
 ## Site
