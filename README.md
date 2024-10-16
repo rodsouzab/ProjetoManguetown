@@ -22,11 +22,11 @@ Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de I
 
 ## Histórias de Usuário
 
-1) Como administrador, eu quero cadastrar doadores, colaboradores, parceiros
-2) Como administrador, eu quero receber relatórios das funcionárias, bem como dos doadores e parceiros
-3) Como administrador, eu quero diferenciar as funcionárias por nível de competência e suas especialidades
-4) Como administrador, eu quero poder atualizar as informações das funcionárias, doadores, colaboradores, parceiros
-5) Como administrador, eu quero listar os doadores, colaboradores e parceiros registrados
+1) Eu como Administrador, quero cadastrar funcionárias.
+2) Eu como Administrador, quero cadastrar empresas parceiras.
+3) Eu como Administrador, quero gerar relatórios das funcionárias.
+4) Eu como Administrador, quero filtrar as funcionárias por nível de competência e suas especialidades.
+5) Eu como Administrador, quero organizar quais funcionárias que estão trabalhando em determinadas bonecas.
 
 ## Protótipo de Baixa Fidelidade e Screencast
 
