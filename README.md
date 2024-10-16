@@ -4,13 +4,14 @@
 
 Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de Ideias, facilitando o cadastro e controle de colaboradores, parceiros e doadores. O sistema é focado na gestão de pessoas e na mensuração de impacto.
 
-## Equipe
+## Equipe de programação
 
-- **Arthur Xavier** 
-- **Augusto Barbosa**
-- **Fernando Cavalcanti** 
+- **Arthur Xavier** - <a href="mailto:axrm@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://www.linkedin.com/in/arthur-xavier-143389304?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
+- **Augusto Barbosa** - <a href="mailto:abc4@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://br.linkedin.com/in/augusto-barbosa-90550b2b8"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
+- **Fernando Cavalcanti** - <a href="mailto:fafhcavalcanti@gmail.com"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://www.linkedin.com/in/fernando-augusto-cavalcanti/"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
 - **Matheus Lustosa** - <a href="mailto:mclc3@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://www.linkedin.com/in/matheus-lustosa-827010242/"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
-- **Rodrigo Barbosa** - [rsb2@cesar.school](mailto:rsb2@cesar.school)
+- **Rodrigo Barbosa** - <a href="mailto:rsb2@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="
+https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
 
 ## Site
 
