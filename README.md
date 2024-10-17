@@ -31,7 +31,7 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 ## ScreenCast Status Report I
 
-[Link para Vídeo](https://drive.google.com/file/d/1Z4u-yTMqXnzyEcWS6G3T0wl56bjRIl3I/view?usp=drive_link)
+[Link para Vídeo](https://drive.google.com/file/d/1fnEh69Mi8w9XbvyxZGOQGWZgZIojXX7Q/view?usp=drive_link)
 
 ## Histórias de Usuário
 
