@@ -38,8 +38,9 @@
             <label for="condicao_residuo">Condição do Resíduo:</label>
             <textarea id="condicao_residuo" name="condicao_residuo" required></textarea>
         </div>
-        <div>
-            <button type="submit">Cadastrar</button>
+        <div class="form-actions"> <!-- Container para alinhar os botões -->
+            <a href="{% url 'manguetown:gestao_empresas' %}" class="button cancel-button">Cancelar</a>
+            <button type="submit" class="button">Cadastrar Empresa</button>
         </div>
     </form>
 {% endblock %}
