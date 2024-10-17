@@ -169,7 +169,6 @@ def cadastro_empresa_view(request):
 
         try:
             empresa.save()  # Tenta salvar a nova empresa
-            messages.success(request, "Empresa cadastrada com sucesso!")
             return redirect('manguetown:gestao_empresas')
         except Exception as e:
             messages.error(request, f"Erro ao cadastrar a empresa: {e}")
