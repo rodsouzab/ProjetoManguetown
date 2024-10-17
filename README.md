@@ -15,7 +15,7 @@ Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de I
 - **Rodrigo Barbosa** - <a href="mailto:rsb2@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="
 https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
 
-### 🎨 Equipe de design 
+### 👨‍🎨 Equipe de design 
 
 - **Bernador aguiar** - <a href="mailto:bernardoaguiartb@gmail.com"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://www.linkedin.com/in/bernardo-aguiar-tavares-barbosa-971827298?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
 - **Samara Tadeuza** - <a href="mailto:stcs@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://www.linkedin.com/in/samara-tadeuza-1aa691326?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
