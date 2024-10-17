@@ -52,7 +52,8 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 #### 🐛Issue/Bug Tracker 
 
-![image](https://github.com/user-attachments/assets/42136493-7eb4-4e1f-bc0e-8be5dc5dca12)
+![Issue/Bug Tracker](https://github.com/user-attachments/assets/c2da87c2-8232-4022-9f3a-da86ea60923d)
+
 
 # Licença 📜
 
