@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Gestão de Empresas Parceiras
+{% endblock %}
+
+{% block content %}
+    <h1>Empresas</h1>
+
+    <div class="action-buttons">
+        <a href="{% url 'manguetown:cadastro_empresa' %}" class="button">Cadastrar nova Empresa</a>
+        <a href="{% url 'manguetown:dashboard' %}" class="button">Voltar para Painel Administrativo</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Responsável</th>
+                <th>Nome da Empresa</th>
+                <th>Local de Captação</th>
+                <th>Disponibilidade para pegar o resíduo</th>
+                <th>Porte de Fabricação</th>
+                <th>Tipo de Resíduo</th>
+                <th>Condição do Resíduo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for empresa in empresas %}
+            <tr>
+                <td>{{ empresa.nome_responsavel }}</td>
+                <td>{{ empresa.nome_empresa }}</td>
+                <td>{{ empresa.captacao_local }}</td>
+                <td>{{ empresa.disponibilidade_residuo }}</td>
+                <td>{{ empresa.porte_fabrico }}</td>
+                <td>{{ empresa.tipo_residuo }}</td>
+                <td>{{ empresa.condicao_residuo }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">Nenhum colaborador cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

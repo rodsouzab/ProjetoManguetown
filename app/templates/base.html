@@ -13,7 +13,17 @@
                 <li><a href="{% url 'manguetown:home' %}">Home</a></li>
                 <li><a href="{% url 'manguetown:sobre' %}">Sobre</a></li>
                 <li><a href="{% url 'manguetown:contato' %}">Contato</a></li>
-                <li><a href="{% url 'manguetown:login' %}">Login</a></li>
+    
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'manguetown:dashboard' %}">Dashboard</a></li>
+                    <!-- Link de Logout -->
+                    <li><a href="#" onclick="document.getElementById('logout-form').submit();">Logout</a></li>
+                    <form id="logout-form" method="POST" action="{% url 'manguetown:logout' %}" style="display: none;">
+                        {% csrf_token %}
+                    </form>
+                {% else %}
+                    <li><a href="{% url 'manguetown:login' %}">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

@@ -57,6 +57,11 @@ def gestao_colaboradores_view(request):
     colaboradores = Colaborador.objects.all()
     return render(request, 'gestao_colaboradores.html', {'colaboradores': colaboradores})
 
+# View da página de gestão de colaboradores
+def gestao_empresas_view(request):
+    empresas = EmpresaParceira.objects.all()
+    return render(request, 'gestao_empresas.html', {'empresas': empresas})
+
 # View para o cadastro de colaborador
 def cadastrar_colaborador_view(request):
     if request.method == 'POST':
@@ -165,7 +170,7 @@ def cadastro_empresa_view(request):
         try:
             empresa.save()  # Tenta salvar a nova empresa
             messages.success(request, "Empresa cadastrada com sucesso!")
-            return redirect('manguetown:dashboard')
+            return redirect('manguetown:gestao_empresas')
         except Exception as e:
             messages.error(request, f"Erro ao cadastrar a empresa: {e}")
 
