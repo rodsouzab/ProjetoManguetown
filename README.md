@@ -14,7 +14,7 @@ Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de I
 - **Matheus Lustosa** - <a href="mailto:mclc3@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://www.linkedin.com/in/matheus-lustosa-827010242/"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
 - **Rodrigo Barbosa** - <a href="mailto:rsb2@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="
 https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
-- **Rodrigo Guimarães** - <a href="mailto:rgp2@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="www.linkedin.com/in/rodrigo-guimarães-6aa431201"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
+- **Rodrigo Guimarães** - <a href="mailto:rgp2@cesar.school"><img src="https://github.com/user-attachments/assets/d910e050-b74b-4dfd-9c58-bd3e6be60e8b" width="25"></a> - <a href="https://www.linkedin.com/in/rodrigo-guimar%C3%A3es-6aa431201/"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="20"></a>
 
 ### 👨‍🎨 Equipe de design 
 
