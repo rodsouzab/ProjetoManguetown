@@ -22,6 +22,7 @@
                 <th>Porte de Fabricação</th>
                 <th>Tipo de Resíduo</th>
                 <th>Condição do Resíduo</th>
+                <th>Ações</th> <!-- Coluna para ações -->
             </tr>
         </thead>
         <tbody>
@@ -34,10 +35,17 @@
                 <td>{{ empresa.porte_fabrico }}</td>
                 <td>{{ empresa.tipo_residuo }}</td>
                 <td>{{ empresa.condicao_residuo }}</td>
+                <td>
+                    <form method="post" action="{% url 'manguetown:gestao_empresas' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="empresa_id" value="{{ empresa.id }}">
+                        <button type="submit" name="excluir_empresa" class="button danger">Excluir</button>
+                    </form>
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="9">Nenhum colaborador cadastrado.</td>
+                <td colspan="8">Nenhuma empresa cadastrada.</td>
             </tr>
             {% endfor %}
         </tbody>

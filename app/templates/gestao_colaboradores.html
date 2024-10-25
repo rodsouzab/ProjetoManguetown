@@ -24,6 +24,7 @@
                 <th>Quantos filhos</th>
                 <th>Moradores na residência</th>
                 <th>Habilidades</th>
+                <th>Ações</th> <!-- Nova coluna para as ações -->
             </tr>
         </thead>
         <tbody>
@@ -38,10 +39,19 @@
                 <td>{{ colaborador.quantos_filhos }}</td>
                 <td>{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
                 <td>{{ colaborador.habilidades }}</td>
+                <td>
+                    <!-- Formulário para excluir colaborador -->
+                    <form method="post" action="{% url 'manguetown:gestao_colaboradores' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="colaboradora_id" value="{{ colaborador.id }}">
+                        <button type="submit" name="excluir_colaboradora" class="button danger">Excluir</button>
+                    </form>
+                    
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="9">Nenhum colaborador cadastrado.</td>
+                <td colspan="10">Nenhum colaborador cadastrado.</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -5,6 +5,10 @@ from .models import Colaborador, EmpresaParceira
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from .models import Colaborador
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 def home(request):
@@ -174,3 +178,35 @@ def cadastro_empresa_view(request):
             messages.error(request, f"Erro ao cadastrar a empresa: {e}")
 
     return render(request, 'cadastro_empresa.html')
+
+@login_required
+def gestao_colaboradores_view(request):
+    if request.method == 'POST' and 'excluir_colaboradora' in request.POST:
+        colaboradora_id = request.POST.get('colaboradora_id')
+        try:
+            colaboradora = get_object_or_404(Colaborador, id=colaboradora_id)
+            colaboradora.delete()
+            messages.success(request, "Colaboradora excluída com sucesso!")
+        except Exception as e:
+            messages.error(request, f"Erro ao excluir colaboradora: {e}")
+        
+        return redirect('manguetown:gestao_colaboradores')
+
+    colaboradores = Colaborador.objects.all()
+    return render(request, 'gestao_colaboradores.html', {'colaboradores': colaboradores})
+
+@login_required
+def gestao_empresas_view(request):
+    if request.method == 'POST' and 'excluir_empresa' in request.POST:
+        empresa_id = request.POST.get('empresa_id')
+        try:
+            empresa = get_object_or_404(EmpresaParceira, id=empresa_id)
+            empresa.delete()
+            messages.success(request, "Empresa excluída com sucesso!")
+        except Exception as e:
+            messages.error(request, f"Erro ao excluir empresa: {e}")
+
+        return redirect('manguetown:gestao_empresas')
+
+    empresas = EmpresaParceira.objects.all()
+    return render(request, 'gestao_empresas.html', {'empresas': empresas})
