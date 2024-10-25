@@ -38,3 +38,12 @@ class EmpresaParceira(models.Model):
 
     def __str__(self):
         return self.nome_empresa
+
+class Boneca(models.Model):
+    nome = models.CharField(max_length=100)
+    quantidade = models.PositiveIntegerField()
+    nivel_dificuldade = models.CharField(max_length=50)
+    colaborador = models.ForeignKey(Colaborador, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nome

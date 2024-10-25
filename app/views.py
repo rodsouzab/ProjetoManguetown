@@ -9,6 +9,7 @@ from .models import Colaborador
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from .models import Boneca
 
 
 def home(request):
@@ -210,3 +211,53 @@ def gestao_empresas_view(request):
 
     empresas = EmpresaParceira.objects.all()
     return render(request, 'gestao_empresas.html', {'empresas': empresas})
+
+@login_required
+def cadastrar_boneca_view(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome_boneca')  # Corrigido
+        quantidade = request.POST.get('quantidade')  # Corrigido
+        nivel_dificuldade = request.POST.get('nivel_dificuldade')  # Corrigido
+        colaborador_id = request.POST.get('colaborador_id')  # Corrigido
+
+        # Verifica se o colaborador existe
+        try:
+            colaborador = Colaborador.objects.get(id=colaborador_id)
+        except Colaborador.DoesNotExist:
+            messages.error(request, "Colaborador não encontrado.")
+            return redirect('manguetown:cadastrar_boneca')
+
+        # Criação da nova boneca
+        boneca = Boneca(
+            colaborador=colaborador,
+            nome=nome,
+            quantidade=quantidade,
+            nivel_dificuldade=nivel_dificuldade
+        )
+
+        try:
+            boneca.save()  # Tenta salvar a nova boneca
+            return redirect('manguetown:gestao_bonecas')  # Redireciona para a página de gestão de bonecas
+        except Exception as e:
+            messages.error(request, f"Erro ao cadastrar a boneca: {e}")
+
+    # Obtém todos os colaboradores cadastrados para o dropdown
+    colaboradores = Colaborador.objects.all()
+    return render(request, 'cadastrar_boneca.html', {'colaboradores': colaboradores})
+
+@login_required
+def gestao_bonecas_view(request):
+    if request.method == 'POST':
+        boneca_id = request.POST.get('boneca_id')
+        try:
+            boneca = Boneca.objects.get(id=boneca_id)
+            boneca.delete()
+            messages.success(request, "Boneca excluída com sucesso.")
+        except Boneca.DoesNotExist:
+            messages.error(request, "Boneca não encontrada.")
+        except Exception as e:
+            messages.error(request, f"Erro ao excluir a boneca: {e}")
+
+    bonecas = Boneca.objects.all()
+    return render(request, 'gestao_bonecas.html', {'bonecas': bonecas})
+

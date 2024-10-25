@@ -5,6 +5,7 @@ from app import views
 from app.views import login_view  
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
+from .views import cadastrar_boneca_view,gestao_bonecas_view
 
 app_name = "manguetown"
 urlpatterns = [
@@ -20,4 +21,6 @@ urlpatterns = [
     path('cadastrar_colaborador/', views.cadastrar_colaborador_view, name='cadastrar_colaborador'),
     path('cadastro-empresa/', views.cadastro_empresa_view, name='cadastro_empresa'),
     path('gestao_empresas/', views.gestao_empresas_view, name='gestao_empresas'),
+    path('cadastrar_boneca/', cadastrar_boneca_view, name='cadastrar_boneca'),
+    path('gestao_bonecas/', gestao_bonecas_view, name='gestao_bonecas'),
 ]

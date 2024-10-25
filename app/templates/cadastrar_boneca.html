@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Cadastrar Boneca
+{% endblock %}
+
+{% block content %}
+    <h1>Cadastrar Nova Boneca</h1>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <label for="nome_boneca">Nome da Boneca:</label>
+        <input type="text" id="nome_boneca" name="nome_boneca" required>
+    
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" id="quantidade" name="quantidade" required>
+    
+        <label for="nivel_dificuldade">Nível de Dificuldade:</label>
+        <input type="text" id="nivel_dificuldade" name="nivel_dificuldade" required>
+    
+        <label for="colaborador_id">Colaborador:</label>
+        <select id="colaborador_id" name="colaborador_id" required>
+            {% for colaborador in colaboradores %}
+                <option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
+            {% endfor %}
+        </select>
+    
+        <button type="submit">Cadastrar Boneca</button>
+    </form>
+    
+    <a href="{% url 'manguetown:gestao_bonecas' %}">Voltar para Gestão de Bonecas</a>
+    
+{% endblock %}
