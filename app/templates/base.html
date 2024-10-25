@@ -4,6 +4,7 @@
     <title>{% block title %}Projeto Manguetown{% endblock %}</title>
     {% load static %}  
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'trama.ico' %}" type="image/x-icon">
 </head>
 <body>
     <header>
@@ -14,7 +15,7 @@
                 <li><a href="{% url 'manguetown:sobre' %}">Sobre</a></li>
                 <li><a href="{% url 'manguetown:contato' %}">Contato</a></li>
     
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated %}  
                     <li><a href="{% url 'manguetown:dashboard' %}">Dashboard</a></li>
                     <!-- Link de Logout -->
                     <li><a href="#" onclick="document.getElementById('logout-form').submit();">Logout</a></li>
