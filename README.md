@@ -26,11 +26,18 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 
 
+
 ## 🌐 Acesse nosso Sistema 
+<p style="text-align: center; text-decoration: none;">
+ <a href="https://projetomanguetown-app.azurewebsites.net"> <img src="https://github.com/user-attachments/assets/ab13ff64-b3ff-4aa9-b03a-fb1b984e8278" width="30">
+  <span>Site T.R.A.M.A </span>
+  </a>
+</p>
 
-[Link para Site na Azure](https://projetomanguetown-app.azurewebsites.net)
-
-# Status Report I
+## Entregas
+<details>
+<summary>Status Report I</summary>
+<ul>
 
 #### 🔗Links
 [Screencast 📹](https://drive.google.com/file/d/1fnEh69Mi8w9XbvyxZGOQGWZgZIojXX7Q/view?usp=drive_link)
@@ -55,6 +62,8 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 ![Issue/Bug Tracker](https://github.com/user-attachments/assets/1906615d-c77c-4631-b339-84afce7ff3a9)
 
+</ul>
+</details>
 
 
 # Licença 📜
