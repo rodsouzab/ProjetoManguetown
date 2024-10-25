@@ -1,4 +1,10 @@
-# Projeto TRAMA
+<div align="center">
+<img src="https://github.com/user-attachments/assets/d4a41add-8358-4da0-b2a8-f5b882b58cda" width="100px"style=> 
+</div>
+
+
+
+<div align="center"><h1> Projeto TRAMA </h1></div>
 
 ## 🚀 Descrição do Projeto
 
