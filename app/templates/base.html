@@ -5,11 +5,40 @@
     {% load static %}  
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" href="{% static 'trama.ico' %}" type="image/x-icon">
+    <style>
+        .header-container {
+            position: relative;
+            text-align: center;
+        }
+        .header-container img {
+            position: absolute;
+            left: 0;
+            top: 60%; /* Ajuste o valor para 60% ou outro valor para mover o GIF para baixo */
+            transform: translateY(-50%);
+            margin-top: 10px; /* Adicione uma margem, se necessário, para ainda mais controle */
+        }      
+        header {
+            background-color: #c55b7e;
+            color:#115a2f;
+            text-shadow: 4px 6px 4px rgba(0, 0, 0, 0.3); 
+        } 
+        footer {
+            background-color: #c55b7e;
+        }
+        nav ul li a {
+            color: #115a2f;
+            text-shadow: 4px 6px 4px rgba(0, 0, 0, 0.3); 
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Projeto Manguetown</h1>
+        <div class="header-container">
+            <img src="{% static 'tramaaa.png' %}" width="85px" alt="Descrição da imagem" />
+            <h1>Projeto Trama</h1>
+        </div>
         <nav>
+        
             <ul>
                 <li><a href="{% url 'manguetown:home' %}">Home</a></li>
                 <li><a href="{% url 'manguetown:sobre' %}">Sobre</a></li>
@@ -33,7 +62,7 @@
         {% endblock %}
     </main>
     <footer>
-        <p>&copy; 2024 Projeto Manguetown</p>
+        <p>&copy; 2024 Projeto Trama</p>
     </footer>
 </body>
 </html>
