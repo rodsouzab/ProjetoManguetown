@@ -7,6 +7,14 @@
 {% block content %}
     <h1>Empresas</h1>
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
     <div class="action-buttons">
         <a href="{% url 'manguetown:cadastro_empresa' %}" class="button">Cadastrar nova Empresa</a>
         <a href="{% url 'manguetown:dashboard' %}" class="button">Voltar para Painel Administrativo</a>

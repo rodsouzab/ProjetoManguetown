@@ -1,16 +1,10 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
-from .models import Colaborador, EmpresaParceira
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from .models import Colaborador
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Boneca
-
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from .models import Colaborador, EmpresaParceira, Boneca, Doador
 
 def home(request):
     return render(request, 'home.html')
@@ -31,7 +25,6 @@ def login_view(request):
             login(request, user)
             return redirect('manguetown:dashboard')
         else:
-            # Adiciona uma mensagem de erro se a autenticação falhar
             messages.error(request, 'Usuário ou senha incorretos.')
     return render(request, 'login.html')
 
@@ -52,8 +45,8 @@ def registro_view(request):
         return render(request, 'login.html')
     return render(request, 'registro.html')
 
-@login_required
 # View para escolher a página de gestão
+@login_required
 def dashboard_view(request):
     return render(request, 'dashboard.html')
 
@@ -145,11 +138,6 @@ def cadastrar_colaborador_view(request):
 #     return render(request, 'cadastro_colaboradora.html')  # Renderiza o template do for
 
 # View de cadastro de empresa parceira
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import EmpresaParceira  # Supondo que o modelo EmpresaParceira já esteja importado
-
 @login_required
 def cadastro_empresa_view(request):
     if request.method == 'POST':
@@ -257,10 +245,10 @@ def gestao_empresas_view(request):
 @login_required
 def cadastrar_boneca_view(request):
     if request.method == 'POST':
-        nome = request.POST.get('nome_boneca')  # Corrigido
-        quantidade = request.POST.get('quantidade')  # Corrigido
-        nivel_dificuldade = request.POST.get('nivel_dificuldade')  # Corrigido
-        colaborador_id = request.POST.get('colaborador_id')  # Corrigido
+        nome = request.POST.get('nome_boneca')
+        quantidade = request.POST.get('quantidade')
+        nivel_dificuldade = request.POST.get('nivel_dificuldade')
+        colaborador_id = request.POST.get('colaborador_id') 
 
         # Verifica se o colaborador existe
         try:
@@ -303,3 +291,112 @@ def gestao_bonecas_view(request):
     bonecas = Boneca.objects.all()
     return render(request, 'gestao_bonecas.html', {'bonecas': bonecas})
 
+@login_required
+def gestao_doadores_view(request):
+    if request.method == 'POST':
+        doador_id = request.POST.get('doador_id')
+        if doador_id:
+            try:
+                doador = get_object_or_404(Doador, id=doador_id)
+                doador.delete()
+                messages.success(request, "Doador excluído com sucesso!")
+            except Exception as e:
+                messages.error(request, f"Erro ao excluir doador: {e}")
+
+            return redirect('manguetown:gestao_doadores')
+
+    doadores = Doador.objects.all()
+    return render(request, 'gestao_doadores.html', {'doadores': doadores})
+
+@login_required
+def cadastrar_doador_view(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        cpf = request.POST.get('cpf')
+        data_nascimento = request.POST.get('data_nascimento')
+        lugar_onde_mora = request.POST.get('lugar_onde_mora')
+        individual = request.POST.get('individual') == 'True'  # Convertendo para booleano
+        tipo_doador = request.POST.get('tipo_doador')
+        data_disponibilidade = request.POST.get('data_disponibilidade')
+        local_captacao = request.POST.get('local_captacao')
+        condicao_residuo = request.POST.get('condicao_residuo')
+        tipo_residuo = request.POST.get('tipo_residuo')
+
+        # Verifica se o CPF já existe
+        if Doador.objects.filter(cpf=cpf).exists():
+            messages.error(request, 'O CPF já está cadastrado. Por favor, insira um CPF diferente.')
+            return render(request, 'cadastrar_doador.html')  # Retorna ao formulário com mensagem
+
+        # Se o tipo doador for Financiador, não preenche os outros campos
+        if tipo_doador == 'Financiador':
+            data_disponibilidade = None
+            local_captacao = None
+            condicao_residuo = None
+            tipo_residuo = None
+
+        doador = Doador(
+            nome=nome,
+            cpf=cpf,
+            data_nascimento=data_nascimento,
+            lugar_onde_mora=lugar_onde_mora,
+            individual=individual,
+            tipo_doador=tipo_doador,
+            data_disponibilidade=data_disponibilidade,
+            local_captacao=local_captacao,
+            condicao_residuo=condicao_residuo,
+            tipo_residuo=tipo_residuo
+        )
+
+        try:
+            doador.save()  # Tenta salvar a nova doador
+            messages.success(request, 'Doador cadastrado com sucesso!')
+            return redirect('manguetown:gestao_doadores')  # Redireciona para a página de gestão de doadores
+        except Exception:
+            messages.error(request, 'Erro ao cadastrar doador. Por favor, tente novamente.')
+            return render(request, 'cadastrar_doador.html')  # Retorna ao formulário com mensagem
+
+    return render(request, 'cadastrar_doador.html')
+
+@login_required
+def editar_doador_view(request, doador_id):
+    doador = get_object_or_404(Doador, id=doador_id)
+
+    if request.method == 'POST':
+        # Captura os dados do formulário
+        nome = request.POST.get('nome')
+        cpf = request.POST.get('cpf')
+        data_nascimento = request.POST.get('data_nascimento')
+        lugar_onde_mora = request.POST.get('lugar_onde_mora')
+        individual = request.POST.get('individual') == 'True'
+        tipo_doador = request.POST.get('tipo_doador')
+        data_disponibilidade = request.POST.get('data_disponibilidade')
+        local_captacao = request.POST.get('local_captacao')
+        condicao_residuo = request.POST.get('condicao_residuo')
+        tipo_residuo = request.POST.get('tipo_residuo')
+
+        # Verifica se o CPF já existe e se não é o CPF do próprio doador
+        if Doador.objects.filter(cpf=cpf).exclude(id=doador.id).exists():
+            messages.error(request, 'O CPF já está cadastrado. Por favor, insira um CPF diferente.')
+            return render(request, 'editar_doador.html', {'doador': doador})
+
+        # Atualiza os dados do doador
+        doador.nome = nome
+        doador.cpf = cpf
+        doador.data_nascimento = data_nascimento
+        doador.lugar_onde_mora = lugar_onde_mora
+        doador.individual = individual
+        doador.tipo_doador = tipo_doador
+        doador.data_disponibilidade = data_disponibilidade
+        doador.local_captacao = local_captacao
+        doador.condicao_residuo = condicao_residuo
+        doador.tipo_residuo = tipo_residuo
+
+        try:
+            doador.save()  # Tenta salvar as alterações
+            messages.success(request, 'Doador atualizado com sucesso!')
+            return redirect('manguetown:gestao_doadores')  # Redireciona para a página de gestão de doadores
+        except Exception:
+            messages.error(request, 'Erro ao atualizar doador. Por favor, tente novamente.')
+            return render(request, 'editar_doador.html', {'doador': doador})
+
+    return render(request, 'editar_doador.html', {'doador': doador})

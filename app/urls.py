@@ -25,4 +25,7 @@ urlpatterns = [
     path('cadastrar_boneca/', cadastrar_boneca_view, name='cadastrar_boneca'),
     path('gestao_bonecas/', gestao_bonecas_view, name='gestao_bonecas'),
     path('editar-empresa/<int:empresa_id>/', views.editar_empresa_view, name='editar_empresa'),
+    path('gestao_doadores/', views.gestao_doadores_view, name='gestao_doadores'),
+    path('cadastrar_doador/', views.cadastrar_doador_view, name='cadastrar_doador'),
+    path('gestao_doadores/editar/<int:doador_id>/', views.editar_doador_view, name='editar_doador'),
 ]
