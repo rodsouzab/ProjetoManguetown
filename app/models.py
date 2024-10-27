@@ -11,10 +11,6 @@ class Colaborador(models.Model):
     quantos_filhos = models.PositiveIntegerField(default=0)
     quantas_pessoas_moram_com_voce = models.PositiveIntegerField(default=0)
     habilidades = models.TextField(default='Não especificado')
-    
-    # O usuário é diferente do colaborador ?
-    # usuario = models.OneToOneField(User, on_delete=models.CASCADE,default='Nome Padrão')
-
 
     def __str__(self):
         return self.nome
@@ -33,8 +29,6 @@ class EmpresaParceira(models.Model):
     tipo_residuo = models.CharField(max_length=100, default='Não especificado')
     condicao_residuo = models.TextField(default='Não especificado')
     
-    # O campo `usuario` não deve ter valor padrão; o usuário logado será associado aqui
-    #usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome_empresa
@@ -45,5 +39,28 @@ class Boneca(models.Model):
     nivel_dificuldade = models.CharField(max_length=50)
     colaborador = models.ForeignKey(Colaborador, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.nome
+    
+
+from django.db import models
+
+class Doador(models.Model):
+    TIPO_DOADOR_CHOICES = [
+        ('Financiador', 'Financiador'),
+        ('Resíduo', 'Resíduo'),
+    ]
+    
+    nome = models.CharField(max_length=100)
+    cpf = models.CharField(max_length=14, unique=True)
+    data_nascimento = models.DateField(null=True, blank=True)
+    lugar_onde_mora = models.CharField(max_length=255)
+    individual = models.BooleanField(default=True)  # True para individual, False para coletivo
+    tipo_doador = models.CharField(max_length=30, choices=TIPO_DOADOR_CHOICES)
+    data_disponibilidade = models.DateField(null=True, blank=True)
+    local_captacao = models.CharField(max_length=255, null=True, blank=True)
+    condicao_residuo = models.CharField(max_length=255, null=True, blank=True)
+    tipo_residuo = models.CharField(max_length=255, null=True, blank=True)
+    
     def __str__(self):
         return self.nome
