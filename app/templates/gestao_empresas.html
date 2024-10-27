@@ -41,6 +41,10 @@
                         <input type="hidden" name="empresa_id" value="{{ empresa.id }}">
                         <button type="submit" name="excluir_empresa" class="button danger">Excluir</button>
                     </form>
+
+                    <div class="action-buttons">
+                        <a href="{% url 'manguetown:editar_empresa' empresa.id %}" class="button">Editar</a>
+                    </div>
                 </td>
             </tr>
             {% empty %}

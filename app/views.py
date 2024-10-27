@@ -181,6 +181,48 @@ def cadastro_empresa_view(request):
     return render(request, 'cadastro_empresa.html')
 
 @login_required
+def editar_empresa_view(request, empresa_id=None):
+    # Busca a empresa existente usando o ID, se ele for fornecido
+    empresa = None
+    if empresa_id:
+        try:
+            empresa = EmpresaParceira.objects.get(id=empresa_id)
+        except EmpresaParceira.DoesNotExist:
+            messages.error(request, "Empresa não encontrada.")
+            return redirect('manguetown:gestao_empresas')
+
+    if request.method == 'POST':
+        nome_empresa = request.POST.get('nome_empresa')
+
+        # Verifica se o usuário está tentando cadastrar uma empresa com um nome já existente
+        if not empresa and EmpresaParceira.objects.filter(nome_empresa=nome_empresa).exists():
+            messages.error(request, "Uma empresa com esse nome já existe.")
+            return render(request, 'editar_empresa.html', {'empresa': empresa})
+
+        # Atualiza os dados da empresa existente ou cria uma nova instância
+        if not empresa:
+            empresa = EmpresaParceira()
+
+        empresa.nome_responsavel = request.POST.get('nome_responsavel')
+        empresa.nome_empresa = nome_empresa
+        empresa.captacao_local = request.POST.get('captacao_local')
+        empresa.disponibilidade_residuo = request.POST.get('disponibilidade_residuo')
+        empresa.porte_fabrico = request.POST.get('porte_fabrico')
+        empresa.tipo_residuo = request.POST.get('tipo_residuo')
+        empresa.condicao_residuo = request.POST.get('condicao_residuo')
+
+        try:
+            empresa.save()  # Tenta salvar a empresa editada
+            messages.success(request, "Empresa atualizada com sucesso!")
+            return redirect('manguetown:gestao_empresas')
+        except Exception as e:
+            messages.error(request, f"Erro ao atualizar a empresa: {e}")
+
+    # Carrega os dados da empresa existente no formulário
+    context = {'empresa': empresa}
+    return render(request, 'editar_empresa.html', context)
+
+@login_required
 def gestao_colaboradores_view(request):
     if request.method == 'POST' and 'excluir_colaboradora' in request.POST:
         colaboradora_id = request.POST.get('colaboradora_id')
