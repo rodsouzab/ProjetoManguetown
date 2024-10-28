@@ -1,0 +1,52 @@
+<!-- editar_colaborador.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar Colaborador
+{% endblock %}
+
+{% block content %}
+    <h2>Editar Colaborador: {{ colaborador.nome }}</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" value="{{ colaborador.nome }}" required /><br />
+    
+    <label for="cpf">CPF:</label>
+    <input type="text" name="cpf" id="cpf" maxlength="14" value="{{ colaborador.cpf }}" required placeholder="Ex: 000.000.000-00" /><br />
+    
+    <label for="data_nascimento">Data de Nascimento:</label>
+    <input type="date" name="data_nascimento" id="data_nascimento" value="{{ colaborador.data_nascimento|date:'Y-m-d' }}" required /><br />
+    
+    <label for="lugar_onde_mora">Lugar onde mora:</label>
+    <input type="text" name="lugar_onde_mora" id="lugar_onde_mora" value="{{ colaborador.lugar_onde_mora }}" maxlength="255" required /><br />
+    
+    <label for="renda">Renda:</label>
+    <input type="text" name="renda" value="{{ colaborador.renda|floatformat:2 }}" required> 
+    
+    <label for="situacoes_de_vulnerabilidade">Situações de Vulnerabilidade:</label>
+    <textarea name="situacoes_de_vulnerabilidade" id="situacoes_de_vulnerabilidade" rows="4" cols="50" placeholder="Descreva as situações...">{{ colaborador.situacoes_de_vulnerabilidade }}</textarea><br />
+    
+    <label for="quantos_filhos">Quantos Filhos:</label>
+    <input type="number" name="quantos_filhos" id="quantos_filhos" value="{{ colaborador.quantos_filhos }}" min="0" required /><br />
+    
+    <label for="quantas_pessoas_moram_com_voce">Quantas Pessoas Moram com Você:</label>
+    <input type="number" name="quantas_pessoas_moram_com_voce" id="quantas_pessoas_moram_com_voce" value="{{ colaborador.quantas_pessoas_moram_com_voce }}" min="0" required /><br />
+    
+    <label for="habilidades">Habilidades:</label>
+    <textarea name="habilidades" id="habilidades" rows="4" cols="50" placeholder="Liste suas habilidades...">{{ colaborador.habilidades }}</textarea><br />
+    
+    <div class="form-actions">
+        <a href="{% url 'manguetown:gestao_colaboradores' %}" class="button cancel-button">Cancelar</a>
+        <button type="submit" class="button">Salvar Alterações</button>
+    </div>
+</form>    
+{% endblock %}

@@ -7,6 +7,12 @@
 {% block content %}
     <h1>Colaboradores</h1>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
     <div class="action-buttons">
         <a href="{% url 'manguetown:cadastrar_colaborador' %}" class="button">Cadastrar novo Colaborador</a>
         <a href="{% url 'manguetown:dashboard' %}" class="button">Voltar para Painel Administrativo</a>
@@ -24,7 +30,7 @@
                 <th>Quantos filhos</th>
                 <th>Moradores na residência</th>
                 <th>Habilidades</th>
-                <th>Ações</th> <!-- Nova coluna para as ações -->
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -40,15 +46,13 @@
                 <td>{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
                 <td>{{ colaborador.habilidades }}</td>
                 <td>
-                    <!-- Formulário para excluir colaborador -->
-                    <form method="post" action="{% url 'manguetown:gestao_colaboradores' %}" style="display:inline;">
-                        {% csrf_token %}
-                        <input type="hidden" name="colaboradora_id" value="{{ colaborador.id }}">
-                        <button type="submit" name="excluir_colaboradora" class="button danger">Excluir</button>
-                    </form>
-                    
-                </td>
-            </tr>
+                    <!-- Dropdown para ações -->
+                    <select class="action-select" data-colaborador-id="{{ colaborador.id }}">
+                        <option value="">Escolha ação</option>
+                        <option value="editar">Editar</option>
+                        <option value="excluir">Excluir</option>
+                    </select>
+                </td> 
             {% empty %}
             <tr>
                 <td colspan="10">Nenhum colaborador cadastrado.</td>
@@ -56,4 +60,55 @@
             {% endfor %}
         </tbody>
     </table>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.action-select').forEach(select => {
+            select.addEventListener('change', function() {
+                const action = this.value;
+                const colaboradorId = this.getAttribute('data-colaborador-id'); // Obtém o ID do colaborador
+
+                if (action === 'excluir') {
+                    // Confirmação antes de excluir
+                    if (confirm("Tem certeza de que deseja excluir este colaborador?")) {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = "{% url 'manguetown:gestao_colaboradores' %}";
+                        form.style.display = 'none';
+
+                        // CSRF token
+                        const csrfToken = document.createElement('input');
+                        csrfToken.type = 'hidden';
+                        csrfToken.name = 'csrfmiddlewaretoken';
+                        csrfToken.value = "{{ csrf_token }}";
+                        form.appendChild(csrfToken);
+
+                        // ID do colaborador
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'colaboradora_id'; // Certifique-se de que o nome é o correto conforme seu backend
+                        input.value = colaboradorId;
+                        form.appendChild(input);
+
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                } else if (action === 'editar') {
+                    if (colaboradorId) {
+                        const editUrl = "{% url 'manguetown:editar_colaborador' '0' %}".replace("0", colaboradorId);
+                        console.log("Redirecionando para:", editUrl); // Log para depuração
+                        window.location.href = editUrl;
+                    } else {
+                        alert("Selecione um colaborador válido para editar.");
+                    }
+                }
+
+                // Resetar o dropdown após uma ação
+                this.value = "";
+            });
+        });
+    });
+</script>
+
 {% endblock %}

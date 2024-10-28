@@ -2,8 +2,17 @@
 
 {% block title %}Cadastro Empresa Parceira{% endblock %}
 
+
+
 {% block content %}
     <h2>Cadastro de Empresa Parceira</h2>
+
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
     <form method="POST">
         {% csrf_token %}
         <div>

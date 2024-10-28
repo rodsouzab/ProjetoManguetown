@@ -1,0 +1,116 @@
+{% extends 'base.html' %} 
+
+{% block title %} Gestão de Doadores {% endblock %} 
+
+{% block content %}
+<h1>Doadores</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div class="action-buttons">
+    <a href="{% url 'manguetown:cadastrar_doador' %}" class="button">Cadastrar novo Doador</a>
+    <a href="{% url 'manguetown:dashboard' %}" class="button">Voltar para Painel Administrativo</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Data de nascimento</th>
+            <th>Lugar onde mora</th>
+            <th>Individual</th>
+            <th>Tipo do doador</th>
+            <th>Data de disponibilidade</th>
+            <th>Local de captação</th>
+            <th>Condição do resíduo</th>
+            <th>Tipo do resíduo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for doador in doadores %}
+        <tr>
+            <td>{{ doador.nome }}</td>
+            <td>{{ doador.cpf }}</td>
+            <td>{{ doador.data_nascimento }}</td>
+            <td>{{ doador.lugar_onde_mora }}</td>
+            <td>{{ doador.individual|yesno:"Sim,Não" }}</td>
+            <td>{{ doador.tipo_doador }}</td>
+            <td>{{ doador.data_disponibilidade|default:"N/A" }}</td>
+            <td>{{ doador.local_captacao|default:"N/A" }}</td>
+            <td>{{ doador.condicao_residuo|default:"N/A" }}</td>
+            <td>{{ doador.tipo_residuo|default:"N/A" }}</td>
+            <td>
+                <!-- Dropdown para ações -->
+                <select class="action-select" data-doador-id="{{ doador.id }}">
+                    <option value="">Escolha ação</option>
+                    <option value="editar">Editar</option>
+                    <option value="excluir">Excluir</option>
+                </select>
+            </td> 
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="11">Nenhum doador cadastrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.action-select').forEach(select => {
+            select.addEventListener('change', function() {
+                const action = this.value;
+                const doadorId = this.getAttribute('data-doador-id'); // Obtém o ID do doador
+    
+                if (action === 'excluir') {
+                    // Confirmação antes de excluir
+                    if (confirm("Tem certeza de que deseja excluir este doador?")) {
+                        // Cria e envia um formulário para excluir
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = "{% url 'manguetown:gestao_doadores' %}";
+                        form.style.display = 'none';
+    
+                        // CSRF token
+                        const csrfToken = document.createElement('input');
+                        csrfToken.type = 'hidden';
+                        csrfToken.name = 'csrfmiddlewaretoken';
+                        csrfToken.value = "{{ csrf_token }}";
+                        form.appendChild(csrfToken);
+    
+                        // ID do doador
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'doador_id';
+                        input.value = doadorId;
+                        form.appendChild(input);
+    
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                } else if (action === 'editar') {
+                    if (doadorId) {
+                        window.location.href = "{% url 'manguetown:editar_doador' '0' %}".replace("0", doadorId);
+                    } else {
+                        alert("Selecione um doador válido para editar.");
+                    }
+                }
+    
+                // Resetar o dropdown após uma ação
+                this.value = "";
+            });
+        });
+    });
+</script>
+    
+
+{% endblock %}

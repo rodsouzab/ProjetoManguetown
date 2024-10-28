@@ -20,7 +20,13 @@ urlpatterns = [
     path('gestao_colaboradores/', views.gestao_colaboradores_view, name='gestao_colaboradores'),
     path('cadastrar_colaborador/', views.cadastrar_colaborador_view, name='cadastrar_colaborador'),
     path('cadastro-empresa/', views.cadastro_empresa_view, name='cadastro_empresa'),
+    path('editar-empresa/', views.editar_empresa_view, name='editar_empresa'),
     path('gestao_empresas/', views.gestao_empresas_view, name='gestao_empresas'),
     path('cadastrar_boneca/', cadastrar_boneca_view, name='cadastrar_boneca'),
     path('gestao_bonecas/', gestao_bonecas_view, name='gestao_bonecas'),
+    path('editar-empresa/<int:empresa_id>/', views.editar_empresa_view, name='editar_empresa'),
+    path('gestao_doadores/', views.gestao_doadores_view, name='gestao_doadores'),
+    path('cadastrar_doador/', views.cadastrar_doador_view, name='cadastrar_doador'),
+    path('gestao_doadores/editar/<int:doador_id>/', views.editar_doador_view, name='editar_doador'),
+    path('editar_colaborador/<int:id>/', views.editar_colaborador_view, name='editar_colaborador'),
 ]
