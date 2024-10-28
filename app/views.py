@@ -256,7 +256,7 @@ def gestao_doadores_view(request):
 
 @login_required
 def gestao_empresas_view(request):
-    if request.method == 'POST' and 'excluir_empresa' in request.POST:
+    if request.method == 'POST':
         empresa_id = request.POST.get('empresa_id')
         try:
             empresa = get_object_or_404(EmpresaParceira, id=empresa_id)
