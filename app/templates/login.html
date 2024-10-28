@@ -3,30 +3,28 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <h2>Login</h2>
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        <div>
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <button type="submit" class="button">Entrar</button>
-        </div>
-    </form>
-    <div>
-        <h3>Ainda não tem uma conta?</h3>
-        <a href="{% url 'manguetown:registro' %}" class="button">Ir para Cadastro</a>
+    <div class="login-container">
+        <h1 class="login-title">Login</h1>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="message">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="button login-button">Entrar</button>
+            </div>
+        </form>
     </div>
 {% endblock %}

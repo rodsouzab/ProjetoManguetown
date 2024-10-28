@@ -273,5 +273,43 @@ table td {
     color: red;
 }
 
+/* Estilo para o botão de login */
+.login-button {
+    display: block; /* Faz o botão ser um bloco, permitindo centralização */
+    margin: 20px auto; /* Espaço acima e abaixo do botão e centraliza horizontalmente */
+    width: fit-content; /* Ajusta a largura do botão ao conteúdo */
+}
 
+.login-container {
+    display: flex;
+    flex-direction: column; /* Coloca os elementos em coluna */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente se necessário */
 
+}
+
+.login-form {
+    background-color: #e4b3c4; /* Cor de fundo do formulário */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 300px; /* Largura fixa para o formulário */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column; /* Coloca os elementos em coluna */
+    align-items: center; /* Centraliza os itens */
+    margin-bottom: 15px; /* Margem inferior para espaçamento */
+}
+
+input.form-control {
+    width: 100%; /* Largura total para os campos de entrada */
+    padding: 10px; /* Espaçamento interno */
+    border: 1px solid #ddd; /* Borda suave */
+    border-radius: 4px; /* Bordas arredondadas */
+}
+
+.login-title {
+    margin-bottom: 20px; /* Adiciona espaço abaixo do título */
+}
