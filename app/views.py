@@ -400,3 +400,37 @@ def editar_doador_view(request, doador_id):
             return render(request, 'editar_doador.html', {'doador': doador})
 
     return render(request, 'editar_doador.html', {'doador': doador})
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import Colaborador  # Supondo que você tenha um modelo Colaborador
+
+@login_required
+def editar_colaborador_view(request, id):
+    colaborador = get_object_or_404(Colaborador, id=id)
+
+    if request.method == 'POST':
+        # Obtém os dados do formulário
+        colaborador.nome = request.POST['nome']
+        colaborador.cpf = request.POST['cpf']
+        colaborador.data_nascimento = request.POST['data_nascimento']
+        colaborador.lugar_onde_mora = request.POST['lugar_onde_mora']
+
+        try:
+            colaborador.renda = float(request.POST['renda'])  # Converter renda para float
+        except ValueError:
+            messages.error(request, 'Por favor, insira um valor de renda válido.')
+            return redirect('manguetown:editar_colaborador', id=id)  # Redireciona de volta ao formulário
+
+        colaborador.situacoes_de_vulnerabilidade = request.POST['situacoes_de_vulnerabilidade']
+        colaborador.quantos_filhos = request.POST['quantos_filhos']
+        colaborador.quantas_pessoas_moram_com_voce = request.POST['quantas_pessoas_moram_com_voce']
+        colaborador.habilidades = request.POST['habilidades']
+
+        # Salva as alterações no colaborador
+        colaborador.save()
+        messages.success(request, "Colaborador editado com sucesso!")
+        return redirect('manguetown:gestao_colaboradores')
+
+    return render(request, 'editar_colaborador.html', {'colaborador': colaborador})

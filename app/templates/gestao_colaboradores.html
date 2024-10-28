@@ -7,14 +7,6 @@
 {% block content %}
     <h1>Colaboradores</h1>
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
     <div class="action-buttons">
         <a href="{% url 'manguetown:cadastrar_colaborador' %}" class="button">Cadastrar novo Colaborador</a>
         <a href="{% url 'manguetown:dashboard' %}" class="button">Voltar para Painel Administrativo</a>
@@ -54,7 +46,9 @@
                         <input type="hidden" name="colaboradora_id" value="{{ colaborador.id }}">
                         <button type="submit" name="excluir_colaboradora" class="button danger">Excluir</button>
                     </form>
-                    
+
+                    <!-- Link para editar colaborador -->
+                    <a href="{% url 'manguetown:editar_colaborador' colaborador.id %}" class="button">Editar</a>
                 </td>
             </tr>
             {% empty %}
