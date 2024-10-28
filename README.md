@@ -38,19 +38,19 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 ## 🌐 Acesse nosso Sistema 
 <p style="text-align: center; text-decoration: none;">
  <a href="https://projetomanguetown-app.azurewebsites.net"> <img src="https://github.com/user-attachments/assets/466478b4-5ec8-4062-91d5-963f9e1b44f2" width="30">
-  <span>Site T.R.A.M.A </span>
+  <span> Site T.R.A.M.A </span>
   </a>
 </p>
 
-## 🌐 Nosso processo
+## 🛠️ Nosso processo
 
 <p style="text-align: center; text-decoration: none;">
- <a href="https://sites.google.com/cesar.school/grupo8-projetos2/in%C3%ADcio?authuser=1"> 
-  <span>Google site</span>
+ <a href="https://sites.google.com/cesar.school/grupo8-projetos2/in%C3%ADcio?authuser=1"> <img src="https://github.com/user-attachments/assets/05feb3b4-8f26-4a26-8082-25959aaef135" width="30">
+  <span> Google sites </span>
   </a>
 </p>
 
-## Entregas
+## 🚚 Entregas 
 <details>
 <summary>Status Report I</summary>
 <ul>
