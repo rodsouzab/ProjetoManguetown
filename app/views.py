@@ -4,7 +4,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Colaborador, EmpresaParceira, Boneca, Doador
+from .models import Colaborador, EmpresaParceira, Boneca, Doador, Colaborador
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+import re
+
 
 def home(request):
     return render(request, 'home.html')
@@ -72,14 +77,19 @@ def cadastrar_colaborador_view(request):
         quantos_filhos = request.POST['quantos_filhos']
         quantas_pessoas_moram_com_voce = request.POST['quantas_pessoas_moram_com_voce']
         habilidades = request.POST['habilidades']
-
+        
+        # Verifica se o CPF contém apenas números
+        if not re.match(r'^\d+$', cpf):
+            messages.error(request, 'O CPF deve conter apenas números.')
+            return redirect('manguetown:cadastrar_colaborador')
+        
         # Verifica se o CPF já existe antes de tentar salvar
         if Colaborador.objects.filter(cpf=cpf).exists():
             messages.error(request, 'O CPF já está cadastrado. Por favor, insira um CPF diferente.')
             return redirect('manguetown:cadastrar_colaborador')  # Redireciona de volta ao formulário
 
         try:
-            novo_colaborador = Colaborador.objects.create(
+            Colaborador.objects.create(
                 nome=nome,
                 cpf=cpf,
                 data_nascimento=data_nascimento,
@@ -212,19 +222,37 @@ def editar_empresa_view(request, empresa_id=None):
 
 @login_required
 def gestao_colaboradores_view(request):
-    if request.method == 'POST' and 'excluir_colaboradora' in request.POST:
+    if request.method == 'POST':
         colaboradora_id = request.POST.get('colaboradora_id')
-        try:
-            colaboradora = get_object_or_404(Colaborador, id=colaboradora_id)
-            colaboradora.delete()
-            messages.success(request, "Colaboradora excluída com sucesso!")
-        except Exception as e:
-            messages.error(request, f"Erro ao excluir colaboradora: {e}")
-        
-        return redirect('manguetown:gestao_colaboradores')
+        if colaboradora_id:    
+            try:
+                colaboradora = get_object_or_404(Colaborador, id=colaboradora_id)
+                colaboradora.delete()
+                messages.success(request, "Colaboradora excluída com sucesso!")
+            except Exception as e:
+                messages.error(request, f"Erro ao excluir colaboradora: {e}")
+            
+            return redirect('manguetown:gestao_colaboradores')
 
     colaboradores = Colaborador.objects.all()
     return render(request, 'gestao_colaboradores.html', {'colaboradores': colaboradores})
+
+@login_required
+def gestao_doadores_view(request):
+    if request.method == 'POST':
+        doador_id = request.POST.get('doador_id')
+        if doador_id:
+            try:
+                doador = get_object_or_404(Doador, id=doador_id)
+                doador.delete()
+                messages.success(request, "Doador excluído com sucesso!")
+            except Exception as e:
+                messages.error(request, f"Erro ao excluir doador: {e}")
+
+            return redirect('manguetown:gestao_doadores')
+
+    doadores = Doador.objects.all()
+    return render(request, 'gestao_doadores.html', {'doadores': doadores})
 
 @login_required
 def gestao_empresas_view(request):
@@ -291,22 +319,7 @@ def gestao_bonecas_view(request):
     bonecas = Boneca.objects.all()
     return render(request, 'gestao_bonecas.html', {'bonecas': bonecas})
 
-@login_required
-def gestao_doadores_view(request):
-    if request.method == 'POST':
-        doador_id = request.POST.get('doador_id')
-        if doador_id:
-            try:
-                doador = get_object_or_404(Doador, id=doador_id)
-                doador.delete()
-                messages.success(request, "Doador excluído com sucesso!")
-            except Exception as e:
-                messages.error(request, f"Erro ao excluir doador: {e}")
 
-            return redirect('manguetown:gestao_doadores')
-
-    doadores = Doador.objects.all()
-    return render(request, 'gestao_doadores.html', {'doadores': doadores})
 
 @login_required
 def cadastrar_doador_view(request):
@@ -401,10 +414,7 @@ def editar_doador_view(request, doador_id):
 
     return render(request, 'editar_doador.html', {'doador': doador})
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from .models import Colaborador  # Supondo que você tenha um modelo Colaborador
+
 
 @login_required
 def editar_colaborador_view(request, id):
@@ -413,15 +423,31 @@ def editar_colaborador_view(request, id):
     if request.method == 'POST':
         # Obtém os dados do formulário
         colaborador.nome = request.POST['nome']
-        colaborador.cpf = request.POST['cpf']
+        cpf = request.POST['cpf']
+        
+        # Verifica se o CPF contém apenas números
+        if not re.match(r'^\d+$', cpf):
+            messages.error(request, 'O CPF deve conter apenas números.')
+            return render(request, 'editar_colaborador.html', {'colaborador': colaborador})
+        
+        # Verifica se o CPF já existe antes de tentar salvar, ignorando o colaborador atual
+        if Colaborador.objects.exclude(id=id).filter(cpf=cpf).exists():
+            messages.error(request, 'O CPF já está cadastrado. Por favor, insira um CPF diferente.')
+            return render(request, 'editar_colaborador.html', {'colaborador': colaborador})
+        
+        colaborador.cpf = cpf
         colaborador.data_nascimento = request.POST['data_nascimento']
         colaborador.lugar_onde_mora = request.POST['lugar_onde_mora']
+        
+        renda_str = request.POST['renda']
+        # Normaliza a string de renda para um formato aceito pelo float
+        renda_str = renda_str.replace(',', '.')  # Substitui vírgulas por pontos
 
         try:
-            colaborador.renda = float(request.POST['renda'])  # Converter renda para float
+            colaborador.renda = float(renda_str)  # Converter renda para float
         except ValueError:
             messages.error(request, 'Por favor, insira um valor de renda válido.')
-            return redirect('manguetown:editar_colaborador', id=id)  # Redireciona de volta ao formulário
+            return render(request, 'editar_colaborador.html', {'colaborador': colaborador})
 
         colaborador.situacoes_de_vulnerabilidade = request.POST['situacoes_de_vulnerabilidade']
         colaborador.quantos_filhos = request.POST['quantos_filhos']
