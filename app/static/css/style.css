@@ -313,3 +313,34 @@ input.form-control {
 .login-title {
     margin-bottom: 20px; /* Adiciona espaço abaixo do título */
 }
+
+/* Estilo para os botões do dashboard */
+.dashboard-buttons {
+    display: flex; /* Usar flexbox para alinhar os botões horizontalmente */
+    justify-content: space-around; /* Espaçar os botões uniformemente */
+    margin-top: 20px; /* Espaço acima dos botões */
+}
+
+.dashboard-button {
+    display: inline-block; /* Garante que os botões se comportem como blocos */
+    padding: 15px 30px; /* Aumenta o padding para deixar os botões maiores */
+    font-size: 1.2em; /* Aumenta o tamanho da fonte */
+    color: white; /* Cor do texto */
+    background-color: #115a2f; /* Cor de fundo dos botões */
+    border: none; /* Remove bordas padrão */
+    border-radius: 5px; /* Bordas arredondadas */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s; /* Transição suave para hover */
+    flex: 1; /* Faz os botões ocuparem o mesmo espaço */
+    margin: 0 10px; /* Espaçamento horizontal entre os botões */
+    text-align: center; /* Centraliza o texto */
+}
+
+.dashboard-button:hover {
+    background-color: #2e8e16; /* Cor de fundo ao passar o mouse */
+}
+
+.dashboard-button:focus {
+    outline: none; /* Remove a borda padrão do foco */
+    text-decoration: none; /* Garante que não tenha sublinhado ao focar */
+}
