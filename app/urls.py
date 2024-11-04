@@ -9,9 +9,9 @@ from .views import cadastrar_boneca_view,gestao_bonecas_view
 
 app_name = "manguetown"
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('home', views.home, name='home'),
     path('sobre/', views.sobre, name='sobre'),
-    path('login/', views.login_view, name='login'),
+    path('', views.login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('contato/', views.contato, name='contato'),
     path('registro/', views.registro_view, name='registro'),
