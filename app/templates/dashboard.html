@@ -5,15 +5,52 @@
 {% endblock %}
 
 {% block content %}
-    <div class="dashboard-container">
-        <h1 style="text-align:center">Bem-vindo(a)</h1>
-        <p style="text-align:center">Escolha a gestão que deseja acessar:</p>
-        
-        <div class="dashboard-buttons">
-            <a href="{% url 'manguetown:gestao_colaboradores' %}" class="dashboard-button">Gestão de Colaboradores</a>
-            <a href="{% url 'manguetown:gestao_empresas' %}" class="dashboard-button">Gestão de Parceiros</a>
-            <a href="{% url 'manguetown:gestao_doadores' %}" class="dashboard-button">Gestão de Doadores</a>
-            <a href="{% url 'manguetown:gestao_bonecas' %}" class="dashboard-button">Gestão de Bonecas</a>
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="welcome-title text-center">Bem-vindo(a)</h1> <!-- Aplica a nova classe -->
+        <p class="welcome-subtitle text-center">Escolha a gestão que deseja acessar:</p> <!-- Aplica a nova classe -->
+
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-4 mb-4 d-flex">
+                <div class="card shadow flex-fill d-flex flex-column custom-card">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                        <h5 class="card-title">Gestão de Colaboradores</h5>
+                        <div class="mt-auto">
+                            <a href="{% url 'manguetown:gestao_colaboradores' %}" class="btn btn-light">Acessar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 mb-4 d-flex">
+                <div class="card shadow flex-fill d-flex flex-column custom-card">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                        <h5 class="card-title">Gestão de Parceiros</h5>
+                        <div class="mt-auto">
+                            <a href="{% url 'manguetown:gestao_empresas' %}" class="btn btn-light">Acessar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 mb-4 d-flex">
+                <div class="card shadow flex-fill d-flex flex-column custom-card">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                        <h5 class="card-title">Gestão de Doadores</h5>
+                        <div class="mt-auto">
+                            <a href="{% url 'manguetown:gestao_doadores' %}" class="btn btn-light">Acessar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 mb-4 d-flex">
+                <div class="card shadow flex-fill d-flex flex-column custom-card">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                        <h5 class="card-title">Gestão de Bonecas</h5>
+                        <div class="mt-auto">
+                            <a href="{% url 'manguetown:gestao_bonecas' %}" class="btn btn-light">Acessar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

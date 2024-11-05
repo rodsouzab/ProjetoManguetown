@@ -5,48 +5,67 @@
 {% endblock %}
 
 {% block content %}
-<h2>Cadastrar Colaborador</h2>
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800 text-danger">Cadastrar Colaborador</h1>
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-{% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" class="form-control" id="nome" name="nome" required />
+            </div>
 
-<form method="POST">
-    {% csrf_token %}
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <input type="text" class="form-control" name="cpf" id="cpf" maxlength="14" required placeholder="Ex: 000.000.000-00" />
+            </div>
 
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" required /><br />
+            <div class="form-group">
+                <label for="data_nascimento">Data de Nascimento:</label>
+                <input type="date" class="form-control" name="data_nascimento" id="data_nascimento" required />
+            </div>
 
-    <label for="cpf">CPF:</label>
-    <input type="text" name="cpf" id="cpf" maxlength="14" required placeholder="Ex: 000.000.000-00" /><br />
+            <div class="form-group">
+                <label for="lugar_onde_mora">Lugar onde mora:</label>
+                <input type="text" class="form-control" name="lugar_onde_mora" id="lugar_onde_mora" maxlength="255" required />
+            </div>
 
-    <label for="data_nascimento">Data de Nascimento:</label>
-    <input type="date" name="data_nascimento" id="data_nascimento" required /><br />
+            <div class="form-group">
+                <label for="renda">Renda:</label>
+                <input type="number" class="form-control" name="renda" id="renda" step="0.01" required />
+            </div>
 
-    <label for="lugar_onde_mora">Lugar onde mora:</label>
-    <input type="text" name="lugar_onde_mora" id="lugar_onde_mora" maxlength="255" required /><br />
+            <div class="form-group">
+                <label for="situacoes_de_vulnerabilidade">Situações de Vulnerabilidade:</label>
+                <textarea name="situacoes_de_vulnerabilidade" class="form-control" id="situacoes_de_vulnerabilidade" rows="4" placeholder="Descreva as situações..."></textarea>
+            </div>
 
-    <label for="renda">Renda:</label>
-    <input type="number" name="renda" id="renda" step="0.01" required /><br />
+            <div class="form-group">
+                <label for="quantos_filhos">Quantos Filhos:</label>
+                <input type="number" class="form-control" name="quantos_filhos" id="quantos_filhos" value="0" min="0" required />
+            </div>
 
-    <label for="situacoes_de_vulnerabilidade">Situações de Vulnerabilidade:</label>
-    <textarea name="situacoes_de_vulnerabilidade" id="situacoes_de_vulnerabilidade" rows="4" cols="50" placeholder="Descreva as situações..."></textarea><br />
+            <div class="form-group">
+                <label for="quantas_pessoas_moram_com_voce">Quantas Pessoas Moram com Você:</label>
+                <input type="number" class="form-control" name="quantas_pessoas_moram_com_voce" id="quantas_pessoas_moram_com_voce" value="0" min="0" required />
+            </div>
 
-    <label for="quantos_filhos">Quantos Filhos:</label>
-    <input type="number" name="quantos_filhos" id="quantos_filhos" value="0" min="0" required /><br />
+            <div class="form-group">
+                <label for="habilidades">Habilidades:</label>
+                <textarea name="habilidades" class="form-control" id="habilidades" rows="4" placeholder="Liste suas habilidades..."></textarea>
+            </div>
 
-    <label for="quantas_pessoas_moram_com_voce">Quantas Pessoas Moram com Você:</label>
-    <input type="number" name="quantas_pessoas_moram_com_voce" id="quantas_pessoas_moram_com_voce" value="0" min="0" required /><br />
-
-    <label for="habilidades">Habilidades:</label>
-    <textarea name="habilidades" id="habilidades" rows="4" cols="50" placeholder="Liste suas habilidades..."></textarea><br />
-
-    <div class="form-actions"> <!-- Container para alinhar os botões -->
-        <a href="{% url 'manguetown:gestao_colaboradores' %}" class="button cancel-button">Cancelar</a>
-        <button type="submit" class="button">Cadastrar Colaborador</button>
+            <div class="form-actions mt-4"> <!-- Container para alinhar os botões -->
+                <a href="{% url 'manguetown:gestao_colaboradores' %}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Cadastrar Colaborador</button>
+            </div>
+        </form>
     </div>
-</form>
 {% endblock %}

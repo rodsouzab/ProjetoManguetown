@@ -1,114 +1,119 @@
 {% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
 {% block title %}
     Gestão de Colaboradores
 {% endblock %}
 
 {% block content %}
-    <h1>Colaboradores</h1>
+    <div class="container-fluid">
+        <h1 class="text-center mb-4">Colaboradores</h1>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+        {% if messages %}
+            <div class="alert alert-info">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <div class="action-buttons">
-        <a href="{% url 'manguetown:cadastrar_colaborador' %}" class="button">Cadastrar novo Colaborador</a>
-        <a href="{% url 'manguetown:dashboard' %}" class="button">Voltar para Painel Administrativo</a>
+        <div class="action-buttons mb-4 text-right">
+            <a href="{% url 'manguetown:cadastrar_colaborador' %}" class="btn btn-primary">Cadastrar novo Colaborador</a>
+            <a href="{% url 'manguetown:dashboard' %}" class="btn btn-secondary">Voltar para Painel Administrativo</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Data de Nascimento</th>
+                    <th>Lugar onde Mora</th>
+                    <th>Renda</th>
+                    <th>Situações de Vulnerabilidade</th>
+                    <th>Quantos Filhos</th>
+                    <th>Moradores na Residência</th>
+                    <th>Habilidades</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for colaborador in colaboradores %}
+                <tr>
+                    <td>{{ colaborador.nome }}</td>
+                    <td>{{ colaborador.cpf }}</td>
+                    <td>{{ colaborador.data_nascimento }}</td>
+                    <td>{{ colaborador.lugar_onde_mora }}</td>
+                    <td>{{ colaborador.renda }}</td>
+                    <td>{{ colaborador.situacoes_de_vulnerabilidade }}</td>
+                    <td>{{ colaborador.quantos_filhos }}</td>
+                    <td>{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
+                    <td>{{ colaborador.habilidades }}</td>
+                    <td>
+                        <!-- Dropdown para ações -->
+                        <select class="form-select action-select custom-select" data-colaborador-id="{{ colaborador.id }}">
+                            <option value="">Escolha ação</option>
+                            <option value="editar">Editar</option>
+                            <option value="excluir">Excluir</option>
+                        </select>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="text-center">Nenhum colaborador cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Data de nascimento</th>
-                <th>Lugar onde mora</th>
-                <th>Renda</th>
-                <th>Situações de vulnerabilidade</th>
-                <th>Quantos filhos</th>
-                <th>Moradores na residência</th>
-                <th>Habilidades</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for colaborador in colaboradores %}
-            <tr>
-                <td>{{ colaborador.nome }}</td>
-                <td>{{ colaborador.cpf }}</td>
-                <td>{{ colaborador.data_nascimento }}</td>
-                <td>{{ colaborador.lugar_onde_mora }}</td>
-                <td>{{ colaborador.renda }}</td>
-                <td>{{ colaborador.situacoes_de_vulnerabilidade }}</td>
-                <td>{{ colaborador.quantos_filhos }}</td>
-                <td>{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
-                <td>{{ colaborador.habilidades }}</td>
-                <td>
-                    <!-- Dropdown para ações -->
-                    <select class="action-select" data-colaborador-id="{{ colaborador.id }}">
-                        <option value="">Escolha ação</option>
-                        <option value="editar">Editar</option>
-                        <option value="excluir">Excluir</option>
-                    </select>
-                </td> 
-            {% empty %}
-            <tr>
-                <td colspan="10">Nenhum colaborador cadastrado.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.action-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    const action = this.value;
+                    const colaboradorId = this.getAttribute('data-colaborador-id'); // Obtém o ID do colaborador
 
+                    if (action === 'excluir') {
+                        // Confirmação antes de excluir
+                        if (confirm("Tem certeza de que deseja excluir este colaborador?")) {
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = "{% url 'manguetown:gestao_colaboradores' %}";
+                            form.style.display = 'none';
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.action-select').forEach(select => {
-            select.addEventListener('change', function() {
-                const action = this.value;
-                const colaboradorId = this.getAttribute('data-colaborador-id'); // Obtém o ID do colaborador
+                            // CSRF token
+                            const csrfToken = document.createElement('input');
+                            csrfToken.type = 'hidden';
+                            csrfToken.name = 'csrfmiddlewaretoken';
+                            csrfToken.value = "{{ csrf_token }}";
+                            form.appendChild(csrfToken);
 
-                if (action === 'excluir') {
-                    // Confirmação antes de excluir
-                    if (confirm("Tem certeza de que deseja excluir este colaborador?")) {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = "{% url 'manguetown:gestao_colaboradores' %}";
-                        form.style.display = 'none';
+                            // ID do colaborador
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = 'colaborador_id'; // Certifique-se de que o nome é o correto conforme seu backend
+                            input.value = colaboradorId;
+                            form.appendChild(input);
 
-                        // CSRF token
-                        const csrfToken = document.createElement('input');
-                        csrfToken.type = 'hidden';
-                        csrfToken.name = 'csrfmiddlewaretoken';
-                        csrfToken.value = "{{ csrf_token }}";
-                        form.appendChild(csrfToken);
-
-                        // ID do colaborador
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'colaboradora_id'; // Certifique-se de que o nome é o correto conforme seu backend
-                        input.value = colaboradorId;
-                        form.appendChild(input);
-
-                        document.body.appendChild(form);
-                        form.submit();
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    } else if (action === 'editar') {
+                        if (colaboradorId) {
+                            const editUrl = "{% url 'manguetown:editar_colaborador' '0' %}".replace("0", colaboradorId);
+                            console.log("Redirecionando para:", editUrl); // Log para depuração
+                            window.location.href = editUrl;
+                        } else {
+                            alert("Selecione um colaborador válido para editar.");
+                        }
                     }
-                } else if (action === 'editar') {
-                    if (colaboradorId) {
-                        const editUrl = "{% url 'manguetown:editar_colaborador' '0' %}".replace("0", colaboradorId);
-                        console.log("Redirecionando para:", editUrl); // Log para depuração
-                        window.location.href = editUrl;
-                    } else {
-                        alert("Selecione um colaborador válido para editar.");
-                    }
-                }
 
-                // Resetar o dropdown após uma ação
-                this.value = "";
+                    // Resetar o dropdown após uma ação
+                    this.value = "";
+                });
             });
         });
-    });
-</script>
-
+    </script>
 {% endblock %}

@@ -5,35 +5,48 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Cadastrar Nova Boneca</h1>
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        <label for="nome_boneca">Nome da Boneca:</label>
-        <input type="text" id="nome_boneca" name="nome_boneca" required>
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800 text-danger">Cadastrar Nova Boneca</h1>
+
+        {% if messages %}
+        <div class="alert alert-info" role="alert">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nome_boneca">Nome da Boneca:</label>
+                <input type="text" class="form-control" id="nome_boneca" name="nome_boneca" required>
+            </div>
     
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" name="quantidade" required>
+            <div class="form-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+            </div>
     
-        <label for="nivel_dificuldade">Nível de Dificuldade:</label>
-        <input type="text" id="nivel_dificuldade" name="nivel_dificuldade" required>
+            <div class="form-group">
+                <label for="nivel_dificuldade">Nível de Dificuldade:</label>
+                <input type="text" class="form-control" id="nivel_dificuldade" name="nivel_dificuldade" required>
+            </div>
     
-        <label for="colaborador_id">Colaborador:</label>
-        <select id="colaborador_id" name="colaborador_id" required>
-            {% for colaborador in colaboradores %}
-                <option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
-            {% endfor %}
-        </select>
+            <div class="form-group">
+                <label for="colaborador_id">Colaborador:</label>
+                <select id="colaborador_id" name="colaborador_id" class="form-control" required>
+                    {% for colaborador in colaboradores %}
+                        <option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
     
-        <button type="submit">Cadastrar Boneca</button>
-    </form>
-    
-    <a href="{% url 'manguetown:gestao_bonecas' %}">Voltar para Gestão de Bonecas</a>
-    
+            <button type="submit" class="btn btn-primary">Cadastrar Boneca</button>
+        </form>
+
+        <a href="{% url 'manguetown:gestao_bonecas' %}" class="btn btn-secondary mt-3">Voltar para Gestão de Bonecas</a>
+    </div>
 {% endblock %}

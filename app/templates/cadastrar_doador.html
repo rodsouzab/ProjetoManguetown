@@ -1,87 +1,91 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
-{% block title %} Cadastrar Doador {% endblock %} 
+{% block title %}Cadastrar Doador{% endblock %}
 
 {% block content %}
-<h2>Cadastrar Doador</h2>
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800 text-danger">Cadastrar Doador</h1>
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    {% if messages %}
+        <ul class="alert alert-warning">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-<form method="POST">
-    {% csrf_token %}
-    
-    <div>
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required>
-    </div>
-    
-    <div>
-        <label for="cpf">CPF:</label>
-        <input type="text" id="cpf" name="cpf" required>
-    </div>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
+        </div>
 
-    <div>
-        <label for="data_nascimento">Data de Nascimento:</label>
-        <input type="date" id="data_nascimento" name="data_nascimento">
-    </div>
+        <div class="form-group">
+            <label for="cpf">CPF:</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" required>
+        </div>
 
-    <div>
-        <label for="lugar_onde_mora">Lugar onde mora:</label>
-        <input type="text" id="lugar_onde_mora" name="lugar_onde_mora" required>
-    </div>
+        <div class="form-group">
+            <label for="data_nascimento">Data de Nascimento:</label>
+            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento">
+        </div>
 
-    <div>
-        <label for="individual">Doador individual ou coletivo:</label>
-        <select id="individual" name="individual">
-            <option value="True">Individual</option>
-            <option value="False">Coletivo</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="lugar_onde_mora">Lugar onde mora:</label>
+            <input type="text" class="form-control" id="lugar_onde_mora" name="lugar_onde_mora" required>
+        </div>
 
-    <div>
-        <label for="tipo_doador">Tipo de Doador:</label>
-        <select id="tipo_doador" name="tipo_doador" required onchange="toggleFields()">
-            <option value="">Escolha um tipo</option>
-            <option value="Financiador">Financiador</option>
-            <option value="Resíduo">Resíduo</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="individual">Doador individual ou coletivo:</label>
+            <select class="form-control" id="individual" name="individual">
+                <option value="True">Individual</option>
+                <option value="False">Coletivo</option>
+            </select>
+        </div>
 
-    <div id="financiador-message" style="display: none;">
-        <strong>Atenção:</strong> Se "Financiador", campos abaixo desabilitados.
-    </div>
+        <div class="form-group">
+            <label for="tipo_doador">Tipo de Doador:</label>
+            <select class="form-control" id="tipo_doador" name="tipo_doador" required onchange="toggleFields()">
+                <option value="">Escolha um tipo</option>
+                <option value="Financiador">Financiador</option>
+                <option value="Resíduo">Resíduo</option>
+            </select>
+        </div>
 
-    <div>
-        <label for="data_disponibilidade">Data de Disponibilidade:</label>
-        <input type="date" id="data_disponibilidade" name="data_disponibilidade" disabled>
-    </div>
+        <div id="financiador-message" class="alert alert-info" style="display: none;">
+            <strong>Atenção:</strong> Se "Financiador", campos abaixo desabilitados.
+        </div>
 
-    <div>
-        <label for="local_captacao">Local de Captação:</label>
-        <input type="text" id="local_captacao" name="local_captacao" disabled>
-    </div>
+        <div class="form-group">
+            <label for="data_disponibilidade">Data de Disponibilidade:</label>
+            <input type="date" class="form-control" id="data_disponibilidade" name="data_disponibilidade" disabled>
+        </div>
 
-    <div>
-        <label for="condicao_residuo">Condição do Resíduo:</label>
-        <input type="text" id="condicao_residuo" name="condicao_residuo" disabled>
-    </div>
+        <div class="form-group">
+            <label for="local_captacao">Local de Captação:</label>
+            <input type="text" class="form-control" id="local_captacao" name="local_captacao" disabled>
+        </div>
 
-    <div>
-        <label for="tipo_residuo">Tipo de Resíduo:</label>
-        <input type="text" id="tipo_residuo" name="tipo_residuo" disabled>
-    </div>
+        <div class="form-group">
+            <label for="condicao_residuo">Condição do Resíduo:</label>
+            <input type="text" class="form-control" id="condicao_residuo" name="condicao_residuo" disabled>
+        </div>
 
-    <a href="{% url 'manguetown:gestao_doadores' %}" class="button cancel-button">Cancelar</a>
-    <button type="submit">Cadastrar Doador</button>
-</form>
+        <div class="form-group">
+            <label for="tipo_residuo">Tipo de Resíduo:</label>
+            <input type="text" class="form-control" id="tipo_residuo" name="tipo_residuo" disabled>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'manguetown:gestao_doadores' %}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Cadastrar Doador</button>
+        </div>
+    </form>
+</div>
 
 <script>
 function toggleFields() {
@@ -110,5 +114,4 @@ function toggleFields() {
 
 toggleFields();
 </script>
-
 {% endblock %}

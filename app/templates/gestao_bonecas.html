@@ -1,55 +1,61 @@
 {% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
 {% block title %}
     Gestão de Bonecas
 {% endblock %}
 
 {% block content %}
-    <h1>Gestão de Bonecas</h1>
+    <div class="container-fluid">
+        <h1 class="text-center mb-4">Gestão de Bonecas</h1>
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        {% if messages %}
+            <div class="alert alert-info">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
 
-    <div class="action-buttons">
-        <a href="{% url 'manguetown:cadastrar_boneca' %}" class="button">Cadastrar Nova Boneca</a>
-        <a href="{% url 'manguetown:dashboard' %}" class="button">Voltar para Painel Administrativo</a>
+        <div class="action-buttons mb-4 text-right">
+            <a href="{% url 'manguetown:cadastrar_boneca' %}" class="btn btn-primary">Cadastrar Nova Boneca</a>
+            <a href="{% url 'manguetown:dashboard' %}" class="btn btn-secondary">Voltar para Painel Administrativo</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Nível de Dificuldade</th>
+                    <th>Colaborador</th>
+                    <th>Ações</th> <!-- Coluna para ações -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for boneca in bonecas %}
+                    <tr>
+                        <td>{{ boneca.nome }}</td>
+                        <td>{{ boneca.quantidade }}</td>
+                        <td>{{ boneca.nivel_dificuldade }}</td>
+                        <td>{{ boneca.colaborador.nome }}</td>
+                        <td>
+                            <form method="post" action="{% url 'manguetown:gestao_bonecas' %}" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="boneca_id" value="{{ boneca.id }}">
+                                <button type="submit" name="excluir_boneca" class="btn btn-danger" onclick="return confirm('Você tem certeza que deseja excluir esta boneca?');">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Nenhuma boneca cadastrada.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Quantidade</th>
-                <th>Nível de Dificuldade</th>
-                <th>Colaborador</th>
-                <th>Ações</th> <!-- Coluna para ações -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for boneca in bonecas %}
-                <tr>
-                    <td>{{ boneca.nome }}</td>
-                    <td>{{ boneca.quantidade }}</td>
-                    <td>{{ boneca.nivel_dificuldade }}</td>
-                    <td>{{ boneca.colaborador.nome }}</td>
-                    <td>
-                        <form method="post" action="{% url 'manguetown:gestao_bonecas' %}" style="display:inline;">
-                            {% csrf_token %}
-                            <input type="hidden" name="boneca_id" value="{{ boneca.id }}">
-                            <button type="submit" name="excluir_boneca" class="button danger" onclick="return confirm('Você tem certeza que deseja excluir esta boneca?');">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="5">Nenhuma boneca cadastrada.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 {% endblock %}
