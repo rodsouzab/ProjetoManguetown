@@ -5,64 +5,59 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="container-fluid">
         <!-- Page Heading -->
-        <h1 class="welcome-title text-center">Bem-vindo(a)</h1> <!-- Aplica a nova classe -->
-        <p class="welcome-subtitle text-center">Escolha a gestão que deseja acessar:</p> <!-- Aplica a nova classe -->
-
-        <!-- Cards de Gestão -->
-        <div class="row justify-content-center">
-            <div class="col-lg-3 col-md-4 mb-4 d-flex">
-                <div class="card shadow flex-fill d-flex flex-column custom-card">
-                    <div class="card-body text-center d-flex flex-column justify-content-center">
-                        <h5 class="card-title">Gestão de Colaboradores</h5>
-                        <div class="mt-auto">
-                            <a href="{% url 'manguetown:gestao_colaboradores' %}" class="btn btn-light">Acessar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 mb-4 d-flex">
-                <div class="card shadow flex-fill d-flex flex-column custom-card">
-                    <div class="card-body text-center d-flex flex-column justify-content-center">
-                        <h5 class="card-title">Gestão de Parceiros</h5>
-                        <div class="mt-auto">
-                            <a href="{% url 'manguetown:gestao_empresas' %}" class="btn btn-light">Acessar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 mb-4 d-flex">
-                <div class="card shadow flex-fill d-flex flex-column custom-card">
-                    <div class="card-body text-center d-flex flex-column justify-content-center">
-                        <h5 class="card-title">Gestão de Doadores</h5>
-                        <div class="mt-auto">
-                            <a href="{% url 'manguetown:gestao_doadores' %}" class="btn btn-light">Acessar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 mb-4 d-flex">
-                <div class="card shadow flex-fill d-flex flex-column custom-card">
-                    <div class="card-body text-center d-flex flex-column justify-content-center">
-                        <h5 class="card-title">Gestão de Bonecas</h5>
-                        <div class="mt-auto">
-                            <a href="{% url 'manguetown:gestao_bonecas' %}" class="btn btn-light">Acessar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h1 class="welcome-title text-center">Bem-vindo(a)</h1>
+        <p class="welcome-subtitle text-center">Gráficos de desempenho</p>
 
         <!-- Gráfico de Bonecas por Colaborador -->
         <div class="row">
             <div class="col-lg-12 col-md-12 mb-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Quantidade de Bonecas por Colaborador</h6>
+                        <!-- Botão para mostrar/ocultar gráfico de bonecas -->
+                        <button class="btn btn-primary w-100" onclick="toggleGraph('graficoBonecas')">
+                            Quantidade de Bonecas por Colaborador
+                        </button>
                     </div>
-                    <div class="card-body">
-                        <canvas id="collaboratorsChart"></canvas>
+                    <div class="card-body graph-container" id="graficoBonecasContainer">
+                        <canvas id="graficoBonecas" class="d-none"></canvas> <!-- Inicialmente escondido -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Desempenho por Colaborador e Cálculo de Pontos -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <!-- Botão para mostrar/ocultar gráfico de desempenho e cálculo de pontos -->
+                        <button class="btn btn-success w-100" onclick="toggleGraph('graficoDesempenho', 'calculoPontos')">
+                            Desempenho de Colaboradores (Pontos)
+                        </button>
+                    </div>
+                    <div class="card-body graph-container" id="graficoDesempenhoContainer">
+                        <canvas id="graficoDesempenho" class="d-none"></canvas> <!-- Inicialmente escondido -->
+                        <div id="calculoPontos" class="d-none mt-4">
+                            <div class="alert alert-info">
+                                <h5><strong>Cálculo de Pontos:</strong></h5>
+                                <p>
+                                    O desempenho de cada colaborador é calculado com base na quantidade de bonecas feitas e o nível de dificuldade de cada uma delas. Cada boneca possui um valor de pontos, que varia conforme o nível de dificuldade:
+                                </p>
+                                <ul>
+                                    <li><strong>Nível 1:</strong> 1 ponto por boneca.</li>
+                                    <li><strong>Nível 2:</strong> 1,5 pontos por boneca.</li>
+                                    <li><strong>Nível 3:</strong> 2 pontos por boneca.</li>
+                                    <li><strong>Nível 4:</strong> 2,5 pontos por boneca.</li>
+                                    <li><strong>Nível 5:</strong> 3 pontos por boneca.</li>
+                                </ul>
+                                <p>
+                                    A pontuação total de cada colaborador é a soma dos pontos de todas as bonecas que ele(a) fez.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,20 +69,48 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Dados para o gráfico (substitua com os dados reais do backend)
-        const collaborators = {{ collaborators | safe }};  // Passando os dados do Django para JavaScript
-        const labels = collaborators.map(collaborator => collaborator.nome);
-        const data = collaborators.map(collaborator => collaborator.quantidade_bonecas);
+        // Função para alternar a visibilidade do gráfico e da explicação de pontos
+        function toggleGraph(graphId, calcId) {
+            // Alterna a visibilidade do gráfico e da seção do gráfico
+            var graph = document.getElementById(graphId);
+            var container = document.getElementById(graphId + 'Container'); // Obtém a div do gráfico
 
-        // Configuração do gráfico
-        var ctx = document.getElementById('collaboratorsChart').getContext('2d');
-        var collaboratorsChart = new Chart(ctx, {
+            if (graph.classList.contains('d-none')) {
+                graph.classList.remove('d-none');
+                container.style.display = 'block'; // Torna a área visível
+            } else {
+                graph.classList.add('d-none');
+                container.style.display = 'none'; // Esconde a área do gráfico
+            }
+
+            // Alterna a visibilidade do cálculo de pontos (se fornecido)
+            if (calcId) {
+                var calc = document.getElementById(calcId);
+                if (calc.classList.contains('d-none')) {
+                    calc.classList.remove('d-none');
+                } else {
+                    calc.classList.add('d-none');
+                }
+            }
+        }
+
+        // Gráfico de Bonecas
+        var ctx1 = document.getElementById('graficoBonecas').getContext('2d');
+        var graficoBonecas = new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: labels,  // Nomes dos colaboradores
+                labels: [
+                    {% for item in dados_bonecas %}
+                        "{{ item.nome }}"{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
                 datasets: [{
                     label: 'Quantidade de Bonecas',
-                    data: data,  // Quantidade de bonecas por colaborador
+                    data: [
+                        {% for item in dados_bonecas %}
+                            {{ item.quantidade }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ],
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
@@ -102,6 +125,57 @@
                 }
             }
         });
+
+        // Gráfico de Desempenho
+        var ctx2 = document.getElementById('graficoDesempenho').getContext('2d');
+        var graficoDesempenho = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: [
+                    {% for item in dados_desempenho %}
+                        "{{ item.nome }}"{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Pontos por Desempenho',
+                    data: [
+                        {% for item in dados_desempenho %}
+                            {{ item.pontos }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                    borderColor: 'rgba(40, 167, 69, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
+
+    <!-- Estilo Customizado para Remover a Barra Branca -->
+    <style>
+        .graph-container {
+            display: none; /* Inicialmente oculto */
+            backgroundColor: #ebceb5;
+        }
+
+        .card-body {
+            padding: 0 !important; /* Remove o padding, caso necessário */
+        }
+
+        /* Estilo opcional para quando o conteúdo está visível */
+        .graph-container.show {
+            display: block;
+        }
+    </style>
+
+</div>
 
 {% endblock %}

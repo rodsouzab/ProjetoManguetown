@@ -460,10 +460,8 @@ def editar_colaborador_view(request, id):
         return redirect('manguetown:gestao_colaboradores')
 
     return render(request, 'editar_colaborador.html', {'colaborador': colaborador})
-# app/views.py
-from django.shortcuts import render
-from django.db.models import Sum
-from .models import Colaborador
+
+
 
 from django.shortcuts import render
 from django.db.models import Sum
@@ -473,13 +471,35 @@ def dashboard_view(request):
     # Buscar todos os colaboradores com a soma da quantidade de bonecas que cada um tem
     colaboradores = Colaborador.objects.annotate(total_bonecas=Sum('boneca__quantidade'))
 
-    # Preparar os dados para o gráfico
-    dados = []
-    for colaborador in colaboradores:
-        dados.append({
-            'nome': colaborador.nome,
-            'quantidade_bonecas': colaborador.total_bonecas or 0  # Se não houver bonecas, coloca 0
-        })
+    dados_bonecas = []
+    dados_desempenho = []
 
+    for colaborador in colaboradores:
+        # Dados para o gráfico de bonecas
+        dados_bonecas.append({
+            'nome': colaborador.nome,
+            'quantidade': colaborador.total_bonecas or 0  # Se não houver bonecas, coloca 0
+        })
+        
+        # Calcular os pontos do colaborador com base no nível de dificuldade das bonecas
+        total_pontos = 0
+        for boneca in colaborador.boneca_set.all():
+            if boneca.nivel_dificuldade == '1':
+                total_pontos += boneca.quantidade * 1  # Nível 1: 1 ponto por boneca
+            elif boneca.nivel_dificuldade == '2':
+                total_pontos += boneca.quantidade * 1.5  # Nível 2: 1.5 pontos por boneca
+            elif boneca.nivel_dificuldade == '3':
+                total_pontos += boneca.quantidade * 2  # Nível 3: 2 pontos por boneca
+            # Adicione mais condições conforme os níveis de dificuldade
+
+        # Dados para o gráfico de desempenho
+        dados_desempenho.append({
+            'nome': colaborador.nome,
+            'pontos': total_pontos
+        })
+    
     # Passando os dados para o template
-    return render(request, 'dashboard.html', {'collaborators': dados})
+    return render(request, 'dashboard.html', {
+        'dados_bonecas': dados_bonecas,
+        'dados_desempenho': dados_desempenho
+    })
