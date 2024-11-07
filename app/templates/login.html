@@ -29,6 +29,7 @@
             padding: 10px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;
+            text-align: center; 
         }
         .brand_logo_container {
             position: absolute;
@@ -47,7 +48,15 @@
             border: 2px solid white;
         }
         .form_container {
-            margin-top: 100px;
+            margin-top: 15px;
+        }
+        .login-title {
+            color: #fff; 
+            font-size: 1.8rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #f8f9fa; 
         }
         .login_btn {
             width: 100%;
@@ -86,6 +95,7 @@
                         <img src="{% static 'tr.png' %}" class="brand_logo" alt="Logo">
                     </div>
                 </div>
+                <h2 class="login-title">Login</h2>
                 <div class="d-flex justify-content-center form_container">
                     {% if messages %}
                         <ul class="messages">
