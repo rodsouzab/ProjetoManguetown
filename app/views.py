@@ -460,3 +460,26 @@ def editar_colaborador_view(request, id):
         return redirect('manguetown:gestao_colaboradores')
 
     return render(request, 'editar_colaborador.html', {'colaborador': colaborador})
+# app/views.py
+from django.shortcuts import render
+from django.db.models import Sum
+from .models import Colaborador
+
+from django.shortcuts import render
+from django.db.models import Sum
+from .models import Colaborador
+
+def dashboard_view(request):
+    # Buscar todos os colaboradores com a soma da quantidade de bonecas que cada um tem
+    colaboradores = Colaborador.objects.annotate(total_bonecas=Sum('boneca__quantidade'))
+
+    # Preparar os dados para o gráfico
+    dados = []
+    for colaborador in colaboradores:
+        dados.append({
+            'nome': colaborador.nome,
+            'quantidade_bonecas': colaborador.total_bonecas or 0  # Se não houver bonecas, coloca 0
+        })
+
+    # Passando os dados para o template
+    return render(request, 'dashboard.html', {'collaborators': dados})

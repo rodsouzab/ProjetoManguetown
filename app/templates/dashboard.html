@@ -10,6 +10,7 @@
         <h1 class="welcome-title text-center">Bem-vindo(a)</h1> <!-- Aplica a nova classe -->
         <p class="welcome-subtitle text-center">Escolha a gestão que deseja acessar:</p> <!-- Aplica a nova classe -->
 
+        <!-- Cards de Gestão -->
         <div class="row justify-content-center">
             <div class="col-lg-3 col-md-4 mb-4 d-flex">
                 <div class="card shadow flex-fill d-flex flex-column custom-card">
@@ -52,5 +53,55 @@
                 </div>
             </div>
         </div>
+
+        <!-- Gráfico de Bonecas por Colaborador -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Quantidade de Bonecas por Colaborador</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="collaboratorsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Inclusão do script do Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Dados para o gráfico (substitua com os dados reais do backend)
+        const collaborators = {{ collaborators | safe }};  // Passando os dados do Django para JavaScript
+        const labels = collaborators.map(collaborator => collaborator.nome);
+        const data = collaborators.map(collaborator => collaborator.quantidade_bonecas);
+
+        // Configuração do gráfico
+        var ctx = document.getElementById('collaboratorsChart').getContext('2d');
+        var collaboratorsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,  // Nomes dos colaboradores
+                datasets: [{
+                    label: 'Quantidade de Bonecas',
+                    data: data,  // Quantidade de bonecas por colaborador
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
 {% endblock %}
