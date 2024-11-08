@@ -1,21 +1,132 @@
-{% extends 'base.html' %}
-
-{% block title %}Login{% endblock %}
-
-{% block content %}
-    <h2>Login</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <div>
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Login</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    {% load static %}  
+    <link rel="icon" href="{% static 'trama.ico' %}" type="image/x-icon">
+    <style>
+        /* Coded with love by Mutiullah Samim */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #ebceb5 !important;
+        }
+        .user_card {
+            height: 400px;
+            width: 350px;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: #c55b7e;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;
+            text-align: center; 
+        }
+        .brand_logo_container {
+            position: absolute;
+            height: 170px;
+            width: 170px;
+            top: -75px;
+            border-radius: 50%;
+            background: #ebceb5;
+            padding: 10px;
+            text-align: center;
+        }
+        .brand_logo {
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        .form_container {
+            margin-top: 15px;
+        }
+        .login-title {
+            color: #fff; 
+            font-size: 1.8rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #f8f9fa; 
+        }
+        .login_btn {
+            width: 100%;
+            background: #c0392b !important;
+            color: white !important;
+        }
+        .login_btn:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+        .login_container {
+            padding: 0 2rem;
+        }
+        .input-group-text {
+            background: #c0392b !important;
+            color: white !important;
+            border: 0 !important;
+            border-radius: 0.25rem 0 0 0.25rem !important;
+        }
+        .input_user, .input_pass:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+        .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+            background-color: #c0392b !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <div class="brand_logo_container">
+                        {% load static %}
+                        <img src="{% static 'tr.png' %}" class="brand_logo" alt="Logo">
+                    </div>
+                </div>
+                <h2 class="login-title">Login</h2>
+                <div class="d-flex justify-content-center form_container">
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="message">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <form method="POST" class="login-form">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" id="username" name="username" required class="form-control input_user" placeholder="Usuário">
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" id="password" name="password" required class="form-control input_pass" placeholder="Senha">
+                        </div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <button type="submit" class="btn login_btn">Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <button type="submit">Entrar</button>
-        </div>
-    </form>
-{% endblock %}
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

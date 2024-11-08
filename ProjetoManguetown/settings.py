@@ -29,10 +29,10 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'projetomanguetown-app.azurewebsites.net',
     'localhost',  
+    '127.0.0.1'
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://projetomanguetown-app.azurewebsites.net']
-
 
 # Application definition
 
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -135,3 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
