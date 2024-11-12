@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}Dashboard{% endblock %}</title>
-    
+
     <!-- Custom fonts for this template-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -13,20 +13,60 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" rel="stylesheet">
     <style>
         #accordionSidebar {
-            background-color: #c55b7e !important; 
+            background-color: #c55b7e !important;
+            transition: all 0.3s ease;
+            position: relative;
         }
+
         #content-wrapper {
-            background-color: #ebceb5 !important; 
-           
+            background-color: #ebceb5 !important;
+            transition: margin-left 0.3s ease;
         }
-        .sidebar .nav-link {    
-            color: white !important; 
+
+        .sidebar .nav-link {
+            color: white !important;
         }
+
         .sidebar .nav-link:hover {
-            background-color: #a34759 !important; 
+            background-color: #a34759 !important;
         }
+
         .topbar {
-            background-color: #white !important; /* Sua cor personalizada */
+            background-color: #ebceb5 !important; /* Cor de fundo já definida */
+            box-shadow: none !important; /* Remove a sombra da topbar */
+            border-bottom: none !important; /* Remove a borda inferior */
+        }
+        /* Esconder a sidebar */
+        .sidebar.hidden {
+            width: 0 !important;      /* A sidebar ocupa 0 de largura */
+            visibility: hidden !important;  /* A sidebar fica invisível */
+            position: absolute; /* Remove a sidebar da sequência normal do layout */
+        }
+
+        /* Ajuste no conteúdo quando a sidebar está oculta */
+        .content-with-sidebar-hidden {
+            margin-left: 0 !important;  /* Remove a margem da sidebar */
+            width: 100% !important;     /* O conteúdo ocupa 100% da largura */
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Ajuste para o conteúdo quando a sidebar está visível */
+        #content-wrapper {
+            margin-left: 250px; /* Largura da sidebar visível */
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Estilo para o botão de hambúrguer */
+        .hamburger-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 9999; /* Garantir que o botão fique acima de outros elementos */
         }
         .custom-select {
             background-color: #007bff; /* Cor de fundo, por exemplo, azul */
@@ -61,30 +101,30 @@
             color: #6c757d; /* Cor mais suave para o subtítulo */
             margin-bottom: 30px; /* Espaçamento inferior */
         }
-    </style>    
+    </style>
 </head>
 
 <body id="page-top">
-    
+
     <!-- Page Wrapper -->
     <div id="wrapper">
-        
+
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
-            <!-- Sidebar - Brand -->
+            <!-- Sidebar - Brand (Logo escondido agora) -->
             {% load static %}
             <div class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div class="sidebar-brand-icon">
-                    <img src="{% static 'tramaaa.png' %}" alt="Logo" style="width: 50px; height: auto;">
+                    <img src="{% static 'tramaaa.png' %}" alt="Logo" style="width: 70px; height: auto;">
                 </div>
-                <div class="sidebar-brand-text mx-3">Trama Admin</div>
             </div>
+
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="/dashboard"> <!-- Altere a URL aqui -->
+                <a class="nav-link" href="/dashboard">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -126,25 +166,27 @@
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            
+        <div id="content-wrapper" class="d-flex flex-column content-with-sidebar-hidden" id="contentWrapper">
+
+            <!-- Botão Hamburguer Fora da Sidebar -->
+            <button class="hamburger-btn" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
             <!-- Main Content -->
             <div id="content">
-                
+
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow">
-                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - Logout -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link" href="{% url 'manguetown:login' %}" role="button" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Sair</span>
-                                <i class="fas fa-sign-out-alt"></i> <!-- Ícone de logout -->
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 1.25rem;">Sair</span>
+                                <i class="fas fa-sign-out-alt" style="font-size: 1.5rem; color: #c55b7e;"></i> <!-- Ícone de logout -->
                             </a>
                         </li>
                     </ul>
                 </nav>
-                <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 {% block content %}
@@ -153,14 +195,13 @@
                         <p class="text-center">Escolha a gestão que deseja acessar:</p>
                     </div>
                 {% endblock %}
-                <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
-            
+
         </div>
         <!-- End of Content Wrapper -->
-        
+
     </div>
     <!-- End of Page Wrapper -->
 
@@ -172,6 +213,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/js/sb-admin-2.min.js"></script>
+    <script>
+        // Seleciona os elementos
+        const sidebar = document.getElementById('accordionSidebar');
+        const contentWrapper = document.getElementById('contentWrapper');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+
+        // Função para alternar a visibilidade da sidebar
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('hidden');               // Esconde ou mostra a sidebar
+            contentWrapper.classList.toggle('content-with-sidebar-hidden'); // Ajusta o conteúdo
+        });
+    </script>
 </body>
+
 </html>
