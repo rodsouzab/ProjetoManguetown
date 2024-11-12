@@ -22,67 +22,44 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-
       - name: Install Python dependencies
-        run: |
-          pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
       - name: Set up Node.js (for Cypress)
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
-
-      - name: Clear npm cache
-        run: npm cache clean --force
-
+          node-version: '16'  # Ou a versão que você precisa
       - name: Install Cypress dependencies
+        run: npm ci  
+      - name: Run Cypress tests
         run: |
-          npm ci  # Instalar dependências baseadas no package-lock.json
-          npm install -g cypress  # Garantir que o Cypress seja instalado globalmente
-
+          npx cypress run --base-url=https://meusite.azurewebsites.net
+  
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-app
-          path: |
-            release.zip
-            !venv/
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
+@@ -57,7 +44,7 @@
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write
+      id-token: write  
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: python-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DD575B9E2DF540DF95548C7940C1C8A5 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D9D38E50D11540228432D9AB688EAD3A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F126851A1C1648B08463A6356E051A6F }}
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
+@@ -81,3 +68,18 @@
         with:
           app-name: 'projetomanguetown-app'
           slot-name: 'Production'
-
-      - name: Run Cypress tests
+  test:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Cypress dependencies
         run: |
-          npx cypress run --env baseUrl=https://projetomanguetown-app.azurewebsites.net
+          npm install
+          npx cypress install
+      - name: Run Cypress tests
+        run: npx cypress run --env baseUrl=https://projetomanguetown-app.azurewebsites.net
