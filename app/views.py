@@ -223,14 +223,14 @@ def editar_empresa_view(request, empresa_id=None):
 @login_required
 def gestao_colaboradores_view(request):
     if request.method == 'POST':
-        colaboradora_id = request.POST.get('colaboradora_id')
-        if colaboradora_id:    
+        colaborador_id = request.POST.get('colaborador_id')
+        if colaborador_id:    
             try:
-                colaboradora = get_object_or_404(Colaborador, id=colaboradora_id)
-                colaboradora.delete()
-                messages.success(request, "Colaboradora excluída com sucesso!")
+                colaborador = get_object_or_404(Colaborador, id=colaborador_id)
+                colaborador.delete()
+                messages.success(request, "Colaborador excluído com sucesso!")
             except Exception as e:
-                messages.error(request, f"Erro ao excluir colaboradora: {e}")
+                messages.error(request, f"Erro ao excluir colaborador: {e}")
             
             return redirect('manguetown:gestao_colaboradores')
 
