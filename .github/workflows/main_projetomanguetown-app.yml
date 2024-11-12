@@ -26,7 +26,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install cypress
+          
+      - name: Install Cypress dependencies
+        run: |
+          npm install cypress
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -70,10 +73,6 @@ jobs:
         with:
           app-name: 'projetomanguetown-app'
           slot-name: 'Production'
-
-      - name: Install Cypress dependencies
-        run: |
-          npm install cypress
 
       - name: Run Cypress tests
         run: npx cypress run --env CYPRESS_BASE_URL=https://projetomanguetown-app.azurewebsites.net
