@@ -2,7 +2,7 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:8000',
+    baseUrl: process.env.CYPRESS_BASE_URL || 'http://localhost:8000',
     viewportWidth: 1920,
     viewportHeight: 1080,
     watchForFileChanges: false,
