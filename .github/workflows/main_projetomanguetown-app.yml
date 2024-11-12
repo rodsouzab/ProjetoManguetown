@@ -75,4 +75,4 @@ jobs:
           slot-name: 'Production'
 
       - name: Run Cypress tests
-        run: npx cypress run --env CYPRESS_BASE_URL=https://projetomanguetown-app.azurewebsites.net
+        run: npx cypress run --env baseUrl=https://projetomanguetown-app.azurewebsites.net
