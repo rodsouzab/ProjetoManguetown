@@ -39,7 +39,6 @@ jobs:
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
-@@ -57,7 +44,7 @@
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
@@ -47,7 +46,6 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-@@ -81,3 +68,18 @@
         with:
           app-name: 'projetomanguetown-app'
           slot-name: 'Production'
