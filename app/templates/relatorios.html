@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Relatórios
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="welcome-title text-center">Gráficos de Desempenho</h1>
+
+        <!-- Gráfico de Bonecas por Colaborador -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <!-- Botão para mostrar/ocultar gráfico de bonecas -->
+                        <button class="btn btn-primary w-100" onclick="toggleGraph('graficoBonecas')">
+                            Quantidade de Bonecas por Colaborador
+                        </button>
+                    </div>
+                    <div class="card-body graph-container" id="graficoBonecasContainer">
+                        <canvas id="graficoBonecas" class="d-none"></canvas> <!-- Inicialmente escondido -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Desempenho por Colaborador e Cálculo de Pontos -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <!-- Botão para mostrar/ocultar gráfico de desempenho e cálculo de pontos -->
+                        <button class="btn btn-success w-100" onclick="toggleGraph('graficoDesempenho', 'calculoPontos')">
+                            Desempenho de Colaboradores (Pontos)
+                        </button>
+                    </div>
+                    <div class="card-body graph-container" id="graficoDesempenhoContainer">
+                        <canvas id="graficoDesempenho" class="d-none"></canvas> <!-- Inicialmente escondido -->
+                        <div id="calculoPontos" class="d-none mt-4">
+                            <div class="alert alert-info">
+                                <h5><strong>Cálculo de Pontos:</strong></h5>
+                                <p>
+                                    O desempenho de cada colaborador é calculado com base na quantidade de bonecas feitas e o nível de dificuldade de cada uma delas. Cada boneca possui um valor de pontos, que varia conforme o nível de dificuldade:
+                                </p>
+                                <ul>
+                                    <li><strong>Nível 1:</strong> 1 ponto por boneca.</li>
+                                    <li><strong>Nível 2:</strong> 1,5 pontos por boneca.</li>
+                                    <li><strong>Nível 3:</strong> 2 pontos por boneca.</li>
+                                    <li><strong>Nível 4:</strong> 2,5 pontos por boneca.</li>
+                                    <li><strong>Nível 5:</strong> 3 pontos por boneca.</li>
+                                </ul>
+                                <p>
+                                    A pontuação total de cada colaborador é a soma dos pontos de todas as bonecas que ele(a) fez.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Inclusão do script do Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Função para alternar a visibilidade do gráfico e da explicação de pontos
+        function toggleGraph(graphId, calcId) {
+            // Alterna a visibilidade do gráfico e da seção do gráfico
+            var graph = document.getElementById(graphId);
+            var container = document.getElementById(graphId + 'Container'); // Obtém a div do gráfico
+
+            if (graph.classList.contains('d-none')) {
+                graph.classList.remove('d-none');
+                container.style.display = 'block'; // Torna a área visível
+            } else {
+                graph.classList.add('d-none');
+                container.style.display = 'none'; // Esconde a área do gráfico
+            }
+
+            // Alterna a visibilidade do cálculo de pontos (se fornecido)
+            if (calcId) {
+                var calc = document.getElementById(calcId);
+                if (calc.classList.contains('d-none')) {
+                    calc.classList.remove('d-none');
+                } else {
+                    calc.classList.add('d-none');
+                }
+            }
+        }
+
+        // Gráfico de Bonecas
+        var ctx1 = document.getElementById('graficoBonecas').getContext('2d');
+        var graficoBonecas = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: [
+                    {% for item in dados_bonecas %}
+                        "{{ item.nome }}"{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Quantidade de Bonecas',
+                    data: [
+                        {% for item in dados_bonecas %}
+                            {{ item.quantidade }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Desempenho
+        var ctx2 = document.getElementById('graficoDesempenho').getContext('2d');
+        var graficoDesempenho = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: [
+                    {% for item in dados_desempenho %}
+                        "{{ item.nome }}"{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Pontos por Desempenho',
+                    data: [
+                        {% for item in dados_desempenho %}
+                            {{ item.pontos }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                    borderColor: 'rgba(40, 167, 69, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Estilo Customizado para Remover a Barra Branca -->
+    <style>
+        .graph-container {
+            display: none; /* Inicialmente oculto */
+            backgroundColor: #ebceb5;
+        }
+
+        .card-body {
+            padding: 0 !important; /* Remove o padding, caso necessário */
+        }
+
+        /* Estilo opcional para quando o conteúdo está visível */
+        .graph-container.show {
+            display: block;
+        }
+    </style>
+
+</div>
+
+{% endblock %}

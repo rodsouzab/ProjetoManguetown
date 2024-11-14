@@ -9,7 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 import re
-from datetime import date
+from datetime import date,timedelta
+from django.utils import timezone
 
 
 def home(request):
@@ -596,10 +597,9 @@ from django.db.models import Sum
 from .models import Colaborador
 
 
-'''
-def dashboard_view(request):
-    # Buscar todos os colaboradores com a soma da quantidade de bonecas que cada um tem
-    colaboradores = Colaborador.objects.annotate(total_bonecas=Sum('boneca__quantidade'))
+def relatorios_view(request):
+    # Buscar todos os colaboradores com a soma da quantidade de bonecas que cada um tem nos trabalhos
+    colaboradores = Colaborador.objects.annotate(total_bonecas=Sum('trabalho__quantidade'))
 
     dados_bonecas = []
     dados_desempenho = []
@@ -608,17 +608,21 @@ def dashboard_view(request):
         # Dados para o gráfico de bonecas
         dados_bonecas.append({
             'nome': colaborador.nome,
+            'total_bonecas': colaborador.total_bonecas or 0  # Garantir que mesmo sem trabalhos, o valor seja 0
         })
         
-        # Calcular os pontos do colaborador com base no nível de dificuldade das bonecas
+        # Calcular os pontos do colaborador com base no nível de dificuldade das bonecas nos trabalhos
         total_pontos = 0
-        for boneca in colaborador.boneca_set.all():
+        for trabalho in colaborador.trabalho_set.all():
+            # Obtém a boneca associada ao trabalho
+            boneca = trabalho.boneca
+
             if boneca.nivel_dificuldade == '1':
-                total_pontos += boneca.quantidade * 1  # Nível 1: 1 ponto por boneca
+                total_pontos += trabalho.quantidade * 1  # Nível 1: 1 ponto por boneca
             elif boneca.nivel_dificuldade == '2':
-                total_pontos += boneca.quantidade * 1.5  # Nível 2: 1.5 pontos por boneca
+                total_pontos += trabalho.quantidade * 1.5  # Nível 2: 1.5 pontos por boneca
             elif boneca.nivel_dificuldade == '3':
-                total_pontos += boneca.quantidade * 2  # Nível 3: 2 pontos por boneca
+                total_pontos += trabalho.quantidade * 2  # Nível 3: 2 pontos por boneca
             # Adicione mais condições conforme os níveis de dificuldade
 
         # Dados para o gráfico de desempenho
@@ -628,8 +632,27 @@ def dashboard_view(request):
         })
     
     # Passando os dados para o template
-    return render(request, 'dashboard.html', {
+    return render(request, 'relatorios.html', {
         'dados_bonecas': dados_bonecas,
         'dados_desempenho': dados_desempenho
     })
-'''
+    
+def dashboard_view(request):
+    # Filtrando os trabalhos com data de previsão dentro dos próximos 7 dias
+    data_limite = timezone.now() + timedelta(days=7)
+    trabalhos = Trabalho.objects.filter(data_previsao__lte=data_limite, data_previsao__gte=timezone.now())
+
+    # Preparando os eventos para o FullCalendar
+    eventos = []
+    for trabalho in trabalhos:
+        evento = {
+            'title': f'{trabalho.boneca.nome} - {trabalho.quantidade} unidades',
+            'start': trabalho.data_previsao.strftime('%Y-%m-%dT%H:%M:%S'),
+            'end': (trabalho.data_previsao + timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M:%S')  # Definindo um fim para o evento
+        }
+        eventos.append(evento)
+
+    return render(request, 'dashboard.html', {
+        'trabalhos': trabalhos,
+        'eventos': eventos  # Passando os eventos para o template
+    })

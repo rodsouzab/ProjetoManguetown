@@ -5,177 +5,94 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="container-fluid">
+    <div class="container-fluid" style="min-height: 100vh;">
         <!-- Page Heading -->
-        <h1 class="welcome-title text-center">Bem-vindo(a)</h1>
-        <p class="welcome-subtitle text-center">Gráficos de desempenho</p>
+        <h1 class="welcome-title text-center">Dashboard</h1>
 
-        <!-- Gráfico de Bonecas por Colaborador -->
-        <div class="row">
-            <div class="col-lg-12 col-md-12 mb-4">
+        <!-- Grid com 2 seções -->
+        <div class="row justify-content-center d-flex align-items-center" style="min-height: 80vh; background-color: transparent">
+            <!-- Seção do Calendário -->
+            <div class="col-lg-6 col-md-8 col-sm-12 mb-4" style="background-color: transparent">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <!-- Botão para mostrar/ocultar gráfico de bonecas -->
-                        <button class="btn btn-primary w-100" onclick="toggleGraph('graficoBonecas')">
-                            Quantidade de Bonecas por Colaborador
-                        </button>
+                        <h6 class="m-0 font-weight-bold text-primary">Calendário</h6>
                     </div>
-                    <div class="card-body graph-container" id="graficoBonecasContainer">
-                        <canvas id="graficoBonecas" class="d-none"></canvas> <!-- Inicialmente escondido -->
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção da Tabela de Trabalhos com Expiração -->
+            <div class="col-lg-6 col-md-8 col-sm-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Trabalhos com Data de Expiração</h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Colaborador</th>
+                                    <th scope="col">Boneca</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Data Previsão</th>              
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for trabalho in trabalhos %}
+                                    <tr>
+                                        <td>
+                                            {% for colaborador in trabalho.colaboradores.all %}
+                                                <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
+                                            {% empty %}
+                                                Nenhum colaborador associado
+                                            {% endfor %}
+                                        </td>
+                                        <td>{{ trabalho.boneca.nome }}</td>
+                                        <td>{{ trabalho.quantidade }}</td>
+                                        <td>{{ trabalho.data_previsao }}</td>    
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">Nenhum trabalho expirando nos próximos 7 dias.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Gráfico de Desempenho por Colaborador e Cálculo de Pontos -->
-        <div class="row">
-            <div class="col-lg-12 col-md-12 mb-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <!-- Botão para mostrar/ocultar gráfico de desempenho e cálculo de pontos -->
-                        <button class="btn btn-success w-100" onclick="toggleGraph('graficoDesempenho', 'calculoPontos')">
-                            Desempenho de Colaboradores (Pontos)
-                        </button>
-                    </div>
-                    <div class="card-body graph-container" id="graficoDesempenhoContainer">
-                        <canvas id="graficoDesempenho" class="d-none"></canvas> <!-- Inicialmente escondido -->
-                        <div id="calculoPontos" class="d-none mt-4">
-                            <div class="alert alert-info">
-                                <h5><strong>Cálculo de Pontos:</strong></h5>
-                                <p>
-                                    O desempenho de cada colaborador é calculado com base na quantidade de bonecas feitas e o nível de dificuldade de cada uma delas. Cada boneca possui um valor de pontos, que varia conforme o nível de dificuldade:
-                                </p>
-                                <ul>
-                                    <li><strong>Nível 1:</strong> 1 ponto por boneca.</li>
-                                    <li><strong>Nível 2:</strong> 1,5 pontos por boneca.</li>
-                                    <li><strong>Nível 3:</strong> 2 pontos por boneca.</li>
-                                    <li><strong>Nível 4:</strong> 2,5 pontos por boneca.</li>
-                                    <li><strong>Nível 5:</strong> 3 pontos por boneca.</li>
-                                </ul>
-                                <p>
-                                    A pontuação total de cada colaborador é a soma dos pontos de todas as bonecas que ele(a) fez.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Inclusão do script do Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Carregando as dependências do jQuery e FullCalendar -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.0/dist/fullcalendar.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.0/dist/fullcalendar.min.css" rel="stylesheet" />
 
+    <!-- Script de inicialização do FullCalendar -->
     <script>
-        // Função para alternar a visibilidade do gráfico e da explicação de pontos
-        function toggleGraph(graphId, calcId) {
-            // Alterna a visibilidade do gráfico e da seção do gráfico
-            var graph = document.getElementById(graphId);
-            var container = document.getElementById(graphId + 'Container'); // Obtém a div do gráfico
+        $(document).ready(function() {
+            console.log("Iniciando o FullCalendar");
 
-            if (graph.classList.contains('d-none')) {
-                graph.classList.remove('d-none');
-                container.style.display = 'block'; // Torna a área visível
-            } else {
-                graph.classList.add('d-none');
-                container.style.display = 'none'; // Esconde a área do gráfico
-            }
+            // Recuperando os eventos passados pelo Django
+            var eventos = JSON.parse(document.getElementById('eventos').textContent);
 
-            // Alterna a visibilidade do cálculo de pontos (se fornecido)
-            if (calcId) {
-                var calc = document.getElementById(calcId);
-                if (calc.classList.contains('d-none')) {
-                    calc.classList.remove('d-none');
-                } else {
-                    calc.classList.add('d-none');
+            $('#calendar').fullCalendar({
+                events: eventos,
+                eventRender: function(event, element) {
+                    console.log("Evento renderizado: ", event);
                 }
-            }
-        }
+            });
 
-        // Gráfico de Bonecas
-        var ctx1 = document.getElementById('graficoBonecas').getContext('2d');
-        var graficoBonecas = new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: [
-                    {% for item in dados_bonecas %}
-                        "{{ item.nome }}"{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                ],
-                datasets: [{
-                    label: 'Quantidade de Bonecas',
-                    data: [
-                        {% for item in dados_bonecas %}
-                            {{ item.quantidade }}{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Gráfico de Desempenho
-        var ctx2 = document.getElementById('graficoDesempenho').getContext('2d');
-        var graficoDesempenho = new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: [
-                    {% for item in dados_desempenho %}
-                        "{{ item.nome }}"{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                ],
-                datasets: [{
-                    label: 'Pontos por Desempenho',
-                    data: [
-                        {% for item in dados_desempenho %}
-                            {{ item.pontos }}{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+            console.log("FullCalendar iniciado");
         });
     </script>
 
-    <!-- Estilo Customizado para Remover a Barra Branca -->
-    <style>
-        .graph-container {
-            display: none; /* Inicialmente oculto */
-            backgroundColor: #ebceb5;
-        }
-
-        .card-body {
-            padding: 0 !important; /* Remove o padding, caso necessário */
-        }
-
-        /* Estilo opcional para quando o conteúdo está visível */
-        .graph-container.show {
-            display: block;
-        }
-    </style>
-
-</div>
+    <!-- Passando os eventos do Django para o JavaScript como JSON -->
+    <script id="eventos" type="application/json">
+        {{ eventos|json_script }}
+    </script>
 
 {% endblock %}
