@@ -10,18 +10,19 @@
         <h1 class="welcome-title text-center" style="margin-top: 30px;">Bem-Vinda, Danielle</h1>
 
         <!-- Grid com 2 seções -->
-        <div class="row justify-content-center d-flex align-items-center" style="min-height: 70vh; background-color: transparent;">
+        <div class="row justify-content-center align-items-stretch" style="min-height: 70vh; background-color: transparent;">
             <!-- Seção do Calendário -->
             <div class="col-lg-6 col-md-8 col-sm-12 mb-4" style="background-color: transparent;">
-                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Calendário</h6> <!-- Ajustado para um <h6> e fechamento correto -->
+                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Calendário</h6>
                 <div class="card-body">
-                    <div id="calendar"></div>
+                    <div id="calendar" style="max-height: 500px; margin-top: 45px"></div>
                 </div>
             </div>
 
             <!-- Seção da Tabela de Trabalhos com Expiração -->
-            <div class="col-lg-6 col-md-8 col-sm-12 mb-4">
-                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6> <!-- Ajustado para um <h6> e fechamento correto -->
+            <div class="col-lg-6 col-md-8 col-sm-12 mb-4" style="background-color: transparent;">
+                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6>
+                <h6 class="welcome-subtitle-lower text-center">(próximos 7 dias)</h6>
                 <div class="card-body" style="max-height: 400px; overflow-y: auto;">
                     <table class="table">
                         <thead class="thead-dark">
@@ -63,28 +64,23 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.0/dist/fullcalendar.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.0/dist/fullcalendar.min.css" rel="stylesheet" />
 
-    <!-- Script de inicialização do FullCalendar -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
     <script>
-        $(document).ready(function() {
-            console.log("Iniciando o FullCalendar");
-
-            // Recuperando os eventos passados pelo Django
-            var eventos = JSON.parse(document.getElementById('eventos').textContent);
-
-            $('#calendar').fullCalendar({
-                events: eventos,
-                eventRender: function(event, element) {
-                    console.log("Evento renderizado: ", event);
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                buttonText: {
+                    today: 'Hoje',
+                    month: 'Mês',
+                    week: 'Semana',
+                    day: 'Dia'
+                },
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
             });
-
-            console.log("FullCalendar iniciado");
+            calendar.render();
         });
     </script>
-
-    <!-- Passando os eventos do Django para o JavaScript como JSON -->
-    <script id="eventos" type="application/json">
-        {{ eventos|json_script }}
-    </script>
-
 {% endblock %}
