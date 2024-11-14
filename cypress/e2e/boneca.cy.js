@@ -98,7 +98,7 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
       cy.url().should('include', '/cadastrar_boneca');
 
       cy.get('#nome_boneca').type('Boneca Cypress de Pano');
-      cy.get('#quantidade').type('50'); // Usa o novo CPF
+
       cy.get('#nivel_dificuldade').type('Muito Difícil');
       cy.get('#colaborador_id').select('Colaborador Boneca');
 
@@ -110,7 +110,6 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
 
       // Verifica se o colaborador está na lista de colaboradores com o novo CPF
       cy.contains('Boneca Cypress de Pano').should('be.visible');
-      cy.contains('50').should('be.visible');
       cy.contains('Muito Difícil').should('be.visible');
       cy.contains('Colaborador Boneca').should('be.visible');
     });
@@ -146,7 +145,6 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
       cy.url().should('include', '/cadastrar_boneca');
 
       cy.get('#nome_boneca').type('Boneca Cypress de Pano 2');
-      cy.get('#quantidade').type('30'); // Usa o novo CPF
       cy.get('#nivel_dificuldade').type('Fácil');
       cy.get('#colaborador_id').select('Colaborador Boneca');
 
@@ -158,7 +156,6 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
 
       // Verifica se o colaborador está na lista de colaboradores com o novo CPF
       cy.contains('Boneca Cypress de Pano 2').should('be.visible');
-      cy.contains('30').should('be.visible');
       cy.contains('Fácil').should('be.visible');
       cy.contains('Colaborador Boneca').should('be.visible');
 
