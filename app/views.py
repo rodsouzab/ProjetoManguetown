@@ -406,7 +406,7 @@ def editar_doador_view(request, doador_id):
 
         try:
             doador.save()  # Tenta salvar as alterações
-            messages.success(request, 'Doador atualizado com sucesso!')
+            messages.success(request, 'Doador editado com sucesso!')
             return redirect('manguetown:gestao_doadores')  # Redireciona para a página de gestão de doadores
         except Exception:
             messages.error(request, 'Erro ao atualizar doador. Por favor, tente novamente.')
