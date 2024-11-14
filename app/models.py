@@ -68,9 +68,9 @@ class Doador(models.Model):
 
 class Trabalho(models.Model):
     boneca = models.ForeignKey(Boneca, on_delete=models.CASCADE)
-    colaborador = models.ForeignKey(Colaborador, on_delete=models.CASCADE)
+    colaboradores = models.ManyToManyField(Colaborador) 
     data_previsao = models.DateField()
     quantidade = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"Trabalho de {self.quantidade} {self.boneca.nome}(s) por {self.colaborador.nome}"
+        return f"Trabalho de {self.quantidade} {self.boneca.nome}(s) por {', '.join([colaborador.nome for colaborador in self.colaboradores.all()])}"

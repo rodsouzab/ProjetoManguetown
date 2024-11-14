@@ -36,7 +36,14 @@
             <tbody>
                 {% for trabalho in trabalhos %}
                 <tr>
-                    <td>{{ trabalho.colaborador.nome}}</td>
+                    <td>
+                        <!-- Exibindo os colaboradores associados ao trabalho -->
+                        {% for colaborador in trabalho.colaboradores.all %}
+                            <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
+                        {% empty %}
+                            Nenhum colaborador associado
+                        {% endfor %}
+                    </td>
                     <td>{{ trabalho.boneca.nome }}</td>
                     <td>{{ trabalho.data_previsao }}</td>
                     <td>{{ trabalho.quantidade }}</td>
