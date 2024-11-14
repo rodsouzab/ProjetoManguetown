@@ -310,7 +310,7 @@ def gestao_bonecas_view(request):
         try:
             boneca = Boneca.objects.get(id=boneca_id)
             boneca.delete()
-            messages.success(request, "Boneca excluída com sucesso.")
+            messages.success(request, "Boneca excluída com sucesso!")
         except Boneca.DoesNotExist:
             messages.error(request, "Boneca não encontrada.")
         except Exception as e:
