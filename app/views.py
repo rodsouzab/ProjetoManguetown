@@ -362,7 +362,7 @@ def gestao_trabalho_view(request):
             
             return redirect('manguetown:gestao_trabalho')
 
-    trabalhos = Trabalho.objects.all()
+    trabalhos = Trabalho.objects.all().order_by('data_previsao')
     return render(request, 'gestao_trabalho.html', {'trabalhos': trabalhos})
 
 @login_required
@@ -640,7 +640,7 @@ def relatorios_view(request):
 def dashboard_view(request):
     # Filtrando os trabalhos com data de previsão dentro dos próximos 7 dias
     data_limite = timezone.now() + timedelta(days=7)
-    trabalhos = Trabalho.objects.filter(data_previsao__lte=data_limite, data_previsao__gte=timezone.now())
+    trabalhos = Trabalho.objects.filter(data_previsao__lte=data_limite, data_previsao__gte=timezone.now()).order_by('data_previsao')
 
     # Preparando os eventos para o FullCalendar
     eventos = []
