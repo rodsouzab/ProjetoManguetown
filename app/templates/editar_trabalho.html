@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar Trabalho
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800 text-danger">Editar Trabalho</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="colaborador_id">Colaborador:</label>
+                <select id="colaborador_id" name="colaborador_id" class="form-control" required>
+                    <option value="" disabled>Escolha uma Colaboradora</option>
+                    {% for colaborador in colaboradores %}
+                        <option value="{{ colaborador.id }}" {% if colaborador.id == trabalho.colaborador.id %}selected{% endif %}>{{ colaborador.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="boneca_id">Boneca:</label>
+                <select id="boneca_id" name="boneca_id" class="form-control" required>
+                    <option value="" disabled>Escolha uma Boneca</option>
+                    {% for boneca in bonecas %}
+                        <option value="{{ boneca.id }}" {% if boneca.id == trabalho.boneca.id %}selected{% endif %}>{{ boneca.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="data_previsao">Data de Previsão:</label>
+                <input type="date" class="form-control" id="data_previsao" name="data_previsao" value="{{ trabalho.data_previsao|date:'Y-m-d' }}" required min="{{ today }}" />
+            </div>
+
+            <div class="form-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" class="form-control" id="quantidade" name="quantidade" value="{{ trabalho.quantidade }}" min="1" required />
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <a href="{% url 'manguetown:gestao_trabalho' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

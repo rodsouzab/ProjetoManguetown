@@ -29,4 +29,7 @@ urlpatterns = [
     path('cadastrar_doador/', views.cadastrar_doador_view, name='cadastrar_doador'),
     path('editar_doadores/<int:doador_id>/', views.editar_doador_view, name='editar_doador'),
     path('editar_colaborador/<int:id>/', views.editar_colaborador_view, name='editar_colaborador'),
+    path('gestao_trabalho/', views.gestao_trabalho_view, name='gestao_trabalho'),
+    path('cadastrar_trabalho/', views.cadastrar_trabalho_view, name='cadastrar_trabalho'),
+    path('editar_trabalho/<int:trabalho_id>/', views.editar_trabalho_view, name='editar_trabalho'),
 ]

@@ -29,7 +29,6 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Nome</th>
-                    <th>Quantidade</th>
                     <th>Nível de Dificuldade</th>
                     <th>Colaborador</th>
                     <th>Ações</th> <!-- Coluna para ações -->
@@ -39,7 +38,6 @@
                 {% for boneca in bonecas %}
                     <tr>
                         <td>{{ boneca.nome }}</td>
-                        <td>{{ boneca.quantidade }}</td>
                         <td>{{ boneca.nivel_dificuldade }}</td>
                         <td>{{ boneca.colaborador.nome }}</td>
                         <td>

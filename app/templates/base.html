@@ -126,7 +126,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/dashboard">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
+                    <span>Painel</span>
                 </a>
             </li>
 
@@ -159,9 +159,18 @@
                     <span>Gestão de Bonecas</span>
                 </a>
             </li>
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+            <div class="sidebar-heading">Trabalho</div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'manguetown:gestao_trabalho' %}">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Gestão de Trabalho</span>
+                </a>
+            </li>
+
         </ul>
         <!-- End of Sidebar -->
 

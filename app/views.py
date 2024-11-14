@@ -4,11 +4,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Colaborador, EmpresaParceira, Boneca, Doador, Colaborador
+from .models import Colaborador, EmpresaParceira, Boneca, Doador, Colaborador, Trabalho
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 import re
+from datetime import date
 
 
 def home(request):
@@ -65,6 +66,11 @@ def gestao_empresas_view(request):
     empresas = EmpresaParceira.objects.all()
     return render(request, 'gestao_empresas.html', {'empresas': empresas})
 
+# View da página de gestão de trabalho
+def gestao_trabalho_view(request):
+    trabalho = Trabalho.objects.all()
+    return render(request, 'gestao_trabalho.html', {'trabalho': trabalho})
+
 # View para o cadastro de colaborador
 def cadastrar_colaborador_view(request):
     if request.method == 'POST':
@@ -108,6 +114,53 @@ def cadastrar_colaborador_view(request):
             return redirect('manguetown:cadastrar_colaborador')  # Redireciona de volta ao formulário
 
     return render(request, 'cadastrar_colaborador.html')
+
+
+# View para cadastro de trabalho
+def cadastrar_trabalho_view(request):
+    if request.method == 'POST':
+        colaborador_id = request.POST.get('colaborador_id')
+        boneca_id = request.POST.get('boneca_id')
+        data_previsao = request.POST.get('data_previsao')
+        quantidade = request.POST.get('quantidade')
+
+        # Verificar se a data de previsão é no futuro
+        if data_previsao and date.fromisoformat(data_previsao) <= date.today():
+            messages.error(request, 'A data de previsão deve ser no futuro.')
+            return redirect('manguetown:cadastrar_trabalho')
+        
+        try:
+            colaborador = Colaborador.objects.get(id=colaborador_id)
+            boneca = Boneca.objects.get(id=boneca_id)
+
+            Trabalho.objects.create(
+                colaborador=colaborador,
+                boneca=boneca,
+                data_previsao=data_previsao,
+                quantidade=quantidade,
+            )
+            return redirect('manguetown:gestao_trabalho')
+
+        except (Colaborador.DoesNotExist, Boneca.DoesNotExist):
+            messages.error(request, 'Colaborador ou Boneca selecionados não existem.')
+            return redirect('manguetown:cadastrar_trabalho')
+        except IntegrityError:
+            messages.error(request, 'Erro ao cadastrar trabalho. Por favor, tente novamente.')
+            return redirect('manguetown:cadastrar_trabalho')
+    
+    else:
+        colaboradores = Colaborador.objects.all()
+        bonecas = Boneca.objects.all()
+        today = date.today().isoformat()  # Passar a data no formato correto
+
+        context = {
+            'colaboradores': colaboradores,
+            'bonecas': bonecas,
+            'today': today,  # Passando a data para o template
+        }
+        return render(request, 'cadastrar_trabalho.html', context)
+
+
 
 # View para escolher tipo de cadastro
 # def escolha_cadastro_view(request):
@@ -221,6 +274,56 @@ def editar_empresa_view(request, empresa_id=None):
     return render(request, 'editar_empresa.html', context)
 
 @login_required
+def editar_trabalho_view(request, trabalho_id):
+    # Buscar o trabalho existente pelo ID
+    trabalho = get_object_or_404(Trabalho, id=trabalho_id)
+
+    if request.method == 'POST':
+        colaborador_id = request.POST.get('colaborador_id')
+        boneca_id = request.POST.get('boneca_id')
+        data_previsao = request.POST.get('data_previsao')
+        quantidade = request.POST.get('quantidade')
+
+        # Verificar se a data de previsão é no futuro
+        if data_previsao and date.fromisoformat(data_previsao) <= date.today():
+            messages.error(request, 'A data de previsão deve ser no futuro.')
+            return redirect('manguetown:editar_trabalho', trabalho_id=trabalho.id)
+        
+        try:
+            colaborador = Colaborador.objects.get(id=colaborador_id)
+            boneca = Boneca.objects.get(id=boneca_id)
+
+            # Atualizando o trabalho com os novos dados
+            trabalho.colaborador = colaborador
+            trabalho.boneca = boneca
+            trabalho.data_previsao = data_previsao
+            trabalho.quantidade = quantidade
+            trabalho.save()
+
+            messages.success(request, 'Trabalho atualizado com sucesso!')
+            return redirect('manguetown:gestao_trabalho')
+
+        except (Colaborador.DoesNotExist, Boneca.DoesNotExist):
+            messages.error(request, 'Colaborador ou Boneca selecionados não existem.')
+            return redirect('manguetown:editar_trabalho', trabalho_id=trabalho.id)
+        except IntegrityError:
+            messages.error(request, 'Erro ao editar trabalho. Por favor, tente novamente.')
+            return redirect('manguetown:editar_trabalho', trabalho_id=trabalho.id)
+    
+    else:
+        colaboradores = Colaborador.objects.all()
+        bonecas = Boneca.objects.all()
+        today = date.today().isoformat()  # Passar a data no formato correto
+
+        context = {
+            'trabalho': trabalho,
+            'colaboradores': colaboradores,
+            'bonecas': bonecas,
+            'today': today,  # Passando a data para o template
+        }
+        return render(request, 'editar_trabalho.html', context)
+
+@login_required
 def gestao_colaboradores_view(request):
     if request.method == 'POST':
         colaborador_id = request.POST.get('colaborador_id')
@@ -236,6 +339,23 @@ def gestao_colaboradores_view(request):
 
     colaboradores = Colaborador.objects.all()
     return render(request, 'gestao_colaboradores.html', {'colaboradores': colaboradores})
+
+@login_required
+def gestao_trabalho_view(request):
+    if request.method == 'POST':
+        trabalho_id = request.POST.get('trabalho_id')
+        if trabalho_id:    
+            try:
+                trabalho = get_object_or_404(Trabalho, id=trabalho_id)
+                trabalho.delete()
+                messages.success(request, "Trabalho excluído com sucesso!")
+            except Exception as e:
+                messages.error(request, f"Erro ao excluir trabalho: {e}")
+            
+            return redirect('manguetown:gestao_trabalho')
+
+    trabalhos = Trabalho.objects.all()
+    return render(request, 'gestao_trabalho.html', {'trabalhos': trabalhos})
 
 @login_required
 def gestao_doadores_view(request):
@@ -274,7 +394,6 @@ def gestao_empresas_view(request):
 def cadastrar_boneca_view(request):
     if request.method == 'POST':
         nome = request.POST.get('nome_boneca')
-        quantidade = request.POST.get('quantidade')
         nivel_dificuldade = request.POST.get('nivel_dificuldade')
         colaborador_id = request.POST.get('colaborador_id') 
 
@@ -285,11 +404,15 @@ def cadastrar_boneca_view(request):
             messages.error(request, "Colaborador não encontrado.")
             return redirect('manguetown:cadastrar_boneca')
 
+        # Verifica se o CPF já existe antes de tentar salvar
+        if Boneca.objects.filter(nome=nome).exists():
+            messages.error(request, 'Já existe uma boneca com esse nome.')
+            return redirect('manguetown:cadastrar_boneca')  # Redireciona de volta ao formulário
+
         # Criação da nova boneca
         boneca = Boneca(
             colaborador=colaborador,
             nome=nome,
-            quantidade=quantidade,
             nivel_dificuldade=nivel_dificuldade
         )
 
@@ -311,8 +434,6 @@ def gestao_bonecas_view(request):
             boneca = Boneca.objects.get(id=boneca_id)
             boneca.delete()
             messages.success(request, "Boneca excluída com sucesso!")
-        except Boneca.DoesNotExist:
-            messages.error(request, "Boneca não encontrada.")
         except Exception as e:
             messages.error(request, f"Erro ao excluir a boneca: {e}")
 
@@ -467,6 +588,8 @@ from django.shortcuts import render
 from django.db.models import Sum
 from .models import Colaborador
 
+
+'''
 def dashboard_view(request):
     # Buscar todos os colaboradores com a soma da quantidade de bonecas que cada um tem
     colaboradores = Colaborador.objects.annotate(total_bonecas=Sum('boneca__quantidade'))
@@ -478,7 +601,6 @@ def dashboard_view(request):
         # Dados para o gráfico de bonecas
         dados_bonecas.append({
             'nome': colaborador.nome,
-            'quantidade': colaborador.total_bonecas or 0  # Se não houver bonecas, coloca 0
         })
         
         # Calcular os pontos do colaborador com base no nível de dificuldade das bonecas
@@ -503,3 +625,4 @@ def dashboard_view(request):
         'dados_bonecas': dados_bonecas,
         'dados_desempenho': dados_desempenho
     })
+'''

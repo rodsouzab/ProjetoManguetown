@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Colaborador(models.Model):
     nome = models.CharField(max_length=100)
@@ -37,8 +38,9 @@ class EmpresaParceira(models.Model):
 
 class Boneca(models.Model):
     nome = models.CharField(max_length=100)
-    quantidade = models.PositiveIntegerField()
-    nivel_dificuldade = models.CharField(max_length=50)
+    nivel_dificuldade = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
     colaborador = models.ForeignKey(Colaborador, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -63,3 +65,12 @@ class Doador(models.Model):
     
     def __str__(self):
         return self.nome
+
+class Trabalho(models.Model):
+    boneca = models.ForeignKey(Boneca, on_delete=models.CASCADE)
+    colaborador = models.ForeignKey(Colaborador, on_delete=models.CASCADE)
+    data_previsao = models.DateField()
+    quantidade = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"Trabalho de {self.quantidade} {self.boneca.nome}(s) por {self.colaborador.nome}"
