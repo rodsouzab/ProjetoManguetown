@@ -5,62 +5,54 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid" style="min-height: 100vh;">
+    <div class="container-fluid" style="min-height: 100vh; margin-top: 20px;">
         <!-- Page Heading -->
-        <h1 class="welcome-title text-center">Dashboard</h1>
+        <h1 class="welcome-title text-center" style="margin-top: 30px;">Bem-Vinda, Danielle</h1>
 
         <!-- Grid com 2 seções -->
-        <div class="row justify-content-center d-flex align-items-center" style="min-height: 80vh; background-color: transparent">
+        <div class="row justify-content-center d-flex align-items-center" style="min-height: 70vh; background-color: transparent;">
             <!-- Seção do Calendário -->
-            <div class="col-lg-6 col-md-8 col-sm-12 mb-4" style="background-color: transparent">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Calendário</h6>
-                    </div>
-                    <div class="card-body">
-                        <div id="calendar"></div>
-                    </div>
+            <div class="col-lg-6 col-md-8 col-sm-12 mb-4" style="background-color: transparent;">
+                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Calendário</h6> <!-- Ajustado para um <h6> e fechamento correto -->
+                <div class="card-body">
+                    <div id="calendar"></div>
                 </div>
             </div>
 
             <!-- Seção da Tabela de Trabalhos com Expiração -->
             <div class="col-lg-6 col-md-8 col-sm-12 mb-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Trabalhos com Data de Expiração</h6>
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead class="thead-dark">
+                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6> <!-- Ajustado para um <h6> e fechamento correto -->
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Colaborador</th>
+                                <th scope="col">Boneca</th>
+                                <th scope="col">Quantidade</th>
+                                <th scope="col">Data Previsão</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trabalho in trabalhos %}
                                 <tr>
-                                    <th scope="col">Colaborador</th>
-                                    <th scope="col">Boneca</th>
-                                    <th scope="col">Quantidade</th>
-                                    <th scope="col">Data Previsão</th>              
+                                    <td>
+                                        {% for colaborador in trabalho.colaboradores.all %}
+                                            <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
+                                        {% empty %}
+                                            Nenhum colaborador associado
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ trabalho.boneca.nome }}</td>
+                                    <td>{{ trabalho.quantidade }}</td>
+                                    <td>{{ trabalho.data_previsao }}</td>    
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {% for trabalho in trabalhos %}
-                                    <tr>
-                                        <td>
-                                            {% for colaborador in trabalho.colaboradores.all %}
-                                                <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
-                                            {% empty %}
-                                                Nenhum colaborador associado
-                                            {% endfor %}
-                                        </td>
-                                        <td>{{ trabalho.boneca.nome }}</td>
-                                        <td>{{ trabalho.quantidade }}</td>
-                                        <td>{{ trabalho.data_previsao }}</td>    
-                                    </tr>
-                                {% empty %}
-                                    <tr>
-                                        <td colspan="5" class="text-center">Nenhum trabalho expirando nos próximos 7 dias.</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhum trabalho expirando nos próximos 7 dias.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

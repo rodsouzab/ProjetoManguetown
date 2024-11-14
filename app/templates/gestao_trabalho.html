@@ -28,8 +28,8 @@
                 <tr>
                     <th>Nome do Colaborador</th>
                     <th>Boneca</th>
-                    <th>Data Prevista</th>
                     <th>Quantidade</th>
+                    <th>Data Prevista</th>
                     <th>Ações</th> <!-- Coluna para ações -->
                 </tr>
             </thead>
@@ -45,8 +45,8 @@
                         {% endfor %}
                     </td>
                     <td>{{ trabalho.boneca.nome }}</td>
-                    <td>{{ trabalho.data_previsao }}</td>
                     <td>{{ trabalho.quantidade }}</td>
+                    <td>{{ trabalho.data_previsao }}</td>
                     <td>
                         <!-- Dropdown para ações -->
                         <select class="form-select action-select custom-select" data-trabalho-id="{{ trabalho.id }}">
