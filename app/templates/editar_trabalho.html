@@ -16,13 +16,17 @@
 
         <form method="POST">
             {% csrf_token %}
+            <input type="hidden" name="trabalho_id" value="{{ trabalho.id }}">
 
             <div class="form-group">
-                <label for="colaborador_id">Colaborador:</label>
-                <select id="colaborador_id" name="colaborador_id" class="form-control" required>
-                    <option value="" disabled>Escolha uma Colaboradora</option>
+                <label for="colaborador_id">Colaboradoras:</label>
+                <select id="colaborador_id" name="colaborador_id" class="form-control select2" multiple="multiple" required>
+                    <option value="" disabled>Escolha uma ou mais colaboradoras</option>
                     {% for colaborador in colaboradores %}
-                        <option value="{{ colaborador.id }}" {% if colaborador.id == trabalho.colaborador.id %}selected{% endif %}>{{ colaborador.nome }}</option>
+                        <option value="{{ colaborador.id }}" 
+                            {% if colaborador in trabalho.colaboradores.all %} selected {% endif %}>
+                            {{ colaborador.nome }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
@@ -32,25 +36,41 @@
                 <select id="boneca_id" name="boneca_id" class="form-control" required>
                     <option value="" disabled>Escolha uma Boneca</option>
                     {% for boneca in bonecas %}
-                        <option value="{{ boneca.id }}" {% if boneca.id == trabalho.boneca.id %}selected{% endif %}>{{ boneca.nome }}</option>
+                        <option value="{{ boneca.id }}" 
+                            {% if boneca.id == trabalho.boneca.id %} selected {% endif %}>
+                            {{ boneca.nome }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="data_previsao">Data de Previsão:</label>
-                <input type="date" class="form-control" id="data_previsao" name="data_previsao" value="{{ trabalho.data_previsao|date:'Y-m-d' }}" required min="{{ today }}" />
+                <input type="date" class="form-control" id="data_previsao" name="data_previsao" 
+                    min="{{ today }}" value="{{ trabalho.data_previsao|date:'Y-m-d' }}" required />
             </div>
 
             <div class="form-group">
                 <label for="quantidade">Quantidade:</label>
-                <input type="number" class="form-control" id="quantidade" name="quantidade" value="{{ trabalho.quantidade }}" min="1" required />
+                <input type="number" class="form-control" id="quantidade" name="quantidade" 
+                    min="1" value="{{ trabalho.quantidade }}" required />
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <button type="submit" class="btn btn-primary">Atualizar Trabalho</button>
                 <a href="{% url 'manguetown:gestao_trabalho' %}" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
     </div>
+
+    <script>
+        // Inicializa o Select2 após a página ser carregada
+        document.addEventListener('DOMContentLoaded', function() {
+            $('#colaborador_id').select2({
+                placeholder: "Escolha uma ou mais colaboradoras",
+                allowClear: true,
+                width: '100%' // Ajuste de largura para melhor adaptação
+            });
+        });
+    </script>
 {% endblock %}

@@ -102,6 +102,9 @@
             margin-bottom: 30px; /* Espaçamento inferior */
         }
     </style>
+
+    <!-- CSS do Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body id="page-top">
@@ -159,7 +162,6 @@
                     <span>Gestão de Bonecas</span>
                 </a>
             </li>
-            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -201,9 +203,17 @@
                 {% block content %}
                     <div class="container-fluid">
                         <h1 class="h3 mb-4 text-gray-800 text-center">Bem-vindo(a)</h1>
-                        <p class="text-center">Escolha a gestão que deseja acessar:</p>
+                        <p class="text-center">Escolha a gestão que deseja acessar.</p>
+
+                        <!-- Example of Select2 usage -->
+                        <select class="custom-select form-select" id="exampleSelect2">
+                            <option value="1">Colaboradores</option>
+                            <option value="2">Empresas</option>
+                            <option value="3">Doadores</option>
+                        </select>
                     </div>
                 {% endblock %}
+                <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
@@ -214,26 +224,47 @@
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-    <!-- Core plugin JavaScript-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Você tem certeza?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Selecione "Sair" abaixo se você está pronto para terminar sua sessão.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="{% url 'manguetown:login' %}">Sair</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Custom scripts for all pages-->
+    <!-- JavaScript da página -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
     <script>
-        // Seleciona os elementos
-        const sidebar = document.getElementById('accordionSidebar');
-        const contentWrapper = document.getElementById('contentWrapper');
-        const sidebarToggle = document.getElementById('sidebarToggle');
+        // Inicializando Select2
+        $(document).ready(function() {
+            $('#exampleSelect2').select2();
+        });
 
-        // Função para alternar a visibilidade da sidebar
-        sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('hidden');               // Esconde ou mostra a sidebar
-            contentWrapper.classList.toggle('content-with-sidebar-hidden'); // Ajusta o conteúdo
+        // Exemplo de script para alternar a visibilidade da sidebar
+        $("#sidebarToggle").click(function() {
+            $("#accordionSidebar").toggleClass("hidden");
+            $("#contentWrapper").toggleClass("content-with-sidebar-hidden");
         });
     </script>
+
 </body>
 
 </html>

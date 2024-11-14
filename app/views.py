@@ -117,12 +117,13 @@ def cadastrar_colaborador_view(request):
 
 
 # View para cadastro de trabalho
+# View para cadastro de trabalho
 def cadastrar_trabalho_view(request):
     if request.method == 'POST':
-        colaborador_id = request.POST.get('colaborador_id')
         boneca_id = request.POST.get('boneca_id')
         data_previsao = request.POST.get('data_previsao')
         quantidade = request.POST.get('quantidade')
+        colaborador_ids = request.POST.getlist('colaborador_id')  # Coletar múltiplos colaboradores
 
         # Verificar se a data de previsão é no futuro
         if data_previsao and date.fromisoformat(data_previsao) <= date.today():
@@ -130,20 +131,21 @@ def cadastrar_trabalho_view(request):
             return redirect('manguetown:cadastrar_trabalho')
         
         try:
-            colaborador = Colaborador.objects.get(id=colaborador_id)
             boneca = Boneca.objects.get(id=boneca_id)
 
-            Trabalho.objects.create(
-                colaborador=colaborador,
-                boneca=boneca,
-                data_previsao=data_previsao,
-                quantidade=quantidade,
+            trabalho = Trabalho.objects.create(
+                    boneca=boneca,
+                    data_previsao=data_previsao,
+                    quantidade=quantidade
             )
+            # Criar trabalho para cada colaborador selecionado
+            for colaborador_id in colaborador_ids:
+                colaborador = Colaborador.objects.get(id=colaborador_id)
+                trabalho.colaboradores.add(colaborador)
+                
+
             return redirect('manguetown:gestao_trabalho')
 
-        except (Colaborador.DoesNotExist, Boneca.DoesNotExist):
-            messages.error(request, 'Colaborador ou Boneca selecionados não existem.')
-            return redirect('manguetown:cadastrar_trabalho')
         except IntegrityError:
             messages.error(request, 'Erro ao cadastrar trabalho. Por favor, tente novamente.')
             return redirect('manguetown:cadastrar_trabalho')
@@ -159,6 +161,8 @@ def cadastrar_trabalho_view(request):
             'today': today,  # Passando a data para o template
         }
         return render(request, 'cadastrar_trabalho.html', context)
+
+
 
 
 
@@ -279,7 +283,7 @@ def editar_trabalho_view(request, trabalho_id):
     trabalho = get_object_or_404(Trabalho, id=trabalho_id)
 
     if request.method == 'POST':
-        colaborador_id = request.POST.get('colaborador_id')
+        colaborador_ids = request.POST.getlist('colaborador_id')  # Recebe uma lista de IDs de colaboradores
         boneca_id = request.POST.get('boneca_id')
         data_previsao = request.POST.get('data_previsao')
         quantidade = request.POST.get('quantidade')
@@ -288,16 +292,19 @@ def editar_trabalho_view(request, trabalho_id):
         if data_previsao and date.fromisoformat(data_previsao) <= date.today():
             messages.error(request, 'A data de previsão deve ser no futuro.')
             return redirect('manguetown:editar_trabalho', trabalho_id=trabalho.id)
-        
+
         try:
-            colaborador = Colaborador.objects.get(id=colaborador_id)
+            # Obtendo a boneca
             boneca = Boneca.objects.get(id=boneca_id)
 
+            # Atualizando os colaboradores (adicionando ou removendo)
+            colaboradores = Colaborador.objects.filter(id__in=colaborador_ids)
+
             # Atualizando o trabalho com os novos dados
-            trabalho.colaborador = colaborador
             trabalho.boneca = boneca
             trabalho.data_previsao = data_previsao
             trabalho.quantidade = quantidade
+            trabalho.colaboradores.set(colaboradores)  # Atualiza os colaboradores com o método `set()`
             trabalho.save()
 
             messages.success(request, 'Trabalho atualizado com sucesso!')
@@ -309,7 +316,7 @@ def editar_trabalho_view(request, trabalho_id):
         except IntegrityError:
             messages.error(request, 'Erro ao editar trabalho. Por favor, tente novamente.')
             return redirect('manguetown:editar_trabalho', trabalho_id=trabalho.id)
-    
+
     else:
         colaboradores = Colaborador.objects.all()
         bonecas = Boneca.objects.all()
