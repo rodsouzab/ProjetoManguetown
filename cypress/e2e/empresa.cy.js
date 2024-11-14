@@ -8,12 +8,33 @@ describe('Cadastro, Edição e Remoção de Empresa', () => {
         cy.get('#password').type('123123');
         cy.get('.login_btn').click();
     });
-    
+
     it('Deve cadastrar uma nova empresa e verificar se foi adicionada', () => {
   
       // Acessa a página de gestão de empresas
       cy.visit('/gestao_empresas');
     
+      // Verifica a presença dos elementos que serão cadastrados no corpo da página
+      cy.get('body').then((body) => {
+        if (body.text().includes('Francisco@TstCypress' && 'Tecidos Cypress' && ('Cypressland' || 'New Cypressland') )) {
+        // Se o CPF existir, realiza a exclusão
+        cy.contains('Francisco@TstCypress' && 'Tecidos Cypress' && ('Cypressland' || 'New Cypressland'))
+            .parents('tr') // Encontra a linha da tabela
+            .find('.action-select') // Encontra o dropdown de ações
+            .select('excluir'); // Seleciona a ação "Excluir"
+        
+        // Confirma o alerta de exclusão
+        cy.on('window:confirm', (text) => {
+            expect(text).to.contains('Tem certeza de que deseja excluir esta empresa?');
+            return true; // Confirma a exclusão
+        });
+        
+        // Verifica se os elementos foi excluído
+        cy.contains('Francisco@TstCypress' && 'Tecidos Cypress' && ('Cypressland' || 'New Cypressland')).should('not.exist');
+    }
+    });
+
+      
       // Clica no botão "Cadastrar nova empresa"
       cy.contains('Cadastrar nova Empresa').click();
   

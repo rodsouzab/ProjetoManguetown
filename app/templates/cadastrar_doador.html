@@ -9,12 +9,10 @@
     <h1 class="h3 mb-4 text-gray-800 text-danger">Cadastrar Doador</h1>
 
     {% if messages %}
-        <ul class="alert alert-warning">
             {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
             {% endfor %}
-        </ul>
-    {% endif %}
+        {% endif %}
 
     <form method="POST">
         {% csrf_token %}
@@ -81,7 +79,7 @@
         </div>
 
         <div class="form-actions">
-            <a href="{% url 'manguetown:gestao_doadores' %}" class="btn btn-secondary">Cancelar</a>
+            <a href="{% url 'manguetown:gestao_doadores' %}" class="btn btn-secondary" id="btn_cancelar">Cancelar</a>
             <button type="submit" class="btn btn-primary">Cadastrar Doador</button>
         </div>
     </form>

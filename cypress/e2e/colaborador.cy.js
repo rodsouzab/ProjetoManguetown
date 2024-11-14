@@ -10,7 +10,6 @@ describe('Cadastro, Edição e Remoção de Colaborador', () => {
     });
     
     it('Deve excluir colaborador com CPF existente e cadastrar um novo colaborador', () => {
-      const cpf = '88099122190';  // CPF para verificar e excluir
   
       // Acessa a página de gestão de colaboradores
       cy.visit('/gestao_colaboradores');
@@ -152,7 +151,7 @@ describe('Cadastro, Edição e Remoção de Colaborador', () => {
         cy.contains(cpf)
             .parents('tr') // Encontra a linha da tabela
             .find('.action-select') // Encontra o dropdown de ações
-            .select('excluir'); // Seleciona a ação "Editar"
+            .select('excluir'); // Seleciona a ação "Excluir"
 
         }
       });
