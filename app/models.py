@@ -41,7 +41,6 @@ class Boneca(models.Model):
     nivel_dificuldade = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
-    colaborador = models.ForeignKey(Colaborador, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome

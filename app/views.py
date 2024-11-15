@@ -366,6 +366,24 @@ def gestao_trabalho_view(request):
     return render(request, 'gestao_trabalho.html', {'trabalhos': trabalhos})
 
 @login_required
+def gestao_bonecas_view(request):
+    if request.method == 'POST':
+        boneca_id = request.POST.get('boneca_id')
+        if boneca_id:    
+            try:
+                boneca = get_object_or_404(Boneca, id=boneca_id)
+                boneca.delete()
+                messages.success(request, "Boneca excluída com sucesso!")
+            except Exception as e:
+                messages.error(request, f"Erro ao excluir boneca: {e}")
+            
+            return redirect('manguetown:gestao_bonecas')
+
+    bonecas = Boneca.objects.all()
+    return render(request, 'gestao_bonecas.html', {'bonecas': bonecas})
+
+
+@login_required
 def gestao_doadores_view(request):
     if request.method == 'POST':
         doador_id = request.POST.get('doador_id')
@@ -403,23 +421,10 @@ def cadastrar_boneca_view(request):
     if request.method == 'POST':
         nome = request.POST.get('nome_boneca')
         nivel_dificuldade = request.POST.get('nivel_dificuldade')
-        colaborador_id = request.POST.get('colaborador_id') 
 
-        # Verifica se o colaborador existe
-        try:
-            colaborador = Colaborador.objects.get(id=colaborador_id)
-        except Colaborador.DoesNotExist:
-            messages.error(request, "Colaborador não encontrado.")
-            return redirect('manguetown:cadastrar_boneca')
-
-        # Verifica se o CPF já existe antes de tentar salvar
-        if Boneca.objects.filter(nome=nome).exists():
-            messages.error(request, 'Já existe uma boneca com esse nome.')
-            return redirect('manguetown:cadastrar_boneca')  # Redireciona de volta ao formulário
 
         # Criação da nova boneca
         boneca = Boneca(
-            colaborador=colaborador,
             nome=nome,
             nivel_dificuldade=nivel_dificuldade
         )
@@ -430,23 +435,8 @@ def cadastrar_boneca_view(request):
         except Exception as e:
             messages.error(request, f"Erro ao cadastrar a boneca: {e}")
 
-    # Obtém todos os colaboradores cadastrados para o dropdown
-    colaboradores = Colaborador.objects.all()
-    return render(request, 'cadastrar_boneca.html', {'colaboradores': colaboradores})
+    return render(request, 'cadastrar_boneca.html')
 
-@login_required
-def gestao_bonecas_view(request):
-    if request.method == 'POST':
-        boneca_id = request.POST.get('boneca_id')
-        try:
-            boneca = Boneca.objects.get(id=boneca_id)
-            boneca.delete()
-            messages.success(request, "Boneca excluída com sucesso!")
-        except Exception as e:
-            messages.error(request, f"Erro ao excluir a boneca: {e}")
-
-    bonecas = Boneca.objects.all()
-    return render(request, 'gestao_bonecas.html', {'bonecas': bonecas})
 
 
 
@@ -589,6 +579,23 @@ def editar_colaborador_view(request, id):
         return redirect('manguetown:gestao_colaboradores')
 
     return render(request, 'editar_colaborador.html', {'colaborador': colaborador})
+
+@login_required
+def editar_boneca_view(request, id):
+     # Obtém a boneca com o ID fornecido ou retorna 404 caso não seja encontrada
+    boneca = get_object_or_404(Boneca, id=id)
+
+    if request.method == 'POST':
+        # Aqui você pode manipular a lógica de atualização da boneca
+        boneca.nome = request.POST['nome']
+        boneca.nivel_dificuldade = request.POST['nivel_dificuldade']
+        boneca.save()
+
+        # Redireciona para a lista de bonecas ou qualquer outra página
+        messages.success(request, "Boneca atualizada com sucesso!")
+        return redirect('manguetown:gestao_bonecas')
+
+    return render(request, 'editar_boneca.html', {'boneca': boneca})
 
 
 

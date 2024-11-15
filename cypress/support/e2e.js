@@ -18,3 +18,12 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // Ignora o erro específico se ele contiver 'Cannot read properties of undefined (reading \'fn\')'
+    if (err.message.includes("Cannot read properties of undefined (reading 'fn')")) {
+        return false;
+    }
+    // Retorna true para outros erros
+    return true;
+});

@@ -29,16 +29,6 @@
                 <label for="nivel_dificuldade">Nível de Dificuldade (1-5):</label>
                 <input type="number" class="form-control" id="nivel_dificuldade" name="nivel_dificuldade" min="1" max="5" required>
             </div>
-
-            <div class="form-group">
-                <label for="colaborador_id">Colaborador:</label>
-                <select id="colaborador_id" name="colaborador_id" class="form-control" required>
-                    <option value="" selected disabled>Escolha uma Colaboradora</option>
-                    {% for colaborador in colaboradores %}
-                        <option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
-                    {% endfor %}
-                </select>
-            </div>
     
             <button type="submit" class="btn btn-primary">Cadastrar Boneca</button>
         </form>
