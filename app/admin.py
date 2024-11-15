@@ -5,10 +5,7 @@ from .models import Colaborador, Boneca, EmpresaParceira, Doador
 # Registre o modelo EmpresaParceira no admin
 admin.site.register(EmpresaParceira)
 
-@admin.register(Boneca)
-class BonecaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'nivel_dificuldade', 'colaborador')  # Campos a serem exibidos na lista
-    search_fields = ('nome',)  # Permite busca pelo nome da boneca
+admin.site.register(Boneca)
     
 @admin.register(Colaborador)
 class ColaboradorAdmin(admin.ModelAdmin):
