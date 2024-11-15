@@ -5,66 +5,80 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid" style="min-height: 100vh; margin-top: 20px;">
+    <div class="container-fluid" style="min-height: 100vh; margin-top: 20px; display: flex; flex-direction: column;">
         <!-- Page Heading -->
         <h1 class="welcome-title text-center" style="margin-top: 30px;">Bem-Vinda, Danielle</h1>
 
         <!-- Grid com 2 seções -->
-        <div class="row justify-content-center align-items-stretch" style="min-height: 70vh; background-color: transparent;">
+        <div class="row justify-content-center align-items-stretch" style="flex-grow: 1; background-color: transparent;">
             <!-- Seção do Calendário -->
-            <div class="col-lg-6 col-md-8 col-sm-12 mb-4" style="background-color: transparent;">
-                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Calendário</h6>
-                <div class="card-body">
-                    <div id="calendar" style="max-height: 500px; margin-top: 45px"></div>
+            <div class="col-lg-6 col-md-8 col-sm-12 mb-4 d-flex" style="background-color: transparent;">
+                <div class="flex-grow-1" style="display: flex; flex-direction: column; height: 100%;">
+                    <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Calendário</h6>
+                    <div class="card-body" style="flex-grow: 1; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                        <div id="calendar" style="min-height: 400px;"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- Seção da Tabela de Trabalhos com Expiração -->
-            <div class="col-lg-6 col-md-8 col-sm-12 mb-4" style="background-color: transparent;">
-                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6>
-                <h6 class="welcome-subtitle-lower text-center">(próximos 7 dias)</h6>
-                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Colaborador</th>
-                                <th scope="col">Boneca</th>
-                                <th scope="col">Quantidade</th>
-                                <th scope="col">Data Previsão</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for trabalho in trabalhos %}
+            <div class="col-lg-6 col-md-8 col-sm-12 mb-4 d-flex" style="background-color: transparent;">
+                <div class="flex-grow-1" style="display: flex; flex-direction: column; height: 100%;">
+                    <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6>
+                    <div class="card-body" style="flex-grow: 1; min-height: 500px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                        <table class="table">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <td>
-                                        {% for colaborador in trabalho.colaboradores.all %}
-                                            <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
-                                        {% empty %}
-                                            Nenhum colaborador associado
-                                        {% endfor %}
-                                    </td>
-                                    <td>{{ trabalho.boneca.nome }}</td>
-                                    <td>{{ trabalho.quantidade }}</td>
-                                    <td>{{ trabalho.data_previsao }}</td>    
+                                    <th scope="col">Colaborador</th>
+                                    <th scope="col">Boneca</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Data Previsão</th>
                                 </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="5" class="text-center">Nenhum trabalho expirando nos próximos 7 dias.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for trabalho in trabalhos %}
+                                    <tr>
+                                        <td>
+                                            {% for colaborador in trabalho.colaboradores.all %}
+                                                <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
+                                            {% empty %}
+                                                Nenhum colaborador associado
+                                            {% endfor %}
+                                        </td>
+                                        <td>{{ trabalho.boneca.nome }}</td>
+                                        <td>{{ trabalho.quantidade }}</td>
+                                        <td>{{ trabalho.data_previsao }}</td>    
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">Nenhum trabalho expirando nos próximos 7 dias.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Carregando as dependências do jQuery e FullCalendar -->
+    <!-- Carregando as dependências do FullCalendar -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.0/dist/fullcalendar.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.0/dist/fullcalendar.min.css" rel="stylesheet" />
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+
+    <!-- Estilo personalizado -->
+    <style>
+        /* Alterando a cor do título do mês em maiúsculas */
+        .fc-toolbar-title::first-letter {
+            text-transform: capitalize;
+        }
+
+
+    </style>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
@@ -76,9 +90,14 @@
                     week: 'Semana',
                     day: 'Dia'
                 },
-                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'],
-                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                locale: 'pt-br', // Define o idioma como português
+                eventDidMount: function(info) {
+                    // Alterar o nome do mês em maiúsculas
+                    const title = document.querySelector('.fc-toolbar-title');
+                    if (title) {
+                        title.innerText = title.innerText.toUpperCase();
+                    }
+                }
             });
             calendar.render();
         });
