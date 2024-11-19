@@ -17,10 +17,24 @@
                 {% endfor %}
             </div>
         {% endif %}
+        
+        <!-- Botões de Status e Ação em linha -->
+        <div class="row mb-4">
+            <!-- Botões de Status à Esquerda -->
+            <div class="col">
+                <a href="?status=ativo" class="btn {% if filtro == 'ativo' %}btn-success{% else %}btn-outline-secondary{% endif %} d-inline-block">
+                    Ativo
+                </a>
+                <a href="?status=expirado" class="btn {% if filtro == 'expirado' %}btn-danger{% else %}btn-outline-secondary{% endif %} d-inline-block">
+                    Expirado
+                </a>
+            </div>
 
-        <div class="action-buttons mb-4 text-right">
-            <a href="{% url 'manguetown:cadastrar_trabalho' %}" class="btn btn-primary">Cadastrar novo Trabalho</a>
-            <a href="{% url 'manguetown:dashboard' %}" class="btn btn-secondary">Voltar para Painel Administrativo</a>
+            <!-- Botões de Ação à Direita -->
+            <div class="col text-right">
+                <a href="{% url 'manguetown:cadastrar_trabalho' %}" class="btn btn-primary">Cadastrar novo Trabalho</a>
+                <a href="{% url 'manguetown:dashboard' %}" class="btn btn-secondary">Voltar para Painel Administrativo</a>
+            </div>
         </div>
 
         <table class="table table-striped">
@@ -30,14 +44,13 @@
                     <th>Boneca</th>
                     <th>Quantidade</th>
                     <th>Data Prevista</th>
-                    <th>Ações</th> <!-- Coluna para ações -->
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for trabalho in trabalhos %}
                 <tr>
                     <td>
-                        <!-- Exibindo os colaboradores associados ao trabalho -->
                         {% for colaborador in trabalho.colaboradores.all %}
                             <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
                         {% empty %}
@@ -48,7 +61,6 @@
                     <td>{{ trabalho.quantidade }}</td>
                     <td>{{ trabalho.data_previsao }}</td>
                     <td>
-                        <!-- Dropdown para ações -->
                         <select class="form-select action-select custom-select" data-trabalho-id="{{ trabalho.id }}">
                             <option value="">Escolha ação</option>
                             <option value="editar">Editar</option>
@@ -70,47 +82,46 @@
             document.querySelectorAll('.action-select').forEach(select => {
                 select.addEventListener('change', function() {
                     const action = this.value;
-                    const trabalhoId = this.getAttribute('data-trabalho-id'); // Obtém o ID do colaborador
-
+                    const trabalhoId = this.getAttribute('data-trabalho-id');
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const statusFiltro = urlParams.get('status'); // Captura o filtro 'ativo' ou 'expirado'
+    
                     if (action === 'excluir') {
-                        // Confirmação antes de excluir
                         if (confirm("Tem certeza de que deseja excluir este trabalho?")) {
                             const form = document.createElement('form');
                             form.method = 'POST';
-                            form.action = "{% url 'manguetown:gestao_trabalho' %}";
+                            form.action = "{% url 'manguetown:gestao_trabalho' %}?status=" + statusFiltro; // Adiciona o filtro à URL
                             form.style.display = 'none';
-
-                            // CSRF token
+    
                             const csrfToken = document.createElement('input');
                             csrfToken.type = 'hidden';
                             csrfToken.name = 'csrfmiddlewaretoken';
                             csrfToken.value = "{{ csrf_token }}";
                             form.appendChild(csrfToken);
-
-                            // ID do colaborador
+    
                             const input = document.createElement('input');
                             input.type = 'hidden';
-                            input.name = 'trabalho_id'; // Certifique-se de que o nome é o correto conforme seu backend
+                            input.name = 'trabalho_id'; // Nome correto do campo no backend
                             input.value = trabalhoId;
                             form.appendChild(input);
-
+    
                             document.body.appendChild(form);
                             form.submit();
                         }
                     } else if (action === 'editar') {
                         if (trabalhoId) {
                             const editUrl = "{% url 'manguetown:editar_trabalho' '0' %}".replace("0", trabalhoId);
-                            console.log("Redirecionando para:", editUrl); // Log para depuração
                             window.location.href = editUrl;
                         } else {
                             alert("Selecione um trabalho válido para editar.");
                         }
                     }
-
-                    // Resetar o dropdown após uma ação
-                    this.value = "";
+    
+                    this.value = ""; // Resetando a seleção do dropdown
                 });
             });
         });
     </script>
+    
+    
 {% endblock %}

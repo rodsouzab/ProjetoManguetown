@@ -344,3 +344,21 @@ input.form-control {
     outline: none; /* Remove a borda padrão do foco */
     text-decoration: none; /* Garante que não tenha sublinhado ao focar */
 }
+
+/* Estilo para os botões não ativos */
+.btn-outline-secondary {
+    color: white;
+    border-color: white;
+    background-color: #6c757d;
+}
+
+/* Quando o botão estiver ativo */
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}

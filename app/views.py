@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 import re
-from datetime import date,timedelta
+from datetime import date,timedelta,datetime
 from django.utils import timezone
 
 
@@ -350,6 +350,9 @@ def gestao_colaboradores_view(request):
 
 @login_required
 def gestao_trabalho_view(request):
+    filtro = request.GET.get('status', 'ativo')
+    agora = datetime.now().date()  # Pega apenas a parte da data, sem hora
+
     if request.method == 'POST':
         trabalho_id = request.POST.get('trabalho_id')
         if trabalho_id:    
@@ -361,9 +364,17 @@ def gestao_trabalho_view(request):
                 messages.error(request, f"Erro ao excluir trabalho: {e}")
             
             return redirect('manguetown:gestao_trabalho')
+        
+    if filtro == 'ativo':
+        trabalhos = Trabalho.objects.filter(data_previsao__gte=agora)
+    elif filtro == 'expirado':
+        trabalhos = Trabalho.objects.filter(data_previsao__lt=agora)
+    else:
+        trabalhos = Trabalho.objects.all()
+        
+    trabalhos = trabalhos.order_by("data_previsao")
 
-    trabalhos = Trabalho.objects.all().order_by('data_previsao')
-    return render(request, 'gestao_trabalho.html', {'trabalhos': trabalhos})
+    return render(request, 'gestao_trabalho.html', {'trabalhos': trabalhos, 'filtro': filtro})
 
 @login_required
 def gestao_bonecas_view(request):
