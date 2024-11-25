@@ -11,6 +11,8 @@ from django.contrib import messages
 import re
 from datetime import date,timedelta,datetime
 from django.utils import timezone
+from django.urls import reverse
+
 
 
 def home(request):
@@ -117,7 +119,6 @@ def cadastrar_colaborador_view(request):
     return render(request, 'cadastrar_colaborador.html')
 
 
-# View para cadastro de trabalho
 # View para cadastro de trabalho
 def cadastrar_trabalho_view(request):
     if request.method == 'POST':
@@ -353,6 +354,9 @@ def gestao_trabalho_view(request):
     filtro = request.GET.get('status', 'ativo')
     agora = datetime.now().date()  # Pega apenas a parte da data, sem hora
 
+    # Atualiza o status dos trabalhos com data de previsão vencida para 'expirado'
+    Trabalho.objects.filter(status='ativo', data_previsao__lt=agora).update(status='expirado')
+
     if request.method == 'POST':
         trabalho_id = request.POST.get('trabalho_id')
         if trabalho_id:    
@@ -364,17 +368,52 @@ def gestao_trabalho_view(request):
                 messages.error(request, f"Erro ao excluir trabalho: {e}")
             
             return redirect('manguetown:gestao_trabalho')
-        
+
+    # Filtra os trabalhos com base no status
     if filtro == 'ativo':
-        trabalhos = Trabalho.objects.filter(data_previsao__gte=agora)
+        trabalhos = Trabalho.objects.filter(status='ativo', data_previsao__gte=agora)
     elif filtro == 'expirado':
-        trabalhos = Trabalho.objects.filter(data_previsao__lt=agora)
+        trabalhos = Trabalho.objects.filter(status='expirado', data_previsao__lt=agora)
+    elif filtro == 'concluido':
+        trabalhos = Trabalho.objects.filter(status='concluido')
     else:
         trabalhos = Trabalho.objects.all()
-        
+
+    # Ordena os trabalhos pela data de previsão
     trabalhos = trabalhos.order_by("data_previsao")
 
     return render(request, 'gestao_trabalho.html', {'trabalhos': trabalhos, 'filtro': filtro})
+
+from datetime import date
+
+def concluir_trabalho(request, trabalho_id):
+    if request.method == 'POST':
+        try:
+            trabalho = Trabalho.objects.get(id=trabalho_id)
+            trabalho.status = 'concluido'
+            trabalho.data_conclusao = date.today()  # Define a data de conclusão
+            trabalho.save()
+            messages.success(request, 'Trabalho concluído com sucesso.')
+        except Trabalho.DoesNotExist:
+            messages.error(request, 'Trabalho não encontrado.')
+    return redirect('manguetown:gestao_trabalho')
+
+
+def reverter_trabalho(request, trabalho_id):
+    trabalho = get_object_or_404(Trabalho, id=trabalho_id)
+    agora = datetime.now().date()  # Pega apenas a data atual
+    data_previsao = trabalho.data_previsao
+
+    # Define o status automaticamente com base na data de previsão
+    if data_previsao < agora:
+        trabalho.status = 'expirado'
+    else:
+        trabalho.status = 'ativo'
+
+    # Salva as alterações
+    trabalho.save()
+
+    return redirect(f"{reverse('manguetown:gestao_trabalho')}?status={trabalho.status}")
 
 @login_required
 def gestao_bonecas_view(request):

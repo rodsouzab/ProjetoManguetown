@@ -34,4 +34,6 @@ urlpatterns = [
     path('cadastrar_trabalho/', views.cadastrar_trabalho_view, name='cadastrar_trabalho'),
     path('editar_trabalho/<int:trabalho_id>/', views.editar_trabalho_view, name='editar_trabalho'),
     path('relatorios/', views.relatorios_view, name='relatorios'),
+    path('reverter/<int:trabalho_id>/', views.reverter_trabalho, name='reverter_trabalho'),
+    path('concluir_trabalho/<int:trabalho_id>/', views.concluir_trabalho, name='concluir_trabalho'),
 ]
