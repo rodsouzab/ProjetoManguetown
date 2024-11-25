@@ -403,6 +403,7 @@ def reverter_trabalho(request, trabalho_id):
     trabalho = get_object_or_404(Trabalho, id=trabalho_id)
     agora = datetime.now().date()  # Pega apenas a data atual
     data_previsao = trabalho.data_previsao
+    
 
     # Define o status automaticamente com base na data de previsão
     if data_previsao < agora:
@@ -410,6 +411,7 @@ def reverter_trabalho(request, trabalho_id):
     else:
         trabalho.status = 'ativo'
 
+    trabalho.data_conclusao = None
     # Salva as alterações
     trabalho.save()
 
