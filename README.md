@@ -109,7 +109,7 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 #### 📊Diagrama de atividades 
 
-![Diagrama]()
+![Diagrama](https://github.com/user-attachments/assets/6938994e-4a49-4836-b68f-72294cccd085)
 
 #### 🐛Issue/Bug Tracker 
 
