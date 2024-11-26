@@ -17,8 +17,8 @@
             background: #ebceb5 !important;
         }
         .user_card {
-            height: 400px;
-            width: 350px;
+            height: 440px;
+            width: 380px;
             margin-top: auto;
             margin-bottom: auto;
             background: #c55b7e;
@@ -68,7 +68,7 @@
             outline: 0px !important;
         }
         .login_container {
-            padding: 0 2rem;
+            padding: 0 3rem;
         }
         .input-group-text {
             background: #c0392b !important;
@@ -83,6 +83,25 @@
         .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
             background-color: #c0392b !important;
         }
+        .message-container {
+            text-align: center;
+            color: red; /* Vermelho claro */
+            font-size: 1rem;
+            margin-top: 15px;
+        }
+        .messages {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .message {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            width: 80%; /* Ajuste opcional para largura */
+        }
     </style>
 </head>
 
@@ -95,8 +114,7 @@
                         {% load static %}
                         <img src="{% static 'tr.png' %}" class="brand_logo" alt="Logo">
                     </div>
-                </div>
-                
+                </div><br>
                 <h2 class="login-title">Login</h2>
                 <div class="d-flex justify-content-center form_container">
                     <form method="POST" class="login-form">
@@ -116,19 +134,25 @@
                         <div class="d-flex justify-content-center mt-3 login_container">
                             <button type="submit" class="btn login_btn">Entrar</button>
                         </div>
-                        {% if messages %}
+                    </form>
+                </div>
+                
+                <!-- Mensagens logo abaixo da caixa de login -->
+                {% if messages %}
+                    <div class="message-container">
                         <ul class="messages">
                             {% for message in messages %}
                                 <li class="message">{{ message }}</li>
                             {% endfor %}
                         </ul>
-                    {% endif %}
-                    </form>
-                </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
+    
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>
