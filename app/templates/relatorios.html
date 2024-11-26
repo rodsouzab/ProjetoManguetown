@@ -5,18 +5,17 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="container-fluid">
         <!-- Page Heading -->
-        <h1 class="welcome-title text-center">Gráficos de Desempenho</h1>
+        <h1 class="welcome-title text-center mb-5">Gráficos de Desempenho</h1>
 
         <!-- Gráfico de Bonecas por Colaborador -->
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-lg-12 col-md-12 mb-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                <div class="card shadow-lg">
+                    <div class="card-header text-center bg-white text-white">
                         <!-- Botão para mostrar/ocultar gráfico de bonecas -->
-                        <button class="btn btn-primary w-100" onclick="toggleGraph('graficoBonecas')">
+                        <button class="btn btn-light w-100" onclick="toggleGraph('graficoBonecas')">
                             Quantidade de Bonecas por Colaborador
                         </button>
                     </div>
@@ -28,68 +27,38 @@
         </div>
 
         <!-- Gráfico de Desempenho por Colaborador e Cálculo de Pontos -->
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-lg-12 col-md-12 mb-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                <div class="card shadow-lg">
+                    <div class="card-header text-center bg-white text-white">
                         <!-- Botão para mostrar/ocultar gráfico de desempenho e cálculo de pontos -->
-                        <button class="btn btn-success w-100" onclick="toggleGraph('graficoDesempenho', 'calculoPontos')">
-                            Desempenho de Colaboradores (Pontos)
+                        <button class="btn btn-light w-100" onclick="toggleGraph('graficoDesempenho')">
+                            Desempenho por Pontos
                         </button>
                     </div>
                     <div class="card-body graph-container" id="graficoDesempenhoContainer">
                         <canvas id="graficoDesempenho" class="d-none"></canvas> <!-- Inicialmente escondido -->
-                        <div id="calculoPontos" class="d-none mt-4">
-                            <div class="alert alert-info">
-                                <h5><strong>Cálculo de Pontos:</strong></h5>
-                                <p>
-                                    O desempenho de cada colaborador é calculado com base na quantidade de bonecas feitas e o nível de dificuldade de cada uma delas. Cada boneca possui um valor de pontos, que varia conforme o nível de dificuldade:
-                                </p>
-                                <ul>
-                                    <li><strong>Nível 1:</strong> 1 ponto por boneca.</li>
-                                    <li><strong>Nível 2:</strong> 1,5 pontos por boneca.</li>
-                                    <li><strong>Nível 3:</strong> 2 pontos por boneca.</li>
-                                    <li><strong>Nível 4:</strong> 2,5 pontos por boneca.</li>
-                                    <li><strong>Nível 5:</strong> 3 pontos por boneca.</li>
-                                </ul>
-                                <p>
-                                    A pontuação total de cada colaborador é a soma dos pontos de todas as bonecas que ele(a) fez.
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Inclusão do script do Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Função para alternar a visibilidade do gráfico e da explicação de pontos
-        function toggleGraph(graphId, calcId) {
-            // Alterna a visibilidade do gráfico e da seção do gráfico
+        // Função para alternar a visibilidade do gráfico
+        function toggleGraph(graphId) {
             var graph = document.getElementById(graphId);
-            var container = document.getElementById(graphId + 'Container'); // Obtém a div do gráfico
+            var container = document.getElementById(graphId + 'Container');
 
             if (graph.classList.contains('d-none')) {
                 graph.classList.remove('d-none');
-                container.style.display = 'block'; // Torna a área visível
+                container.style.display = 'block';
             } else {
                 graph.classList.add('d-none');
-                container.style.display = 'none'; // Esconde a área do gráfico
-            }
-
-            // Alterna a visibilidade do cálculo de pontos (se fornecido)
-            if (calcId) {
-                var calc = document.getElementById(calcId);
-                if (calc.classList.contains('d-none')) {
-                    calc.classList.remove('d-none');
-                } else {
-                    calc.classList.add('d-none');
-                }
+                container.style.display = 'none';
             }
         }
 
@@ -107,11 +76,11 @@
                     label: 'Quantidade de Bonecas',
                     data: [
                         {% for item in dados_bonecas %}
-                            {{ item.quantidade }}{% if not forloop.last %},{% endif %}
+                            {{ item.quantidade_bonecas }}{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     ],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(197, 91, 126, 0.6)',
+                    borderColor: 'rgba(197, 91, 126, 1)',
                     borderWidth: 1
                 }]
             },
@@ -142,8 +111,8 @@
                             {{ item.pontos }}{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     ],
-                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
+                    backgroundColor: 'rgba(197, 91, 126, 0.6)',
+                    borderColor: 'rgba(197, 91, 126, 1)',
                     borderWidth: 1
                 }]
             },
@@ -158,23 +127,37 @@
         });
     </script>
 
-    <!-- Estilo Customizado para Remover a Barra Branca -->
+    <!-- Estilo Customizado -->
     <style>
+        /* Personalização do container do gráfico */
         .graph-container {
             display: none; /* Inicialmente oculto */
-            backgroundColor: #ebceb5;
+            background-color: rgba(197, 91, 126, 0.2);
+            border-radius: 10px;
+            padding: 20px;
         }
 
-        .card-body {
-            padding: 0 !important; /* Remove o padding, caso necessário */
+        /* Estilos de carta */
+        .card {
+            border-radius: 10px;
         }
 
-        /* Estilo opcional para quando o conteúdo está visível */
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Efeitos de transição */
+        .graph-container {
+            transition: opacity 0.3s ease;
+        }
+
+        .graph-container.d-none {
+            opacity: 0;
+        }
+
         .graph-container.show {
-            display: block;
+            opacity: 1;
         }
     </style>
-
-</div>
 
 {% endblock %}
