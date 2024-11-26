@@ -655,7 +655,7 @@ from django.shortcuts import render
 from django.db.models import Sum
 from .models import Colaborador
 
-
+""""
 def relatorios_view(request):
     # Buscar todos os colaboradores com a soma da quantidade de bonecas que cada um tem nos trabalhos
     colaboradores = Colaborador.objects.annotate(total_bonecas=Sum('trabalho__quantidade'))
@@ -695,6 +695,7 @@ def relatorios_view(request):
         'dados_bonecas': dados_bonecas,
         'dados_desempenho': dados_desempenho
     })
+"""
     
 def dashboard_view(request):
     # Filtrando os trabalhos com data de previsão dentro dos próximos 7 dias
@@ -715,3 +716,39 @@ def dashboard_view(request):
         'trabalhos': trabalhos,
         'eventos': eventos  # Passando os eventos para o template
     })
+    
+from django.db.models import Sum, F, Count
+
+def relatorios_view(request):
+    trabalhos_concluidos = Trabalho.objects.filter(status='concluido')
+
+    # Dados para o gráfico de quantidade de bonecas por colaborador
+    dados_bonecas = (
+        Colaborador.objects.filter(
+            trabalho__in=trabalhos_concluidos  # Filtra apenas os colaboradores com trabalhos concluídos
+        )
+        .annotate(
+            quantidade_bonecas=Sum('trabalho__quantidade')  # Soma a quantidade de bonecas para cada colaborador
+        )
+        .values('nome', 'quantidade_bonecas')  # Ajusta para refletir a quantidade de bonecas
+    )
+
+    # Dados para o gráfico de desempenho por pontos
+    dados_desempenho = (
+        Colaborador.objects.filter(
+            trabalho__in=trabalhos_concluidos  # Filtra apenas os colaboradores com trabalhos concluídos
+        )
+        .annotate(
+            pontos=Sum(
+                F('trabalho__quantidade') * F('trabalho__boneca__nivel_dificuldade')
+            )
+        )
+        .values('nome', 'pontos')
+    )
+    
+    # Passa os dados para o template
+    context = {
+        'dados_bonecas': dados_bonecas,
+        'dados_desempenho': dados_desempenho,
+    }
+    return render(request, 'relatorios.html', context)
