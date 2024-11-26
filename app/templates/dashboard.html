@@ -25,38 +25,42 @@
             <div class="col-lg-6 col-md-8 col-sm-12 mb-4 d-flex" style="background-color: transparent;">
                 <div class="flex-grow-1" style="display: flex; flex-direction: column; height: 100%;">
                     <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6>
-                    <div class="card-body" style="flex-grow: 1; min-height: 500px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Colaborador</th>
-                                    <th scope="col">Boneca</th>
-                                    <th scope="col">Quantidade</th>
-                                    <th scope="col">Data Previsão</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for trabalho in trabalhos %}
+                    
+                    <!-- Tornar a tabela clicável -->
+                    <a href="{% url 'manguetown:gestao_trabalho' %}" style="display: flex; flex-grow: 1; text-decoration: none; color: inherit;">
+                        <div class="card-body clickable-table" style="flex-grow: 1; min-height: 500px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                            <table class="table">
+                                <thead class="thead-dark">
                                     <tr>
-                                        <td>
-                                            {% for colaborador in trabalho.colaboradores.all %}
-                                                <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
-                                            {% empty %}
-                                                Nenhum colaborador associado
-                                            {% endfor %}
-                                        </td>
-                                        <td>{{ trabalho.boneca.nome }}</td>
-                                        <td>{{ trabalho.quantidade }}</td>
-                                        <td>{{ trabalho.data_previsao }}</td>    
+                                        <th scope="col">Colaborador</th>
+                                        <th scope="col">Boneca</th>
+                                        <th scope="col">Quantidade</th>
+                                        <th scope="col">Data Previsão</th>
                                     </tr>
-                                {% empty %}
-                                    <tr>
-                                        <td colspan="5" class="text-center">Nenhum trabalho expirando nos próximos 7 dias.</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {% for trabalho in trabalhos %}
+                                        <tr>
+                                            <td>
+                                                {% for colaborador in trabalho.colaboradores.all %}
+                                                    <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
+                                                {% empty %}
+                                                    Nenhum colaborador associado
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ trabalho.boneca.nome }}</td>
+                                            <td>{{ trabalho.quantidade }}</td>
+                                            <td>{{ trabalho.data_previsao }}</td>    
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center">Nenhum trabalho expirando nos próximos 7 dias.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -76,7 +80,16 @@
             text-transform: capitalize;
         }
 
+        /* Estilo do hover na tabela */
+        .clickable-table {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
+        .clickable-table:hover {
+            cursor: pointer;
+            transform: scale(1.02); /* Efeito de aumento ao passar o mouse */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
+        }
     </style>
 
     <script>

@@ -66,10 +66,24 @@ class Doador(models.Model):
         return self.nome
 
 class Trabalho(models.Model):
+    STATUS_CHOICES = [
+        ('ativo', 'Ativo'),
+        ('expirado', 'Expirado'),
+        ('concluido', 'Concluído'),
+    ]
+    
     boneca = models.ForeignKey(Boneca, on_delete=models.CASCADE)
-    colaboradores = models.ManyToManyField(Colaborador) 
+    colaboradores = models.ManyToManyField(Colaborador)
     data_previsao = models.DateField()
     quantidade = models.PositiveIntegerField()
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='ativo',
+    )
+    data_conclusao = models.DateField(null=True, blank=True)  # Novo campo
 
     def __str__(self):
-        return f"Trabalho de {self.quantidade} {self.boneca.nome}(s) por {', '.join([colaborador.nome for colaborador in self.colaboradores.all()])}"
+        return f"Trabalho de {self.quantidade} {self.boneca.nome}(s)"
+
+

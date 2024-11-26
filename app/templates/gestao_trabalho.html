@@ -23,10 +23,13 @@
             <!-- Botões de Status à Esquerda -->
             <div class="col">
                 <a href="?status=ativo" class="btn {% if filtro == 'ativo' %}btn-success{% else %}btn-outline-secondary{% endif %} d-inline-block">
-                    Ativo
+                    Ativos
                 </a>
                 <a href="?status=expirado" class="btn {% if filtro == 'expirado' %}btn-danger{% else %}btn-outline-secondary{% endif %} d-inline-block">
-                    Expirado
+                    Expirados
+                </a>
+                <a href="?status=concluido" class="btn {% if filtro == 'concluido' %}btn-primary{% else %}btn-outline-secondary{% endif %} d-inline-block">
+                    Concluídos
                 </a>
             </div>
 
@@ -44,9 +47,13 @@
                     <th>Boneca</th>
                     <th>Quantidade</th>
                     <th>Data Prevista</th>
+                    {% if filtro == 'concluido' %}
+                        <th>Concluido em</th>
+                    {% endif %}
                     <th>Ações</th>
                 </tr>
             </thead>
+            
             <tbody>
                 {% for trabalho in trabalhos %}
                 <tr>
@@ -60,12 +67,24 @@
                     <td>{{ trabalho.boneca.nome }}</td>
                     <td>{{ trabalho.quantidade }}</td>
                     <td>{{ trabalho.data_previsao }}</td>
+                    {% if filtro == 'concluido' %}
+                        <td>{{ trabalho.data_conclusao|date:"d/m/Y" }}</td>
+                    {% endif %}
                     <td>
-                        <select class="form-select action-select custom-select" data-trabalho-id="{{ trabalho.id }}">
-                            <option value="">Escolha ação</option>
-                            <option value="editar">Editar</option>
-                            <option value="excluir">Excluir</option>
-                        </select>
+                        {% if trabalho.status == 'concluido' %}
+                            <select class="form-select action-select custom-select" data-trabalho-id="{{ trabalho.id }}">
+                                <option value="">Escolha ação</option>
+                                <option value="reverter">Reverter</option>
+                                <option value="excluir">Excluir</option>
+                            </select>
+                        {% else %}
+                            <select class="form-select action-select custom-select" data-trabalho-id="{{ trabalho.id }}">
+                                <option value="">Escolha ação</option>
+                                <option value="concluir">Concluir</option>
+                                <option value="editar">Editar</option>
+                                <option value="excluir">Excluir</option>
+                            </select>
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}
@@ -78,9 +97,9 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.action-select').forEach(select => {
-                select.addEventListener('change', function() {
+                select.addEventListener('change', function () {
                     const action = this.value;
                     const trabalhoId = this.getAttribute('data-trabalho-id');
                     const urlParams = new URLSearchParams(window.location.search);
@@ -101,7 +120,7 @@
     
                             const input = document.createElement('input');
                             input.type = 'hidden';
-                            input.name = 'trabalho_id'; // Nome correto do campo no backend
+                            input.name = 'trabalho_id';
                             input.value = trabalhoId;
                             form.appendChild(input);
     
@@ -115,13 +134,51 @@
                         } else {
                             alert("Selecione um trabalho válido para editar.");
                         }
-                    }
+                    } else if (action === 'concluir') {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = "{% url 'manguetown:concluir_trabalho' 0 %}".replace("0", trabalhoId);
+                        form.style.display = 'none';
     
+                        const csrfToken = document.createElement('input');
+                        csrfToken.type = 'hidden';
+                        csrfToken.name = 'csrfmiddlewaretoken';
+                        csrfToken.value = "{{ csrf_token }}";
+                        form.appendChild(csrfToken);
+    
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'trabalho_id';
+                        input.value = trabalhoId;
+                        form.appendChild(input);
+    
+                        document.body.appendChild(form);
+                        form.submit();
+                    } else if (action === 'reverter') {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = "{% url 'manguetown:reverter_trabalho' 0 %}".replace("0", trabalhoId);
+                        form.style.display = 'none';
+    
+                        const csrfToken = document.createElement('input');
+                        csrfToken.type = 'hidden';
+                        csrfToken.name = 'csrfmiddlewaretoken';
+                        csrfToken.value = "{{ csrf_token }}";
+                        form.appendChild(csrfToken);
+    
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'trabalho_id';
+                        input.value = trabalhoId;
+                        form.appendChild(input);
+    
+                        document.body.appendChild(form);
+                        form.submit();
+                        
+                    }
                     this.value = ""; // Resetando a seleção do dropdown
                 });
             });
         });
     </script>
-    
-    
 {% endblock %}
