@@ -7,6 +7,6 @@ class SessionTimeoutMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if not request.user.is_authenticated and request.path != reverse('login'):
+        if not request.user.is_authenticated:
             return redirect('login')
         return self.get_response(request)
