@@ -1,5 +1,5 @@
 describe('Cadastro, Edição e Remoção de doador', () => {
-    const cpf = '88099122190';  // CPF para verificar e excluir
+    const cpf = '99999999999';  // CPF para verificar e excluir
     
     beforeEach(() => {
         // Realiza o login uma vez para economizar tempo nos testes
@@ -41,7 +41,7 @@ describe('Cadastro, Edição e Remoção de doador', () => {
       cy.url().should('include', '/cadastrar_doador');
     
       // Preenche o formulário com dados fictícios
-      cy.get('#nome').type('Mariana');
+      cy.get('#nome').type('CypressUser');
       cy.get('#cpf').type(cpf); // Usa o novo CPF
       cy.get('#data_nascimento').type('1980-05-27');
       cy.get('#lugar_onde_mora').type('Casa Amarela');
@@ -59,7 +59,7 @@ describe('Cadastro, Edição e Remoção de doador', () => {
       cy.url().should('include', '/gestao_doadores');
     
       // Verifica se o Doador está na lista de Doadores com o novo CPF
-      cy.contains('Mariana').should('be.visible');
+      cy.contains('CypressUser').should('be.visible');
       cy.contains(cpf).should('be.visible'); // Usa o novo CPF
       cy.contains('27 de Maio de 1980').should('be.visible');
       cy.contains('Casa Amarela').should('be.visible');
@@ -79,7 +79,7 @@ describe('Cadastro, Edição e Remoção de doador', () => {
         cy.contains('Cadastrar novo Doador').click();
 
         // Preenche o formulário com o CPF já cadastrado
-        cy.get('#nome').type('Mariana');
+        cy.get('#nome').type('CypressUser');
         cy.get('#cpf').type(cpf); // Usa o novo CPF
         cy.get('#data_nascimento').type('1980-05-27');
         cy.get('#lugar_onde_mora').type('Casa Amarela');
@@ -127,7 +127,7 @@ describe('Cadastro, Edição e Remoção de doador', () => {
       cy.url().should('include', '/gestao_doadores');
 
       // Verifica se o Doador está na lista de Doadores com os novos elementos
-      cy.contains('Mariana').should('be.visible');
+      cy.contains('CypressUser').should('be.visible');
       cy.contains(cpf).should('be.visible'); // Usa o novo CPF
       cy.contains('27 de Maio de 1980').should('be.visible');
       cy.contains('Casa Amarela').should('be.visible');
@@ -181,7 +181,7 @@ describe('Cadastro, Edição e Remoção de doador', () => {
         cy.contains('Cadastrar novo Doador').click();
     
         // Preenche o formulário com o CPF já cadastrado
-        cy.get('#nome').type('Mariana');
+        cy.get('#nome').type('CypressUser');
         cy.get('#cpf').type(cpf); // Usa o novo CPF
         cy.get('#data_nascimento').type('1980-05-27');
         cy.get('#lugar_onde_mora').type('Casa Amarela');

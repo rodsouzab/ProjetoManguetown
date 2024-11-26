@@ -1,9 +1,9 @@
 describe('Gestão de Trabalho - Cadastro com criação de Boneca e Colaborador', () => {
-    const bonecaNome = 'Boneca Cypress de Pano';
+    const bonecaNome = 'CypressDoll';
     const bonecaDificuldade = 4;
 
-    const colaboradorNome = 'Mariana';
-    const colaboradorCPF = '88099122190';
+    const colaboradorNome = 'CypressUser';
+    const colaboradorCPF = '99999999999';
 
     const trabalhoQuantidade = 10;
     const trabalhoDataPrevisao = '8024-12-01'; // Aqui você pode manter a data no formato ISO (ano-mês-dia)
@@ -93,39 +93,101 @@ describe('Gestão de Trabalho - Cadastro com criação de Boneca e Colaborador',
         // O status será "Ativo" se a data de previsão for no futuro, ou "Expirado" se a data de previsão já passou
         cy.contains('Ativo').should('be.visible'); // Verifica se o status 'Ativo' aparece
     });
-});
-
-
-
-// ===================TESTE DO EDITAR IMCOMPLETO==================== 
-
-
-describe('Gestão de Trabalho - Edição de Trabalho', () => {
-    const bonecaNome = 'Boneca Cypress de Pano';
-    const colaboradorNome = 'Mariana';
-    const trabalhoDataPrevisao = '2024-12-01'; 
-    const novaQuantidade = 15; // Novo valor de quantidade para a edição
-
-    beforeEach(() => {
-        // Realiza o login
-        cy.visit('/');
-        cy.get('#username').type('admin');
-        cy.get('#password').type('123123');
-        cy.get('.login_btn').click();
-    });
 
     it('Deve editar um trabalho existente', () => {
         // Passo 1: Criação do Trabalho
         cy.visit('/gestao_trabalho');
-        // Passo 2: Selecionar a ação para a colaboradora Mariana
-        cy.contains(colaboradorNome) // Encontrar a linha da colaboradora Mariana
+        // Passo 2: Selecionar a ação para a colaboradora CypressUser
+        cy.contains(colaboradorNome) // Encontrar a linha da colaboradora CypressUser
             .parents('tr') // Encontrar o <tr> que contém o nome da colaboradora
             .find('.action-select') // Localiza o select de ações
             .select('editar') // Seleciona a opção 'editar'
-            .click(); 
 
         // Passo 3: Verificar se a URL foi redirecionada para a página de edição
         cy.url().should('include', '/editar_trabalho');
+
+        cy.get('#quantidade').clear().type('9999'); // Preenche a quantidade
+        cy.get('#data_previsao').clear().type('8024-01-01');
+        cy.get('button[type="submit"]').click(); // Submete o formulário
+
+        cy.contains('9999').should('be.visible'); 
+        cy.contains('1 de Janeiro de 8024').should('be.visible'); 
+
+
+    });
+
+    it('Deve excluir um trabalho existente', () => {
+        // Passo 1: Criação do Trabalho
+        cy.visit('/gestao_trabalho');
+        // Passo 2: Selecionar a ação para a colaboradora CypressUser
+        cy.contains(colaboradorNome) // Encontrar a linha da colaboradora CypressUser
+            .parents('tr') // Encontrar o <tr> que contém o nome da colaboradora
+            .find('.action-select') // Localiza o select de ações
+            .select('excluir') // Seleciona a opção 'editar'
+
+            cy.on('window:confirm', (text) => {
+                if(text == 'Tem certeza de que deseja excluir este trabalho?')
+                return true; // Confirma a exclusão
+              });
+
+        cy.contains(bonecaNome).should('not.exist'); 
+        cy.contains(colaboradorNome).should('not.exist');
+        cy.contains('9999').should('not.exist'); 
+        cy.contains('1 de Janeiro de 8024').should('not.exist'); 
+
+        cy.visit('/gestao_colaboradores');
+
+        // Verifica a presença do CPF no corpo da página
+        cy.get('body').then((body) => {
+            if (body.text().includes(colaboradorCPF)) {
+            // Se o CPF existir, realiza a edição
+            cy.contains(colaboradorCPF)
+                .parents('tr') // Encontra a linha da tabela
+                .find('.action-select') // Encontra o dropdown de ações
+                .select('excluir'); // Seleciona a ação "Excluir"
+
+            }
+        });
+
+        // Confirma o alerta de exclusão
+        // Confirma o alerta de exclusão
+        cy.on('window:confirm', (text) => {
+            if(text == 'Tem certeza de que deseja excluir este colaborador?' || text === 'Tem certeza de que deseja excluir esta boneca?')
+            return true; // Confirma a exclusão
+          });
+        // Verifica se o CPF foi excluído
+        cy.contains(colaboradorCPF).should('not.exist');
+
+
+        cy.visit('/gestao_bonecas');
+
+      // Verifica a presença do CPF no corpo da página
+      cy.get('body').then((body) => {
+        if (body.text().includes('CypressDoll')) {
+        // Se o CPF existir, realiza a edição
+        cy.contains('CypressDoll')
+            .parents('tr') // Encontra a linha da tabela
+            .find('.action-select') // Encontra o dropdown de ações
+            .select('excluir'); // Seleciona a ação "Excluir"
+
+        }
+
+        // Confirma o alerta de exclusão
+        cy.on('window:confirm', (text) => {
+            if(text == 'Tem certeza de que deseja excluir este colaborador?' || text === 'Tem certeza de que deseja excluir esta boneca?')
+            return true; // Confirma a exclusão
+          });
+
+        cy.contains('CypressDoll').should('not.exist');
+
+        // Verifica se o sistema exibe uma mensagem de confirmacao
+        cy.contains('Boneca excluída com sucesso!').should('be.visible');
+
+
+
+
+        });
+
     });
 });
 
