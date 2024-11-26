@@ -52,7 +52,7 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 ## 🚚 Entregas 
 <details>
-<summary>Status Report I</summary>
+<summary><strong>Status Report I</strong></summary>
 <ul>
 
 #### 🔗Links
@@ -80,6 +80,44 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 </ul>
 </details>
+
+<details>
+<summary><strong>Status Report II</strong></summary>
+<ul>
+
+#### 🔗Links
+[Screencast 📹]()
+
+[Screencast de Testes 📹]()
+
+[Protótipo de Média Fidelidade 🎨](https://www.figma.com/design/99oqol9kJoziZQHy6iwHwc/T.R.A.M.A?node-id=0-1&node-type=canvas&t=DAEuJhBnMbM0DW3n-0)
+
+[Relatório de Programação em Par 🤝]()
+
+#### 📚Histórias de Usuário 
+
+1) Eu como Administrador, quero cadastrar e visualizar colaboradoras;
+2) Eu como Administrador, quero editar e remover colaboradoras;
+3) Eu como Administrador, quero cadastrar e visualizar empresas parceiras;
+4) Eu como Administrador, quero editar e remover empresas parceiras;
+5) Eu como Administrador, quero cadastrar e visualizar doadores;
+6) Eu como Administrador, quero editar e remover doadores;
+7) Eu como Administrador, quero cadastrar e visualizar bonecas;
+8) Eu como Administrador, quero editar e remover bonecas;
+9) Eu como Administrador, quero gerenciar uma linha de trabalho, relacionando uma boneca a uma ou mais colaboradoras;
+10) Eu como Administrador, quero visualizar relatórios sobre as colaboradoras.
+
+#### 📊Diagrama de atividades 
+
+![Diagrama]()
+
+#### 🐛Issue/Bug Tracker 
+
+![Issue/Bug Tracker]()
+ 
+</ul>
+</details>
+
 
 ## ✨ Contribuição
 <a href="https://github.com/rodsouzab/ProjetoManguetown/graphs/contributors">
