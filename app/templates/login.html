@@ -85,6 +85,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container h-100">
         <div class="d-flex justify-content-center h-100">
@@ -95,15 +96,9 @@
                         <img src="{% static 'tr.png' %}" class="brand_logo" alt="Logo">
                     </div>
                 </div>
+                
                 <h2 class="login-title">Login</h2>
                 <div class="d-flex justify-content-center form_container">
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <li class="message">{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
                     <form method="POST" class="login-form">
                         {% csrf_token %}
                         <div class="input-group mb-3">
@@ -121,6 +116,13 @@
                         <div class="d-flex justify-content-center mt-3 login_container">
                             <button type="submit" class="btn login_btn">Entrar</button>
                         </div>
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="message">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                     </form>
                 </div>
             </div>
