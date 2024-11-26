@@ -92,7 +92,7 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 
 [Protótipo de Média Fidelidade 🎨](https://www.figma.com/design/99oqol9kJoziZQHy6iwHwc/T.R.A.M.A?node-id=0-1&node-type=canvas&t=DAEuJhBnMbM0DW3n-0)
 
-[Relatório de Programação em Par 🤝]()
+[Relatório de Programação em Par 🤝](https://docs.google.com/document/d/1OjU8t83jdAzR2g2IuGt-XnTSurq753zi7vIKLnwhwR4/edit?tab=t.0)
 
 #### 📚Histórias de Usuário 
 
