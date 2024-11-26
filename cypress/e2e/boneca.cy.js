@@ -16,9 +16,9 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
 
       // Verifica a presença do nome da boneca no corpo da página
       cy.get('body').then((body) => {
-        if (body.text().includes('Boneca Cypress de Pano')) {
+        if (body.text().includes('CypressDoll')) {
         // Se o nome
-        cy.contains('Boneca Cypress de Pano')
+        cy.contains('CypressDoll')
             .parents('tr') // Encontra a linha da tabela
             .find('.action-select') // Encontra o dropdown de ações
             .select('excluir'); // Seleciona a ação "Excluir"
@@ -30,7 +30,7 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
         });
         
         // Verifica se o CPF foi excluído
-        cy.contains('Boneca Cypress de Pano').should('not.exist');
+        cy.contains('CypressDoll').should('not.exist');
     }
     });
       
@@ -40,7 +40,7 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
       // Verifica se a página de cadastro foi carregada
       cy.url().should('include', '/cadastrar_boneca');
 
-      cy.get('#nome_boneca').type('Boneca Cypress de Pano');
+      cy.get('#nome_boneca').type('CypressDoll');
       cy.get('#nivel_dificuldade').type('4');
 
       // Envia o formulário
@@ -50,7 +50,7 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
       cy.url().should('include', '/gestao_bonecas');
 
       // Verifica se o colaborador está na lista de colaboradores com o novo CPF
-      cy.contains('Boneca Cypress de Pano').should('be.visible');
+      cy.contains('CypressDoll').should('be.visible');
       cy.contains('4').should('be.visible');
     });
 
@@ -60,9 +60,9 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
 
         // Verifica a presença de informações
         cy.get('body').then((body) => {
-          if (body.text().includes('Boneca Cypress de Pano')) {
+          if (body.text().includes('CypressDoll')) {
           // Se as informações existirem
-          cy.contains('Boneca Cypress de Pano')
+          cy.contains('CypressDoll')
               .parents('tr') // Encontra a linha da tabela
               .find('.action-select') // Encontra o dropdown de ações
               .select('editar'); // Seleciona a ação "Editar"
@@ -83,7 +83,7 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
       cy.url().should('include', '/gestao_bonecas');
 
       // Verifica se a boneca cadastrada está na lista de bonecas com os novos elementos
-      cy.contains('Boneca Cypress de Pano').should('be.visible');
+      cy.contains('CypressDoll').should('be.visible');
       cy.contains('2').should('be.visible');
 
 
@@ -99,9 +99,9 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
 
       // Verifica a presença do CPF no corpo da página
       cy.get('body').then((body) => {
-        if (body.text().includes('Boneca Cypress de Pano')) {
+        if (body.text().includes('CypressDoll')) {
         // Se o CPF existir, realiza a edição
-        cy.contains('Boneca Cypress de Pano')
+        cy.contains('CypressDoll')
             .parents('tr') // Encontra a linha da tabela
             .find('.action-select') // Encontra o dropdown de ações
             .select('excluir'); // Seleciona a ação "Excluir"
@@ -114,7 +114,7 @@ describe('Cadastro, alocação e Remoção de Boneca', () => {
             return true; // Confirma a exclusão
         })
 
-        cy.contains('Boneca Cypress de Pano').should('not.exist');
+        cy.contains('CypressDoll').should('not.exist');
 
         // Verifica se o sistema exibe uma mensagem de confirmacao
         cy.contains('Boneca excluída com sucesso!').should('be.visible');
