@@ -24,7 +24,7 @@
         </div>
 
         <table class="table table-striped">
-            <thead class="thead-dark">
+            <thead class="corTabela">
                 <tr>
                     <th>Nome</th>
                     <th>CPF</th>
@@ -41,16 +41,16 @@
             <tbody>
                 {% for colaborador in colaboradores %}
                 <tr>
-                    <td>{{ colaborador.nome }}</td>
-                    <td>{{ colaborador.cpf }}</td>
-                    <td>{{ colaborador.data_nascimento }}</td>
-                    <td>{{ colaborador.lugar_onde_mora }}</td>
-                    <td>{{ colaborador.renda }}</td>
-                    <td>{{ colaborador.situacoes_de_vulnerabilidade }}</td>
-                    <td>{{ colaborador.quantos_filhos }}</td>
-                    <td>{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
-                    <td>{{ colaborador.habilidades }}</td>
-                    <td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.nome }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.cpf }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.data_nascimento }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.lugar_onde_mora }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.renda }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.situacoes_de_vulnerabilidade }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.quantos_filhos }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.habilidades }}</td>
+                    <td style="background-color: #EBCEB555; color: black;"> 
                         <!-- Dropdown para ações -->
                         <select class="form-select action-select custom-select" data-colaborador-id="{{ colaborador.id }}">
                             <option value="">Escolha ação</option>

@@ -22,7 +22,7 @@
     </div>
 
     <table class="table table-striped">
-        <thead class="thead-dark">
+        <thead class="corTabela">
             <tr>
                 <th>Nome</th>
                 <th>CPF</th>
@@ -40,17 +40,17 @@
         <tbody>
             {% for doador in doadores %}
             <tr>
-                <td>{{ doador.nome }}</td>
-                <td>{{ doador.cpf }}</td>
-                <td>{{ doador.data_nascimento }}</td>
-                <td>{{ doador.lugar_onde_mora }}</td>
-                <td>{{ doador.individual|yesno:"Sim,Não" }}</td>
-                <td>{{ doador.tipo_doador }}</td>
-                <td>{{ doador.data_disponibilidade|default:"N/A" }}</td>
-                <td>{{ doador.local_captacao|default:"N/A" }}</td>
-                <td>{{ doador.condicao_residuo|default:"N/A" }}</td>
-                <td>{{ doador.tipo_residuo|default:"N/A" }}</td>
-                <td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.nome }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.cpf }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.data_nascimento }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.lugar_onde_mora }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.individual|yesno:"Sim,Não" }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.tipo_doador }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.data_disponibilidade|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.local_captacao|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.condicao_residuo|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ doador.tipo_residuo|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;">
                     <!-- Dropdown para ações -->
                     <select class="form-select action-select custom-select" data-doador-id="{{ doador.id }}">
                         <option value="">Escolha ação</option>

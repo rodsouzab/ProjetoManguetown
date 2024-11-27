@@ -22,7 +22,7 @@
     </div>
 
     <table class="table table-striped">
-        <thead class="thead-dark">
+        <thead class="corTabela">
             <tr>
                 <th>Nome do Responsável</th>
                 <th>Nome da Empresa</th>
@@ -37,16 +37,16 @@
         <tbody>
             {% for empresa in empresas %}
             <tr>
-                <td>{{ empresa.nome_responsavel }}</td>
-                <td>{{ empresa.nome_empresa }}</td>
-                <td>{{ empresa.captacao_local }}</td>
-                <td>{{ empresa.disponibilidade_residuo }}</td>
-                <td>{{ empresa.porte_fabrico }}</td>
-                <td>{{ empresa.tipo_residuo }}</td>
-                <td>{{ empresa.condicao_residuo }}</td>
-                <td>
+                <td style="background-color: #EBCEB555; color: black;">{{ empresa.nome_responsavel }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ empresa.nome_empresa }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ empresa.captacao_local }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ empresa.disponibilidade_residuo }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ empresa.porte_fabrico }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ empresa.tipo_residuo }}</td>
+                <td style="background-color: #EBCEB555; color: black;">{{ empresa.condicao_residuo }}</td>
+                <td style="background-color: #EBCEB555; color: black;">
                     <!-- Dropdown para ações -->
-                    <select class="form-select action-select custom-select" data-empresa-id="{{ empresa.id }}">
+                    <select class="form-select action-select custom-select " data-empresa-id="{{ empresa.id }}">
                         <option value="">Escolha ação</option>
                         <option value="editar">Editar</option>
                         <option value="excluir">Excluir</option>

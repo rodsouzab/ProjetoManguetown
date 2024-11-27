@@ -41,7 +41,7 @@
         </div>
 
         <table class="table table-striped">
-            <thead class="thead-dark">
+            <thead class="corTabela">
                 <tr>
                     <th>Nome do Colaborador</th>
                     <th>Boneca</th>
@@ -57,20 +57,20 @@
             <tbody>
                 {% for trabalho in trabalhos %}
                 <tr>
-                    <td>
+                    <td style="background-color: #EBCEB555; color: black;">
                         {% for colaborador in trabalho.colaboradores.all %}
                             <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
                         {% empty %}
                             Nenhum colaborador associado
                         {% endfor %}
                     </td>
-                    <td>{{ trabalho.boneca.nome }}</td>
-                    <td>{{ trabalho.quantidade }}</td>
-                    <td>{{ trabalho.data_previsao }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ trabalho.boneca.nome }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ trabalho.quantidade }}</td>
+                    <td style="background-color: #EBCEB555; color: black;">{{ trabalho.data_previsao }}</td>
                     {% if filtro == 'concluido' %}
                         <td>{{ trabalho.data_conclusao|date:"d/m/Y" }}</td>
                     {% endif %}
-                    <td>
+                    <td style="background-color: #EBCEB555; color: black;">
                         {% if trabalho.status == 'concluido' %}
                             <select class="form-select action-select custom-select" data-trabalho-id="{{ trabalho.id }}">
                                 <option value="">Escolha ação</option>
