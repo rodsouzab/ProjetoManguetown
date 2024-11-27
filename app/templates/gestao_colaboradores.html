@@ -41,16 +41,16 @@
             <tbody>
                 {% for colaborador in colaboradores %}
                 <tr>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.nome }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.cpf }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.data_nascimento }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.lugar_onde_mora }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.renda }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.situacoes_de_vulnerabilidade }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.quantos_filhos }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ colaborador.habilidades }}</td>
-                    <td style="background-color: #EBCEB555; color: black;"> 
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.nome }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.cpf }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.data_nascimento }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.lugar_onde_mora }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.renda }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.situacoes_de_vulnerabilidade }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.quantos_filhos }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.quantas_pessoas_moram_com_voce }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ colaborador.habilidades }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black"> 
                         <!-- Dropdown para ações -->
                         <select class="form-select action-select custom-select" data-colaborador-id="{{ colaborador.id }}">
                             <option value="">Escolha ação</option>

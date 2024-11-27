@@ -40,17 +40,17 @@
         <tbody>
             {% for doador in doadores %}
             <tr>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.nome }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.cpf }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.data_nascimento }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.lugar_onde_mora }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.individual|yesno:"Sim,Não" }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.tipo_doador }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.data_disponibilidade|default:"N/A" }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.local_captacao|default:"N/A" }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.condicao_residuo|default:"N/A" }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ doador.tipo_residuo|default:"N/A" }}</td>
-                <td style="background-color: #EBCEB555; color: black;">
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.nome }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.cpf }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.data_nascimento }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.lugar_onde_mora }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.individual|yesno:"Sim,Não" }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.tipo_doador }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.data_disponibilidade|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.local_captacao|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.condicao_residuo|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ doador.tipo_residuo|default:"N/A" }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">
                     <!-- Dropdown para ações -->
                     <select class="form-select action-select custom-select" data-doador-id="{{ doador.id }}">
                         <option value="">Escolha ação</option>

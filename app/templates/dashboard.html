@@ -7,14 +7,13 @@
 {% block content %}
     <div class="container-fluid" style="min-height: 100vh; margin-top: 20px; display: flex; flex-direction: column;">
         <!-- Page Heading -->
-        <h1 class="welcome-title text-center" style="margin-top: 30px;">Bem-Vinda, Danielle</h1>
+        <h1 class="welcome-title text-center" style="margin-top: 10px;">Bem-Vinda, Danielle</h1>
 
         <!-- Grid com 2 seções -->
         <div class="row justify-content-center align-items-stretch" style="flex-grow: 1; background-color: transparent;">
             <!-- Seção do Calendário -->
-            <div class="col-lg-6 col-md-8 col-sm-12 mb-4 d-flex" style="background-color: transparent;">
+            <div class="col-lg-6 col-md-8 col-sm-12 mb-4 d-flex" style="background-color: #D98BA755; color: black;border-radius: 10px; border: none;padding: 0; max-height: 600px;overflow-y: auto;">
                 <div class="flex-grow-1" style="display: flex; flex-direction: column; height: 100%;">
-                    <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Calendário</h6>
                     <div class="card-body" style="flex-grow: 1; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
                         <div id="calendar" style="min-height: 500px;"></div>
                     </div>
@@ -24,13 +23,14 @@
             <!-- Seção da Tabela de Trabalhos com Expiração -->
             <div class="col-lg-6 col-md-8 col-sm-12 mb-4 d-flex" style="background-color: transparent;">
                 <div class="flex-grow-1" style="display: flex; flex-direction: column; height: 100%;">
-                    <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6>
+                    
                     
                     <!-- Tornar a tabela clicável -->
                     <a href="{% url 'manguetown:gestao_trabalho' %}" style="display: flex; flex-grow: 1; text-decoration: none; color: inherit;">
                         <div class="card-body clickable-table" style="flex-grow: 1; min-height: 500px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
                             <table class="table">
-                                <thead class="corTabela">
+                                <h6 class="welcome-title-lower text-center" style="margin-top: 30px;">Relatório de Atividades</h6>
+                                <thead class="corTabelaDashboard">
                                     <tr>
                                         <th scope="col">Colaborador</th>
                                         <th scope="col">Boneca</th>
@@ -41,16 +41,16 @@
                                 <tbody>
                                     {% for trabalho in trabalhos %}
                                         <tr>
-                                            <td style="background-color: #EBCEB555; color: black;">
+                                            <td style="background-color: #D98BA755; color: black; border:1px solid #f5a3b5">
                                                 {% for colaborador in trabalho.colaboradores.all %}
                                                     <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
                                                 {% empty %}
                                                     Nenhum colaborador associado
                                                 {% endfor %}
                                             </td>
-                                            <td style="background-color: #EBCEB555; color: black;">{{ trabalho.boneca.nome }}</td>
-                                            <td style="background-color: #EBCEB555; color: black;">{{ trabalho.quantidade }}</td>
-                                            <td style="background-color: #EBCEB555; color: black;">{{ trabalho.data_previsao }}</td>    
+                                            <td style="background-color: white; color: black; border:1px solid #f5a3b5">{{ trabalho.boneca.nome }}</td>
+                                            <td style="background-color: white; color: black;border:1px solid #f5a3b5">{{ trabalho.quantidade }}</td>
+                                            <td style="background-color: white; color: black;border:1px solid #f5a3b5">{{ trabalho.data_previsao }}</td>    
                                         </tr>
                                     {% empty %}
                                         <tr>
@@ -89,6 +89,36 @@
             cursor: pointer;
             transform: scale(1.02); /* Efeito de aumento ao passar o mouse */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
+        }
+
+            /* Torna todos os textos do calendário pretos */
+            .fc-event,                /* Texto dos eventos */
+            .fc-daygrid-day-number,   /* Números dos dias */
+            .fc-toolbar-title,        /* Título do mês */
+            .fc-header-toolbar button, /* Botões do cabeçalho */
+            .fc-daygrid-event-dot,    /* Texto dos eventos compactados */
+            .fc-daygrid-day-top,      /* Cabeçalho do dia */
+            .fc-daygrid-day
+            .fc-col-header-cell,          
+            .fc-daygrid-day-events {  
+            color: black !important;
+        }
+
+        /* Botões e textos do cabeçalho */
+        .fc-header-toolbar button {
+            color: white !important;
+            border-color: black !important;
+        }
+
+        /* Dias inativos (fora do mês atual) */
+        .fc-day-other {
+            color: #6c757d !important; /* Cinza escuro para dias inativos */
+        }
+
+        /* Torna os textos dos dias da semana pretos */
+        .fc-col-header-cell,        /* Dias da semana no cabeçalho */
+        .fc-col-header-cell span {  /* Texto dentro do cabeçalho */
+            color: black !important;
         }
     </style>
 
