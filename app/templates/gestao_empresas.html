@@ -37,14 +37,14 @@
         <tbody>
             {% for empresa in empresas %}
             <tr>
-                <td style="background-color: #EBCEB555; color: black;">{{ empresa.nome_responsavel }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ empresa.nome_empresa }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ empresa.captacao_local }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ empresa.disponibilidade_residuo }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ empresa.porte_fabrico }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ empresa.tipo_residuo }}</td>
-                <td style="background-color: #EBCEB555; color: black;">{{ empresa.condicao_residuo }}</td>
-                <td style="background-color: #EBCEB555; color: black;">
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ empresa.nome_responsavel }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ empresa.nome_empresa }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ empresa.captacao_local }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ empresa.disponibilidade_residuo }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ empresa.porte_fabrico }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ empresa.tipo_residuo }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ empresa.condicao_residuo }}</td>
+                <td style="background-color: #EBCEB555; color: black;border:1px solid black">
                     <!-- Dropdown para ações -->
                     <select class="form-select action-select custom-select " data-empresa-id="{{ empresa.id }}">
                         <option value="">Escolha ação</option>

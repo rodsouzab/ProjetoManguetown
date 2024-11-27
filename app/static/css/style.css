@@ -303,6 +303,8 @@ table td {
     margin-bottom: 15px; /* Margem inferior para espaçamento */
 }
 
+
+
 input.form-control {
     width: 100%; /* Largura total para os campos de entrada */
     padding: 10px; /* Espaçamento interno */
@@ -362,5 +364,7 @@ input.form-control {
     background-color: #dc3545;
     color: white;
 }
+
+
 
 

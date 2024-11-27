@@ -57,20 +57,20 @@
             <tbody>
                 {% for trabalho in trabalhos %}
                 <tr>
-                    <td style="background-color: #EBCEB555; color: black;">
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">
                         {% for colaborador in trabalho.colaboradores.all %}
                             <span>{{ colaborador.nome }}</span>{% if not forloop.last %}<br>{% endif %}
                         {% empty %}
                             Nenhum colaborador associado
                         {% endfor %}
                     </td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ trabalho.boneca.nome }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ trabalho.quantidade }}</td>
-                    <td style="background-color: #EBCEB555; color: black;">{{ trabalho.data_previsao }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ trabalho.boneca.nome }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ trabalho.quantidade }}</td>
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ trabalho.data_previsao }}</td>
                     {% if filtro == 'concluido' %}
-                        <td>{{ trabalho.data_conclusao|date:"d/m/Y" }}</td>
+                        <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ trabalho.data_conclusao|date:"d/m/Y" }}</td>
                     {% endif %}
-                    <td style="background-color: #EBCEB555; color: black;">
+                    <td style="background-color: #EBCEB555; color: black;border:1px solid black">
                         {% if trabalho.status == 'concluido' %}
                             <select class="form-select action-select custom-select" data-trabalho-id="{{ trabalho.id }}">
                                 <option value="">Escolha ação</option>

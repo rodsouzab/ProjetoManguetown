@@ -36,17 +36,21 @@
             height: 170px;
             width: 170px;
             top: -75px;
-            border-radius: 50%;
-            background: white;
-            padding: 10px;
+            border-radius: 100%;
+            background: #D98BA755;
+            padding: 14px;
             text-align: center;
+            opacity: 1 !important;
         }
         .brand_logo {
-            height: 150px;
-            width: 150px;
+            height: calc(100% + 28px); /* Subtraia a espessura da borda */
+            width: calc(100% + 28px);
             border-radius: 50%;
-            border: 2px solid white;
-            
+            border: 8px solid white;
+            margin-top: -14px; /* Ajusta o alinhamento vertical */
+            margin-left: -14px; /* Ajusta o alinhamento horizontal */
+            object-fit: contain; /* Ajusta a imagem dentro do círculo */
+            opacity: 1 !important;
         }
         .form_container {
             margin-top: 15px;
@@ -61,28 +65,30 @@
         }
         .login_btn {
             width: 100%;
-            background: #c0392b !important;
-            color: white !important;
+            background: #D98BA755; !important;
+            color: black !important;
         }
         .login_btn:focus {
             box-shadow: none !important;
             outline: 0px !important;
+            
         }
         .login_container {
             padding: 0 3rem;
         }
         .input-group-text {
-            background: #c0392b !important;
-            color: white !important;
+            color: black !important;
             border: 0 !important;
             border-radius: 0.25rem 0 0 0.25rem !important;
+            background-color:#D98BA755 !important;
         }
-        .input_user, .input_pass:focus {
+        .input_user, .input_pass, .input_pass:focus {
             box-shadow: none !important;
             outline: 0px !important;
+            background-color:#D98BA755 !important;
         }
         .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
-            background-color: #c0392b !important;
+            background-color: #D98BA755 !important;
         }
         .message-container {
             text-align: center;
@@ -113,7 +119,7 @@
                 <div class="d-flex justify-content-center">
                     <div class="brand_logo_container">
                         {% load static %}
-                        <img src="{% static 'tr.png' %}" class="brand_logo" alt="Logo">
+                        <img src="{% static 'trama-logo.png' %}" class="brand_logo" alt="Logo">
                     </div>
                 </div><br>
                 <h2 class="login-title">Login</h2>

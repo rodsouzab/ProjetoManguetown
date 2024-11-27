@@ -36,9 +36,9 @@
             <tbody>
                 {% for boneca in bonecas %}
                     <tr>
-                        <td style="background-color: #EBCEB555; color: black;">{{ boneca.nome }}</td>
-                        <td style="background-color: #EBCEB555; color: black;">{{ boneca.nivel_dificuldade }}</td>
-                        <td class="text-end" style="background-color: #EBCEB555; color: black;"> <!-- Adicionando a classe text-end para as células de ação -->
+                        <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ boneca.nome }}</td>
+                        <td style="background-color: #EBCEB555; color: black;border:1px solid black">{{ boneca.nivel_dificuldade }}</td>
+                        <td class="text-end" style="background-color: #EBCEB555; color: black;border:1px solid black"> <!-- Adicionando a classe text-end para as células de ação -->
                             <select class="form-select action-select custom-select" data-boneca-id="{{ boneca.id }}">
                                 <option value="">Escolha ação</option>
                                 <option value="editar">Editar</option>
