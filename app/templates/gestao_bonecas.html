@@ -26,7 +26,7 @@
         </div>
 
         <table class="table table-striped">
-            <thead class="thead-dark">
+            <thead class="corTabela">
                 <tr>
                     <th>Nome</th>
                     <th>Nível de Dificuldade</th>
@@ -36,9 +36,9 @@
             <tbody>
                 {% for boneca in bonecas %}
                     <tr>
-                        <td>{{ boneca.nome }}</td>
-                        <td>{{ boneca.nivel_dificuldade }}</td>
-                        <td class="text-end"> <!-- Adicionando a classe text-end para as células de ação -->
+                        <td style="background-color: #EBCEB555; color: black;">{{ boneca.nome }}</td>
+                        <td style="background-color: #EBCEB555; color: black;">{{ boneca.nivel_dificuldade }}</td>
+                        <td class="text-end" style="background-color: #EBCEB555; color: black;"> <!-- Adicionando a classe text-end para as células de ação -->
                             <select class="form-select action-select custom-select" data-boneca-id="{{ boneca.id }}">
                                 <option value="">Escolha ação</option>
                                 <option value="editar">Editar</option>

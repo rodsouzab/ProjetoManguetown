@@ -88,7 +88,7 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 #### 🔗Links
 [Screencast 📹]()
 
-[Screencast de Testes 📹]()
+[Screencast de Testes 📹](https://drive.google.com/file/d/1iVgy4wTuo331QZQHTSLdA6jhbpCH3liz/view?usp=drive_link)
 
 [Protótipo de Média Fidelidade 🎨](https://www.figma.com/design/99oqol9kJoziZQHy6iwHwc/T.R.A.M.A?node-id=0-1&node-type=canvas&t=DAEuJhBnMbM0DW3n-0)
 

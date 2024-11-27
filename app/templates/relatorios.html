@@ -38,15 +38,15 @@
                     </div>
                     <div class="card-body graph-container" id="graficoDesempenhoContainer">
                         <canvas id="graficoDesempenho" class="d-none"></canvas> <!-- Inicialmente escondido -->
-                        <h5><strong>Cálculo de Pontos:</strong></h5>
-                                <p>
+                        <h5 style="color: black"><strong>Cálculo de Pontos:</strong></h5>
+                                <p style="color: black">
                                     Os pontos de cada colaboradora é calculado com base na quantidade de bonecas feitas por ela multiplicado pelas suas respectivas dificuldades.
                                 </p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 
     <!-- Inclusão do script do Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -83,8 +83,8 @@
                             {{ item.quantidade_bonecas }}{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     ],
-                    backgroundColor: 'rgba(197, 91, 126, 0.6)',
-                    borderColor: 'rgba(197, 91, 126, 1)',
+                    backgroundColor: 'rgb(17, 90, 47, 0.33)',
+                    borderColor: 'rgb(17, 90, 47, 0.33)',
                     borderWidth: 1
                 }]
             },
@@ -93,6 +93,12 @@
                 scales: {
                     y: {
                         beginAtZero: true
+                    },
+                    x: {
+                        ticks: {
+                            // Modifica a cor das labels no eixo X (nomes das pessoas)
+                            color: 'black' // Altere para 'black' ou qualquer outra cor desejada
+                        }
                     }
                 }
             }
@@ -115,8 +121,8 @@
                             {{ item.pontos }}{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     ],
-                    backgroundColor: 'rgba(197, 91, 126, 0.6)',
-                    borderColor: 'rgba(197, 91, 126, 1)',
+                    backgroundColor: 'rgb(17, 90, 47, 0.33)',
+                    borderColor: 'rgb(17, 90, 47, 0.33)',
                     borderWidth: 1
                 }]
             },
@@ -125,7 +131,14 @@
                 scales: {
                     y: {
                         beginAtZero: true
+                    },
+                    x: {
+                        ticks: {
+                            // Modifica a cor das labels no eixo X (nomes das pessoas)
+                            color: 'black' // Altere para 'black' ou qualquer outra cor desejada
+                        }
                     }
+                    
                 }
             }
         });
@@ -136,7 +149,7 @@
         /* Personalização do container do gráfico */
         .graph-container {
             display: none; /* Inicialmente oculto */
-            background-color: rgba(197, 91, 126, 0.2);
+            background-color: rgba(17, 90, 47, 0.333);
             border-radius: 10px;
             padding: 20px;
         }
@@ -144,6 +157,7 @@
         /* Estilos de carta */
         .card {
             border-radius: 10px;
+            
         }
 
         .card-header {
@@ -153,6 +167,7 @@
         /* Efeitos de transição */
         .graph-container {
             transition: opacity 0.3s ease;
+            
         }
 
         .graph-container.d-none {
