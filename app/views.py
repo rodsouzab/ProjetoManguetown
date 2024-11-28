@@ -700,7 +700,7 @@ def relatorios_view(request):
 def dashboard_view(request):
     # Filtrando os trabalhos com data de previsão dentro dos próximos 7 dias
     data_limite = timezone.now() + timedelta(days=7)
-    trabalhos = Trabalho.objects.filter(data_previsao__lte=data_limite, data_previsao__gte=timezone.now()).order_by('data_previsao')
+    trabalhos = Trabalho.objects.filter(data_previsao__lte=data_limite, data_previsao__gte=timezone.now(), status = 'ativo').order_by('data_previsao')
 
     # Preparando os eventos para o FullCalendar
     eventos = []
