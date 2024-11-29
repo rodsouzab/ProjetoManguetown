@@ -5,7 +5,6 @@
 
 
 
-
 <div align="center"><h1> Projeto TRAMA </h1></div>
 
 ## 🚀 Descrição do Projeto
