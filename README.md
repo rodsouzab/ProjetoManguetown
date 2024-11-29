@@ -118,7 +118,6 @@ https://www.linkedin.com/in/rodrigo-souza-28682b2b7?utm_source=share&utm_campaig
 </ul>
 </details>
 
-
 ## ✨ Contribuição
 <a href="https://github.com/rodsouzab/ProjetoManguetown/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=rodsouzab/ProjetoManguetown" />
