@@ -8,8 +8,8 @@
 <div align="center"><h1> Projeto TRAMA </h1></div>
 
 ## Usuario padrão
-- usuario 123
-- senha 123
+- usuario: 123
+- senha: 123
 ## 🚀 Descrição do Projeto
 
 Este projeto visa desenvolver um sistema de gestão para a empresa Fábrica de Ideias, facilitando o cadastro e controle de colaboradores, parceiros e doadores. O sistema é focado na gestão de pessoas e na mensuração de impacto.
